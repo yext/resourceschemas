@@ -1,0 +1,32 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://schema.yext.com/config/example/versioned-resource",
+  "type": "object",
+  "title": "Versioned Resource",
+  "additionalProperties": false,
+  "$version": "2",
+  "$deprecationDate": "2035-12-25",
+  "properties": {
+    "$id": {
+      "type": "string"
+    },
+    "$schema": {
+      "const": "https://schema.yext.com/config/example/versioned-resource/v2"
+    },
+    "previouslyStringNowIntegerValue": {
+      "type": "integer"
+    },
+    "previouslyRequiredNowOptionalValue": {
+      "type": "integer"
+    },
+    "previouslySingleNowListValue": {
+      "type": "integer"
+    }
+  },
+  "required": [
+    "$id",
+    "$schema",
+    "previouslyStringNowIntegerValue",
+    "previouslyRequiredNowOptionalValue"
+  ]
+}

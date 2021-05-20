@@ -1,0 +1,56 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://schema.yext.com/config/km/entity-template",
+  "$version": "1.1",
+  "type": "object",
+  "title": "Entity Template",
+  "description": "Entity templates for applying values to entities.",
+  "properties": {
+    "$id": {
+      "type": "string",
+      "description": "Unique identifier of the template resource."
+    },
+    "$schema": {
+      "const": "https://schema.yext.com/config/km/entity-template/v1"
+    },
+    "content": {
+      "type": "object",
+      "description": "The values of all the fields the template should apply.",
+      "additionalProperties": true
+    },
+    "entityTypes": {
+      "type": "array",
+      "description": "The unique identifiers of the entity types this template is available for.",
+      "items": {
+        "type": "string",
+        "format": "km/entity-type"
+      }
+    },
+    "externalId": {
+      "type": "string",
+      "description": "The ID to be used by the API."
+    },
+    "labelsToApply": {
+      "type": "array",
+      "description": "The unique identifiers of the labels this template should apply to entities.",
+      "items": {
+        "type": "string",
+        "format": "km/entity-label"
+      }
+    },
+    "localeCode": {
+      "type": "string",
+      "description": "The locale code of the language profiles this template is available for."
+    },
+    "name": {
+      "type": "string",
+      "description": "Display name of the template."
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "$id",
+    "$schema",
+    "name"
+  ]
+}

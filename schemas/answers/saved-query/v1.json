@@ -1,0 +1,85 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://schema.yext.com/config/answers/saved-query",
+  "$version": "1",
+  "type": "object",
+  "title": "Saved Query",
+  "additionalProperties": false,
+  "properties": {
+    "$id": {
+      "type": "string"
+    },
+    "$schema": {
+      "const": "https://schema.yext.com/config/answers/saved-query/v1"
+    },
+    "answersKey": {
+      "type": "string"
+    },
+    "idealResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "directAnswer": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "entityId": {
+              "type": "string",
+              "format": "km/entity"
+            },
+            "fieldId": {
+              "type": "string",
+              "format": "km/field"
+            },
+            "verticalKey": {
+              "type": "string"
+            }
+          }
+        },
+        "relevantSections": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "verticalConfigId": {
+                "type": "string"
+              },
+              "savedSearchId": {
+                "type": "string"
+              },
+              "entityIds": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "format": "km/entity"
+                }
+              },
+              "relevance": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "locale": {
+      "type": "string"
+    },
+    "latitude": {
+      "type": "number"
+    },
+    "longitude": {
+      "type": "number"
+    },
+    "pinIdealResults": {
+      "type": "boolean"
+    },
+    "queryString": {
+      "type": "string"
+    },
+    "notes": {
+      "type": "string"
+    }
+  }
+}

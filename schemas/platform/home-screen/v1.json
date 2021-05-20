@@ -1,0 +1,67 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://schema.yext.com/config/platform/home-screen",
+  "$version": "1",
+  "type": "object",
+  "title": "Home Screen",
+  "description": "Configures a home screen.",
+  "properties": {
+    "$id": {
+      "type": "string",
+      "description": "The unique identifier for the home screen resource."
+    },
+    "$schema": {
+      "const": "https://schema.yext.com/config/platform/home-screen/v1"
+    },
+    "name": {
+      "type": "string",
+      "description": "The display name of the home screen.",
+      "maxLength": 50
+    },
+    "bannerText": {
+      "type": "string",
+      "description": "Text to display in the banner at the top of the home screen.",
+      "maxLength": 255
+    },
+    "modules": {
+      "type": "array",
+      "description": "The ordered list of modules that will appear on the home screen. The order is left to right, with two modules per row.",
+      "maxItems": 20,
+      "unordered": false,
+      "items": {
+        "type": "object",
+        "description": "An individual module to be displayed on the home screen.",
+        "properties": {
+          "module": {
+            "type": "string",
+            "description": "The name of the module resource."
+          },
+          "insight": {
+            "type": "string",
+            "description": "The name of the insight resource.",
+            "format": "analytics/insight"
+          }
+        },
+        "oneOf": [
+          {
+            "required": [
+              "module"
+            ]
+          },
+          {
+            "required": [
+              "insight"
+            ]
+          }
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "$id",
+    "$schema",
+    "name"
+  ]
+}

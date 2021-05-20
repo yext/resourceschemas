@@ -1,0 +1,34 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://schema.yext.com/config/example/validation-resource",
+  "$version": "1",
+  "type": "object",
+  "title": "Validation Resource",
+  "additionalProperties": false,
+  "properties": {
+    "$id": {
+      "type": "string"
+    },
+    "$schema": {
+      "const": "https://schema.yext.com/config/example/validation-resource/v1"
+    },
+    "lowercaseOnly": {
+      "type": "string"
+    },
+    "object": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "lengthLessThanFive": {
+          "type": "string"
+        }
+      }
+    },
+    "numbersOnlyList": {
+      "type": "array",
+      "items": {
+        "type": "number"
+      }
+    }
+  }
+}

@@ -1,0 +1,522 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://schema.yext.com/config/km/entity-upload-config",
+  "$version": "1",
+  "type": "object",
+  "title": "Entity Upload Configuration",
+  "description": "A resource that represents the configuration of an entity upload. The upload configuration can be applied to files using the same template.",
+  "properties": {
+    "$id": {
+      "type": "string"
+    },
+    "$schema": {
+      "const": "https://schema.yext.com/config/km/entity-upload-config/v1"
+    },
+    "displayName": {
+      "type": "string",
+      "description": "The upload configuration display name."
+    },
+    "mapping": {
+      "type": "array",
+      "description": "List of mappings that associate a column from the uploaded file to a Yext field.",
+      "items": {
+        "type": "object",
+        "description": "Mapping that associate a column from the uploaded file to a Yext field.",
+        "properties": {
+          "sourceColumnName": {
+            "type": "string",
+            "description": "Uploaded file column header name."
+          },
+          "ignoreColumn": {
+            "type": "boolean",
+            "description": "If set to true, all values of the column will be omitted.",
+            "default": false
+          },
+          "fieldReference": {
+            "$ref": "#/definitions/fieldReference",
+            "description": "Yext field reference."
+          },
+          "transform": {
+            "type": "array",
+            "description": "Transformations to apply during the upload process.",
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/definitions/transform/noConfigTransform",
+                  "description": "Transformations without configurations."
+                },
+                {
+                  "$ref": "#/definitions/transform/capitalizationTransform",
+                  "description": "Uploaded value capitalization transformation."
+                },
+                {
+                  "$ref": "#/definitions/transform/blankValueTransform",
+                  "description": "Handle blank uploaded value operation."
+                },
+                {
+                  "$ref": "#/definitions/transform/delimitedTransform",
+                  "description": "Uploaded list value delimitation transformation."
+                },
+                {
+                  "$ref": "#/definitions/transform/richTextTransform",
+                  "description": "Uploaded rich text value transformations."
+                },
+                {
+                  "$ref": "#/definitions/transform/timeZoneTransform",
+                  "description": "Uploaded time zone value transformations."
+                }
+              ]
+            },
+            "additionalItems": false
+          }
+        },
+        "if": {
+          "properties": {
+            "ignoreColumn": {
+              "const": false
+            }
+          }
+        },
+        "then": {
+          "required": [
+            "sourceColumnName",
+            "fieldReference",
+            "transform"
+          ]
+        },
+        "else": {
+          "required": [
+            "sourceColumnName"
+          ]
+        },
+        "additionalProperties": false
+      },
+      "minItems": 1
+    },
+    "additionalField": {
+      "type": "array",
+      "description": "List of additional data to add to the upload.",
+      "items": {
+        "type": "object",
+        "description": "An additional data to add to the upload.",
+        "properties": {
+          "entityClassification": {
+            "type": "string",
+            "description": "The scope of the entities to include additional data. ALL is all entities for the business; NEW is newly created entities through the current upload process; EXISTING is all the existing entities specified in the file.",
+            "enum": [
+              "ALL",
+              "NEW",
+              "EXISTING"
+            ]
+          },
+          "fieldReference": {
+            "$ref": "#/definitions/fieldReference",
+            "description": "Yext field reference."
+          },
+          "fieldValue": {
+            "type": "string",
+            "description": "The value of the additional data."
+          },
+          "transform": {
+            "type": "array",
+            "description": "Transformations to apply during the upload process.",
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/definitions/transform/noConfigTransform",
+                  "description": "Transformations without configurations."
+                },
+                {
+                  "$ref": "#/definitions/transform/capitalizationTransform",
+                  "description": "Uploaded value capitalization transformation."
+                },
+                {
+                  "$ref": "#/definitions/transform/blankValueTransform",
+                  "description": "Handle blank uploaded value operation."
+                },
+                {
+                  "$ref": "#/definitions/transform/delimitedTransform",
+                  "description": "Uploaded list value delimitation transformation."
+                },
+                {
+                  "$ref": "#/definitions/transform/richTextTransform",
+                  "description": "Uploaded rich text value transformations."
+                },
+                {
+                  "$ref": "#/definitions/transform/timeZoneTransform",
+                  "description": "Uploaded time zone value transformations."
+                }
+              ]
+            },
+            "additionalItems": false
+          }
+        },
+        "required": [
+          "entityClassification",
+          "fieldReference",
+          "fieldValue",
+          "transform"
+        ],
+        "additionalProperties": false
+      },
+      "additionalItems": false
+    },
+    "action": {
+      "type": "array",
+      "description": "Additional operations to apply with this upload.",
+      "items": {
+        "oneOf": [
+          {
+            "type": "object",
+            "description": "Additional operation to apply with this upload.",
+            "properties": {
+              "entityClassification": {
+                "$ref": "#/definitions/action/entityClassification",
+                "description": "The scope of the entities to apply the additional action. ALL is all entities for the business; MISSING is existing entities not specified in the uploaded file; NEW is newly created entities through the current upload process; EXISTING is all the existing entities specified in the file."
+              },
+              "actionType": {
+                "const": "ADD_LABEL",
+                "description": "Additional action type."
+              },
+              "addLabelConfiguration": {
+                "$ref": "#/definitions/action/addLabelConfiguration",
+                "description": "Add label configuration."
+              }
+            },
+            "required": [
+              "entityClassification",
+              "actionType",
+              "addLabelConfiguration"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "entityClassification": {
+                "$ref": "#/definitions/action/entityClassification",
+                "description": "The scope of the entities to apply the additional action. ALL is all entities for the business; MISSING is existing entities not specified in the uploaded file; NEW is newly created entities through the current upload process; EXISTING is all the existing entities specified in the file."
+              },
+              "actionType": {
+                "const": "APPLY_TEMPLATE",
+                "description": "Additional action type."
+              },
+              "applyTemplateConfiguration": {
+                "$ref": "#/definitions/action/applyTemplateConfiguration",
+                "description": "Apply template configuration."
+              }
+            },
+            "required": [
+              "entityClassification",
+              "actionType",
+              "applyTemplateConfiguration"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "entityClassification": {
+                "$ref": "#/definitions/action/entityClassification",
+                "description": "The scope of the entities to apply the additional action. ALL is all entities for the business; MISSING is existing entities not specified in the uploaded file; NEW is newly created entities through the current upload process; EXISTING is all the existing entities specified in the file."
+              },
+              "actionType": {
+                "const": "MOVE_TO_FOLDER",
+                "description": "Additional action type."
+              },
+              "moveToFolderConfiguration": {
+                "$ref": "#/definitions/action/moveToFolderConfiguration",
+                "description": "Move to folder configuration."
+              }
+            },
+            "required": [
+              "entityClassification",
+              "actionType",
+              "moveToFolderConfiguration"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      }
+    }
+  },
+  "required": [
+    "$id",
+    "$schema",
+    "displayName",
+    "mapping"
+  ],
+  "additionalProperties": false,
+  "definitions": {
+    "fieldReference": {
+      "type": "object",
+      "description": "Yext field reference.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Yext field resource ID.",
+          "format": "km/field"
+        },
+        "propertyName": {
+          "type": "array",
+          "description": "Yext field property names to reference Yext sub-field.",
+          "items": {
+            "type": "string",
+            "description": "Yext field property name."
+          }
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "transform": {
+      "noConfigTransform": {
+        "type": "object",
+        "description": "Transformations without configurations.",
+        "properties": {
+          "transformType": {
+            "type": "string",
+            "description": "Transformation type. TRIM_WHITESPACE will remove the leading and trailing white spaces; ADD_TO_EXISTING will append uploaded value to existing values; INFER_PHONE_ISO_COUNTRY_CODE will infer uploaded phone number to ISO country code; PHONE_LETTERS_TO_NUMBERS will convert phone letters to numbers.",
+            "enum": [
+              "TRIM_WHITESPACE",
+              "ADD_TO_EXISTING",
+              "INFER_PHONE_ISO_COUNTRY_CODE",
+              "PHONE_LETTERS_TO_NUMBERS"
+            ]
+          }
+        },
+        "additionalProperties": false
+      },
+      "capitalizationTransform": {
+        "type": "object",
+        "description": "Uploaded value capitalization transformation.",
+        "properties": {
+          "transformType": {
+            "const": "CAPITALIZE",
+            "description": "Transformation type."
+          },
+          "capitalizationConfiguration": {
+            "type": "object",
+            "description": "Capitalized transformation configurations.",
+            "properties": {
+              "capitalization": {
+                "type": "string",
+                "description": "CAPITALIZE capitalizes all the delimiter separated words in a String; CAPITALIZE_FULLY converts all the whitespace separated words in a String into capitalized words, that is each word is made up of a titlecase character and then a series of lowercase characters.",
+                "enum": [
+                  "CAPITALIZE",
+                  "CAPITALIZE_FULLY"
+                ]
+              }
+            },
+            "required": [
+              "capitalization"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "capitalizationConfiguration"
+        ],
+        "additionalProperties": false
+      },
+      "blankValueTransform": {
+        "type": "object",
+        "description": "Handle blank uploaded value operation.",
+        "properties": {
+          "transformType": {
+            "const": "HANDLE_BLANK_VALUES",
+            "description": "Transformation type."
+          },
+          "blankValueConfiguration": {
+            "type": "object",
+            "description": "Handle blank value transformation configuration.",
+            "properties": {
+              "handleBlankValues": {
+                "type": "string",
+                "description": "IGNORE will disregard the uploaded blank value; CLEAR will clear the value from the specified field reference",
+                "enum": [
+                  "IGNORE",
+                  "CLEAR"
+                ]
+              }
+            },
+            "required": [
+              "handleBlankValues"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "blankValueConfiguration"
+        ],
+        "additionalProperties": false
+      },
+      "delimitedTransform": {
+        "type": "object",
+        "description": "Uploaded list value delimitation transformation.",
+        "properties": {
+          "transformType": {
+            "const": "DELIMITED_COLUMNS",
+            "description": "Transformation type."
+          },
+          "delimitedColumnConfiguration": {
+            "type": "object",
+            "properties": {
+              "delimiter": {
+                "type": "string",
+                "description": "COMMA will delimit value into a list by commas; TAB will delimit value into a list by tabs.",
+                "enum": [
+                  "COMMA",
+                  "TAB"
+                ]
+              }
+            },
+            "required": [
+              "delimiter"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "delimitedColumnConfiguration"
+        ],
+        "additionalProperties": false
+      },
+      "richTextTransform": {
+        "type": "object",
+        "description": "Uploaded rich text value transformations.",
+        "properties": {
+          "transformType": {
+            "const": "RICH_TEXT_FORMATTING_TYPE"
+          },
+          "richTextFormatConfiguration": {
+            "type": "object",
+            "description": "Transformation type.",
+            "properties": {
+              "formatTransformValues": {
+                "type": "string",
+                "description": "ALLOW_SUPPORTED_FORMATTING converts uploaded data into supported rich text formats; REMOVE_ALL_FORMATTING strips out all formatting syntax in uploaded data.",
+                "enum": [
+                  "ALLOW_SUPPORTED_FORMATTING",
+                  "REMOVE_ALL_FORMATTING"
+                ]
+              },
+              "formatLanguage": {
+                "type": "string",
+                "description": "Uploaded rich text data format language.",
+                "enum": [
+                  "MARKDOWN",
+                  "HTML"
+                ]
+              }
+            },
+            "required": [
+              "formatTransformValues",
+              "formatLanguage"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "timeZoneTransform": {
+        "type": "object",
+        "description": "Uploaded time zone field format transformation.",
+        "properties": {
+          "transformType": {
+            "const": "TIME_ZONE_FORMATTING_TYPE",
+            "description": "Transformation type."
+          },
+          "timeZoneFormatConfiguration": {
+            "type": "object",
+            "properties": {
+              "timeZoneFormat": {
+                "type": "string",
+                "description": "IANA allows time zone in IANA format, e.g., \u0027America/New_York\u0027; GMT_OFFSET allows time zone in GMT_OFFSET format, e.g., \u0027(GMT-4) New York Time\u0027.",
+                "enum": [
+                  "IANA",
+                  "GMT_OFFSET"
+                ]
+              }
+            },
+            "required": [
+              "timeZoneFormat"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "timeZoneFormatConfiguration"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "action": {
+      "entityClassification": {
+        "type": "string",
+        "description": "The scope of the entities to apply the additional action. ALL is all entities for the business; MISSING is existing entities not specified in the uploaded file; NEW is newly created entities through the current upload process; EXISTING is all the existing entities specified in the file.",
+        "enum": [
+          "ALL",
+          "MISSING",
+          "NEW",
+          "EXISTING"
+        ]
+      },
+      "actionType": {
+        "type": "string",
+        "description": "Action type. MOVE_TO_FOLDER moves entities to one specified folder; ADD_LABEL adds specified label(s) to entities; APPLY_TEMPLATE applies one specified template to entities",
+        "enum": [
+          "MOVE_TO_FOLDER",
+          "ADD_LABEL",
+          "APPLY_TEMPLATE"
+        ]
+      },
+      "moveToFolderConfiguration": {
+        "type": "object",
+        "description": "Move to folder action configuration.",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Folder resource id.",
+            "format": "km/entity-folder"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "additionalProperties": false
+      },
+      "addLabelConfiguration": {
+        "type": "object",
+        "description": "Add label action configuration.",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Label resource id.",
+            "format": "km/entity-label"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "additionalProperties": false
+      },
+      "applyTemplateConfiguration": {
+        "type": "object",
+        "description": "Apply template action configuration.",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Template resource id.",
+            "format": "km/entity-template"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "additionalProperties": false
+      }
+    }
+  }
+}

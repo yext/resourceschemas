@@ -1,0 +1,188 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://schema.yext.com/config/pages/site-config",
+  "$version": "1.1",
+  "type": "object",
+  "title": "Site",
+  "description": "Configures a site. A site is a collection of templates that is published to a single domain.",
+  "properties": {
+    "$id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64
+    },
+    "$schema": {
+      "const": "https://schema.yext.com/config/pages/site-config/v1"
+    },
+    "siteName": {
+      "type": "string",
+      "description": "The name of the site. Must be unique within the account.",
+      "minLength": 1,
+      "maxLength": 50
+    },
+    "repoConfig": {
+      "$ref": "#/definitions/repoConfig"
+    },
+    "domain": {
+      "type": "string",
+      "description": "The ID of the site\u0027s domain configuration.",
+      "format": "pages/domain"
+    },
+    "publishingConfig": {
+      "$ref": "#/definitions/publishingConfig"
+    },
+    "features": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/feature"
+      }
+    },
+    "attributes": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/attribute"
+      }
+    }
+  },
+  "if": {
+    "not": {
+      "properties": {
+        "repoConfig": {
+          "required": [
+            "targetRepoName"
+          ]
+        }
+      }
+    }
+  },
+  "then": {
+    "required": [
+      "domain"
+    ]
+  },
+  "required": [
+    "$id",
+    "$schema",
+    "siteName",
+    "features"
+  ],
+  "definitions": {
+    "repoConfig": {
+      "type": "object",
+      "properties": {
+        "targetRepoName": {
+          "type": "string",
+          "description": "An optional parameter specifying the name of the target repo. If not specified, the domain name is used as the repo name."
+        },
+        "templateRepo": {
+          "type": "string",
+          "description": "The Github template repo which holds the template files for the site"
+        }
+      }
+    },
+    "credentials": {
+      "type": "object",
+      "properties": {
+        "username": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "username",
+        "password"
+      ]
+    },
+    "publishingConfig": {
+      "type": "object",
+      "description": "The configuration used to publish the site\u0027s repository, if it exists.",
+      "properties": {
+        "pinnedStagingBranchName": {
+          "type": "string",
+          "description": "The name of the branch to which the staging site should be pinned."
+        },
+        "pinnedProductionBranchName": {
+          "type": "string",
+          "description": "The name of the branch to which the production site should be pinned."
+        },
+        "stagingCredentials": {
+          "description": "The credentials used for access to the staging site.",
+          "$ref": "#/definitions/credentials"
+        }
+      },
+      "required": [
+        "pinnedStagingBranchName",
+        "pinnedProductionBranchName",
+        "stagingCredentials"
+      ]
+    },
+    "feature": {
+      "type": "object",
+      "description": "A feature of a site.",
+      "properties": {
+        "featureType": {
+          "type": "string",
+          "description": "The feature\u0027s type.",
+          "enum": [
+            "SELF_SERVE_PAGE_SET"
+          ]
+        },
+        "feature": {
+          "type": "string",
+          "format": "pages/page-builder-template",
+          "description": "The feature\u0027s ref."
+        }
+      },
+      "required": [
+        "featureType",
+        "feature"
+      ]
+    },
+    "attribute": {
+      "type": "object",
+      "description": "An attribute of a site.",
+      "properties": {
+        "key": {
+          "type": "string",
+          "description": "The key of an attribute.",
+          "minLength": 1
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of an attribute."
+        },
+        "value": {
+          "type": "string",
+          "description": "The value of an attribute."
+        },
+        "description": {
+          "type": "string",
+          "description": "The description of an attribute."
+        },
+        "locale": {
+          "type": "string",
+          "description": "The locale of an attribute."
+        },
+        "type": {
+          "type": "string",
+          "description": "The type of an attribute.",
+          "enum": [
+            "TEXT",
+            "COLOR",
+            "IMAGE"
+          ]
+        }
+      },
+      "required": [
+        "key",
+        "name",
+        "value",
+        "description",
+        "locale",
+        "type"
+      ]
+    }
+  }
+}

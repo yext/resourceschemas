@@ -1,0 +1,71 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://schema.yext.com/config/pages/module",
+  "$version": "1",
+  "type": "object",
+  "title": "Module",
+  "description": "Configures a module that can be used in Page Builder Templates.",
+  "properties": {
+    "$id": {
+      "type": "string"
+    },
+    "$schema": {
+      "const": "https://schema.yext.com/config/pages/module/v1"
+    },
+    "name": {
+      "type": "string",
+      "description": "The name of the module."
+    },
+    "displayName": {
+      "type": "string",
+      "description": "The name displayed in the Platform UI. This name is internal only and not displayed to end users of your site. "
+    },
+    "description": {
+      "type": "string",
+      "description": "The module\u0027s description."
+    },
+    "apiVersion": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "The api version of the module."
+    },
+    "entityGroups": {
+      "type": "array",
+      "description": "The entity groups associated with this module.",
+      "items": {
+        "type": "string",
+        "enum": [
+          "Locations",
+          "People",
+          "Events",
+          "Organizations",
+          "Categories",
+          "Custom",
+          "Jobs",
+          "FAQs",
+          "Products"
+        ]
+      }
+    },
+    "pageSetTypes": {
+      "type": "array",
+      "description": "The types of page builder template the module can be used with.",
+      "items": {
+        "type": "string",
+        "enum": [
+          "TEMPLATE",
+          "SINGLE_PAGE"
+        ]
+      }
+    }
+  },
+  "required": [
+    "$id",
+    "$schema",
+    "apiVersion",
+    "name",
+    "displayName",
+    "description",
+    "entityGroups"
+  ]
+}

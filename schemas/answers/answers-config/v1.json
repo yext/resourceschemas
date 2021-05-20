@@ -1,0 +1,468 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://schema.yext.com/config/answers/answers-config",
+  "$version": "1",
+  "type": "object",
+  "title": "Answers Configuration",
+  "additionalProperties": true,
+  "required": [
+    "$schema",
+    "$id"
+  ],
+  "properties": {
+    "$schema": {
+      "const": "https://schema.yext.com/config/answers/answers-config/v1"
+    },
+    "$id": {
+      "description": "The ID that uniquely identifies the experience within the business",
+      "type": "string"
+    },
+    "externalKey": {
+      "type": "string"
+    },
+    "name": {
+      "description": "Display name of the experience (eg in Storm)",
+      "type": "string"
+    },
+    "supportedLocales": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "countryRestrictions": {
+      "description": "Scope the set of countries for place search.  Will default to United States if no values are provided.",
+      "type": "array",
+      "items": {
+        "description": "Country code of in-scope country",
+        "type": "string"
+      }
+    },
+    "boundingBox": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Scope all Place Searches to the specified area",
+      "properties": {
+        "minLatitude": {
+          "type": "number"
+        },
+        "minLongitude": {
+          "type": "number"
+        },
+        "maxLatitude": {
+          "type": "number"
+        },
+        "maxLongitude": {
+          "type": "number"
+        }
+      }
+    },
+    "verticals": {
+      "type": "object",
+      "description": "Map of field ids to vertical configurations",
+      "additionalProperties": true,
+      "patternProperties": {
+        "^.*$": {
+          "type": "object",
+          "additionalProperties": true,
+          "properties": {
+            "name": {
+              "description": "Display name of the vertical (eg in Storm)",
+              "type": "string"
+            },
+            "source": {
+              "description": "The data source for the backend.  Options include KNOWLEDGE_MANAGER, GOOGLE_CSE, BING_CSE, ZENDESK, ALGOLIA, and CUSTOM_SEARCHER",
+              "type": "string"
+            },
+            "verticalIntents": {
+              "description": "Configuration to boost relevance of a vertical",
+              "type": "object",
+              "additionalProperties": true,
+              "properties": {
+                "boostingIntents": {
+                  "description": "Intent phrases that, when present in the user\u0027s query, provide a boost to the designated vertical",
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": true,
+                    "properties": {
+                      "phrase": {
+                        "description": "The phrase that triggers the boost when present anywhere in the user\u0027s query",
+                        "type": "string"
+                      },
+                      "boost": {
+                        "description": "Positive or negative modifier",
+                        "type": "number"
+                      }
+                    }
+                  }
+                },
+                "blacklistedIntents": {
+                  "description": "If found, prevent a vertical from showing up",
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "requireIntent": {
+                  "description": "Only show this vertical if an intent is detected",
+                  "type": "boolean"
+                }
+              }
+            },
+            "baseScore": {
+              "description": "Base ranking of the vertical",
+              "type": "number"
+            },
+            "entityTypes": {
+              "description": "KNOWLEDGE_MANAGER only. API names of the entity ids allowed in this vertical",
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "savedSearchId": {
+              "description": "KNOWLEDGE_MANAGER only. Saved search to restrict results to",
+              "type": "string"
+            },
+            "dynamicRerank": {
+              "description": "Controls dynamic reranking of results based on user engagement. Only available for KNOWLEDGE_MANAGER verticals with FAQ entity type.",
+              "type": "object",
+              "additionalProperties": true,
+              "properties": {
+                "target": {
+                  "type": "string",
+                  "description": "Which user action to optimize for. Options include “CLICKS”."
+                }
+              }
+            },
+            "sortBys": {
+              "description": "KNOWLEDGE_MANAGER only. Specification for how results should be ordered",
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": true,
+                "properties": {
+                  "type": {
+                    "description": "The type of sort",
+                    "type": "string"
+                  },
+                  "field": {
+                    "description": "If the type is FIELD, the field to sort on",
+                    "type": "string"
+                  },
+                  "direction": {
+                    "description": "ASC or DESC",
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "searchableFields": {
+              "description": "KNOWLEDGE_MANAGER only. Map of field api names to field configurations.",
+              "type": "object",
+              "additionalProperties": true,
+              "patternProperties": {
+                "^.*$": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "properties": {
+                    "textSearch": {
+                      "description": "Whether this field can be used in fulltext search",
+                      "type": "boolean"
+                    },
+                    "documentSearch": {
+                      "description": "Whether this field can be used in document search",
+                      "type": "boolean"
+                    },
+                    "facet": {
+                      "description": "Whether this field can be used to facet",
+                      "type": "boolean"
+                    },
+                    "staticFilter": {
+                      "description": "Whether this field can be used to statically filter",
+                      "type": "boolean"
+                    },
+                    "typeaheadFilter": {
+                      "description": "Whether this field can be used in filtersearch",
+                      "type": "boolean"
+                    },
+                    "directAnswer": {
+                      "description": "Whether this field can be returned as a Direct Answer",
+                      "type": "boolean"
+                    },
+                    "nlpFilter": {
+                      "description": "Whether this field can be inferred as a filter",
+                      "type": "boolean"
+                    },
+                    "sortable": {
+                      "description": "Whether this field can be used for sorting",
+                      "type": "boolean"
+                    },
+                    "nerType": {
+                      "description": "The named entity recognition type for this field.  Options include PERSON_GENERIC, PERSON_SPECIFIC, LOCATION, DATE, EVENTS, NUMBER_RANGE, PRODUCT, HEALTHCARE_PROCEDURE, HEALTHCARE_CONDITION, HEALTHCARE_SPECIALTY, INSTITUTION_BRAND, ROUTINE_BUSINESS_OPERATION, FEE_LIMIT_CHARGE, and PROBLEM",
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            },
+            "facetOrder": {
+              "description": "KNOWLEDGE_MANAGER only. Ordering for facets",
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "nlpFilterOrder": {
+              "description": "KNOWLEDGE_MANAGER only. Priority ordering of fields for NLP Filtering",
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "minLocationRadius": {
+              "description": "KNOWLEDGE_MANAGER only. A minimum location radius override in meters.",
+              "type": "number"
+            },
+            "apiKey": {
+              "description": "Only valid when source is GOOGLE_CSE",
+              "type": "string"
+            },
+            "cx": {
+              "description": "Only valid when source is GOOGLE_CSE",
+              "type": "string"
+            },
+            "useSynonyms": {
+              "description": "Only valid when source is GOOGLE_CSE",
+              "type": "string"
+            },
+            "directAnswers": {
+              "description": "KNOWLEDGE_MANAGER only. Configuration for various types of direct answers.",
+              "type": "object",
+              "additionalProperties": true,
+              "properties": {
+                "featuredSnippets": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "description": "Configuration for featured snippets from any field documentSearch enabled.",
+                  "properties": {
+                    "predictionMode": {
+                      "description": "Whether featured snippets require explicit approval from experience training. Options include “APPROVE_ONLY” and “ALLOW_ALL”.",
+                      "type": "string"
+                    }
+                  }
+                },
+                "fieldValues": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "description": "Configuration for field value direct answers from the knowledge graph.",
+                  "properties": {
+                    "eligibleFields": {
+                      "type": "array",
+                      "description": "Array of API names for fields that are eligible for field value direct answers."
+                    },
+                    "predictionMode": {
+                      "description": "Determines when a field value direct answer is extracted. Options include “CLASSIFIER”, “FIELD_NAME”, and “ONE_ENTITY”.",
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "autocomplete": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "disablePopularQueries": {
+          "description": "Disables autocomplete prompts from popular queries",
+          "type": "boolean"
+        },
+        "hardcodedPrompts": {
+          "description": "Collection of hardcoded autocomplete prompts shown to the user alongside popular query autocomplete prompts on universal search.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "synonyms": {
+      "$ref": "#/definitions/synonyms"
+    },
+    "timeout": {
+      "description": "Timeout, in milliseconds, given for each vertical within a query.  All verticals completed before the timeout will still be returned even if others haven\u0027t.",
+      "type": "number"
+    },
+    "localizations": {
+      "type": "object",
+      "description": "Map of locale codes to configurations that have i18nable strings overriden",
+      "additionalProperties": true,
+      "patternProperties": {
+        "^.*$": {
+          "type": "object",
+          "additionalProperties": true,
+          "properties": {
+            "verticals": {
+              "type": "object",
+              "additionalProperties": true,
+              "patternProperties": {
+                "^.*$": {
+                  "type": "object"
+                }
+              }
+            },
+            "autocomplete": {
+              "type": "object",
+              "additionalProperties": true,
+              "properties": {
+                "hardcodedPrompts": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "synonyms": {
+              "$ref": "#/definitions/synonyms"
+            }
+          }
+        }
+      }
+    },
+    "rules": {
+      "type": "array",
+      "description": "Array of Query Rules",
+      "items": {
+        "type": "object",
+        "description": "Object of Query Rule",
+        "additionalProperties": true,
+        "properties": {
+          "criteria": {
+            "type": "object",
+            "description": "Map of criterion type to value"
+          },
+          "actions": {
+            "type": "array",
+            "description": "Array of actions",
+            "items": {
+              "type": "object",
+              "description": "Object of action",
+              "additionalProperties": true,
+              "properties": {
+                "actionType": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "additionalStopWords": {
+      "description": "Set additional configurable stop words for searches.",
+      "type": "array",
+      "items": {
+        "description": "The word to be used as an additional stop word.",
+        "type": "string"
+      }
+    },
+    "additionalSearchablePlaces": {
+      "description": "Add Additional Searchable Places to enable more fine-grained location search. E.g. Add ‘neighborhoods’ to search for neighborhoods",
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "additionalItems": false
+    },
+    "querySuggestions": {
+      "type": "object",
+      "title": "Query Suggestions",
+      "description": "Settings for Query Suggestion",
+      "additionalProperties": true,
+      "properties": {
+        "disablePopularQueries": {
+          "description": "Disables autocomplete prompts from popular queries",
+          "type": "boolean"
+        },
+        "popularQueriesBlacklistedTerms": {
+          "title": "Query Suggestions",
+          "description": "Terms that should be blacklisted from popular queries",
+          "type": "array",
+          "additionalProperties": true,
+          "items": {
+            "term": {
+              "type": "string"
+            }
+          }
+        },
+        "universalPrompts": {
+          "title": "Universal Prompts",
+          "description": "Collection of prompts shown to the user on a universal search.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "verticalPrompts": {
+          "title": "Vertical Prompts",
+          "description": "Map of vertical key to vertical prompts.",
+          "type": "object",
+          "additionalProperties": true,
+          "patternProperties": {
+            "^.*$": {
+              "description": "Collection of prompts shown to the user on a vertical search for a given vertical key.",
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "synonyms": {
+      "description": "Synonyms used at query time.",
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "oneWay": {
+          "description": "A phrase that, when detected, is expanded to include all of the synonyms associated with the phrase.",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": true,
+            "properties": {
+              "phrase": {
+                "type": "string"
+              },
+              "synonyms": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "synonymSet": {
+          "description": "A collection of phrases that, whenever any is present in a user\u0027s query, is expanded to include all other terms in the set.",
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  }
+}

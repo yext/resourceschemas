@@ -1,0 +1,274 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://schema.yext.com/config/answers/experience-training",
+  "$version": "1",
+  "type": "object",
+  "title": "Experience Training",
+  "additionalProperties": true,
+  "required": [
+    "experienceKey",
+    "locale",
+    "searchTerm",
+    "triggerType",
+    "type",
+    "details"
+  ],
+  "properties": {
+    "$schema": {
+      "const": "https://schema.yext.com/config/answers/experience-training/v1"
+    },
+    "$id": {
+      "type": "string"
+    },
+    "experienceKey": {
+      "description": "The ID that uniquely identifies the experience within the business",
+      "type": "string"
+    },
+    "locale": {
+      "type": "string"
+    },
+    "searchTerm": {
+      "description": "The keyword entered by user.",
+      "type": "string"
+    },
+    "triggerType": {
+      "type": "string",
+      "enum": [
+        "query",
+        "queryResultPair",
+        "segment"
+      ]
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "featuredSnippet",
+        "nlpFilter",
+        "spellCheck"
+      ]
+    },
+    "vertical": {
+      "type": "string"
+    },
+    "details": {
+      "type": "object",
+      "properties": {
+        "resultText": {
+          "type": "string"
+        },
+        "enforcedPrediction": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "anyOf": [
+            {
+              "$ref": "#/definitions/featuredSnippet"
+            },
+            {
+              "$ref": "#/definitions/nlpFilter"
+            },
+            {
+              "$ref": "#/definitions/spellCheck"
+            }
+          ]
+        },
+        "rejectedPrediction": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "anyOf": [
+            {
+              "$ref": "#/definitions/featuredSnippet"
+            },
+            {
+              "$ref": "#/definitions/nlpFilter"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "definitions": {
+    "featuredSnippet": {
+      "additionalProperties": false,
+      "type": "object",
+      "properties": {
+        "offset": {
+          "type": "number"
+        },
+        "length": {
+          "type": "number"
+        }
+      }
+    },
+    "spellCheck": {
+      "additionalProperties": false,
+      "type": "object",
+      "properties": {
+        "corrected": {
+          "type": [
+            "null",
+            "string"
+          ]
+        }
+      }
+    },
+    "nlpFilter": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "patternProperties": {
+        ".*": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/nlpFilterVertical"
+          }
+        }
+      }
+    },
+    "nlpFilterVertical": {
+      "type": "object",
+      "properties": {
+        "filter": {
+          "$ref": "#/definitions/nlpFilterSetting"
+        },
+        "placeDetails": {
+          "additionalProperties": false,
+          "type": "object",
+          "properties": {
+            "displayValue": {
+              "type": "string"
+            },
+            "fullAddress": {
+              "type": "string"
+            },
+            "center": {
+              "required": [
+                "lat",
+                "lng"
+              ],
+              "type": "object",
+              "properties": {
+                "lat": {
+                  "type": "number",
+                  "minimum": -90,
+                  "maximum": 90
+                },
+                "lng": {
+                  "type": "number",
+                  "minimum": -180,
+                  "maximum": 180
+                }
+              }
+            },
+            "placeName": {
+              "type": "string"
+            },
+            "boundingBox": {
+              "required": [
+                "minLat",
+                "minLng",
+                "maxLat",
+                "maxLng"
+              ],
+              "type": "object",
+              "properties": {
+                "minLat": {
+                  "type": "number",
+                  "minimum": -90,
+                  "maximum": 90
+                },
+                "minLng": {
+                  "type": "number",
+                  "minimum": -180,
+                  "maximum": 180
+                },
+                "maxLat": {
+                  "type": "number",
+                  "minimum": -90,
+                  "maximum": 90
+                },
+                "maxLng": {
+                  "type": "number",
+                  "minimum": -180,
+                  "maximum": 180
+                }
+              }
+            },
+            "featureType": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "nlpFilterSetting": {
+      "type": "object",
+      "patternProperties": {
+        ".*": {
+          "$ref": "#/definitions/nlpFilterItem"
+        }
+      }
+    },
+    "nlpFilterItem": {
+      "type": "object",
+      "properties": {
+        "$eq": {
+          "type": [
+            "null",
+            "number",
+            "string"
+          ]
+        },
+        "$gt": {
+          "type": [
+            "null",
+            "number",
+            "string"
+          ]
+        },
+        "$gte": {
+          "type": [
+            "null",
+            "number",
+            "string"
+          ]
+        },
+        "$lt": {
+          "type": [
+            "null",
+            "number",
+            "string"
+          ]
+        },
+        "$lte": {
+          "type": [
+            "null",
+            "number",
+            "string"
+          ]
+        },
+        "$ne": {
+          "type": [
+            "null",
+            "number",
+            "string"
+          ]
+        },
+        "$near": {
+          "type": [
+            "number",
+            "null",
+            "string"
+          ]
+        }
+      }
+    }
+  }
+}

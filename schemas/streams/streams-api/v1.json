@@ -1,0 +1,54 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://schema.yext.com/config/streams/streams-api",
+  "$version": "1",
+  "type": "object",
+  "title": "Streams API",
+  "properties": {
+    "$id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64
+    },
+    "$schema": {
+      "const": "https://schema.yext.com/config/streams/streams-api/v1"
+    },
+    "name": {
+      "type": "string",
+      "description": "The name of the streams API."
+    },
+    "sourceStreams": {
+      "type": "array",
+      "description": "The names of streams that should be included in this API.",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 64,
+        "format": "streams/stream-config"
+      }
+    },
+    "fieldIndexes": {
+      "type": "array",
+      "description": "The field indexes for this API.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "field": {
+            "type": "string",
+            "description": "The name of the field to be indexed."
+          }
+        },
+        "required": [
+          "field"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "$id",
+    "$schema",
+    "sourceStreams"
+  ]
+}

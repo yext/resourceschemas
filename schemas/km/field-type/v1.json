@@ -1,0 +1,603 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://schema.yext.com/config/km/field-type",
+  "$version": "1",
+  "type": "object",
+  "title": "Field Type",
+  "description": "Resource that represents a field type definition. These types can be assigned to custom fields, permitting businesses to create unique and complex ways to model their profile data.",
+  "properties": {
+    "$id": {
+      "type": "string"
+    },
+    "$schema": {
+      "const": "https://schema.yext.com/config/km/field-type/v1"
+    },
+    "description": {
+      "type": "string",
+      "description": "Optional property describing the type."
+    },
+    "descriptionTranslation": {
+      "type": "array",
+      "description": "Translations of the description for different locale codes.",
+      "items": {
+        "$ref": "#/definitions/translation"
+      }
+    },
+    "displayName": {
+      "type": "string",
+      "description": "Display name of the type."
+    },
+    "displayNameTranslation": {
+      "type": "array",
+      "description": "Translations of the displayName for different locale codes.",
+      "items": {
+        "$ref": "#/definitions/translation"
+      }
+    },
+    "type": {
+      "type": "object",
+      "description": "Property that contains the subfields for this type.",
+      "properties": {
+        "structType": {
+          "$ref": "#/definitions/structType"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "displayName"
+  ],
+  "definitions": {
+    "type": {
+      "type": "object",
+      "properties": {
+        "booleanType": {
+          "$ref": "#/definitions/booleanType"
+        },
+        "dateType": {
+          "$ref": "#/definitions/dateType"
+        },
+        "decimalType": {
+          "$ref": "#/definitions/decimalType"
+        },
+        "imageType": {
+          "$ref": "#/definitions/imageType"
+        },
+        "listType": {
+          "$ref": "#/definitions/listType"
+        },
+        "optionType": {
+          "$ref": "#/definitions/optionType"
+        },
+        "richTextType": {
+          "$ref": "#/definitions/richTextType"
+        },
+        "stringType": {
+          "$ref": "#/definitions/stringType"
+        },
+        "structType": {
+          "$ref": "#/definitions/structType"
+        },
+        "videoType": {
+          "$ref": "#/definitions/videoType"
+        }
+      },
+      "additionalProperties": false,
+      "minProperties": 1,
+      "maxProperties": 1
+    },
+    "booleanType": {
+      "type": "object",
+      "description": "A Boolean (Yes/No) type.",
+      "additionalProperties": false
+    },
+    "dateType": {
+      "type": "object",
+      "description": "A Date type.",
+      "properties": {
+        "minValue": {
+          "$ref": "#/definitions/day"
+        },
+        "maxValue": {
+          "$ref": "#/definitions/day"
+        }
+      },
+      "additionalProperties": false
+    },
+    "day": {
+      "type": "object",
+      "description": "A type describing a certain date.",
+      "properties": {
+        "year": {
+          "type": "integer",
+          "description": "Year of the date.",
+          "minimum": 0
+        },
+        "month": {
+          "type": "integer",
+          "description": "Month of the date.",
+          "minimum": 1,
+          "maximum": 12
+        },
+        "day": {
+          "type": "integer",
+          "description": "Day of the date.",
+          "minimum": 1,
+          "maximum": 31
+        }
+      },
+      "required": [
+        "year",
+        "month",
+        "day"
+      ],
+      "additionalProperties": false
+    },
+    "decimalType": {
+      "type": "object",
+      "description": "A Decimal type.",
+      "properties": {
+        "minValue": {
+          "type": "string"
+        },
+        "maxValue": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "imageType": {
+      "type": "object",
+      "description": "An Image type.",
+      "properties": {
+        "isSimpleImage": {
+          "type": "boolean",
+          "description": "A flag determining if the image is simple or complex. A simple image contains a source url and an alternate text of an image. A complex image contains a simple image, caption, details and a click-through URL."
+        },
+        "minSize": {
+          "type": "object",
+          "description": "Minimum size of the image.",
+          "properties": {
+            "width": {
+              "type": "integer",
+              "description": "Width of the image in pixels.",
+              "minimum": 0,
+              "maximum": 10000
+            },
+            "height": {
+              "type": "integer",
+              "description": "Height of the image in pixels.",
+              "minimum": 0,
+              "maximum": 10000
+            }
+          },
+          "required": [
+            "width",
+            "height"
+          ],
+          "additionalProperties": false
+        },
+        "allowedAspectRatio": {
+          "type": "array",
+          "description": "The set of aspect ratios supported by the image type.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "horizontalFactor": {
+                "type": "integer",
+                "description": "The horizontal value for the aspect ratio."
+              },
+              "verticalFactor": {
+                "type": "integer",
+                "description": "The vertical value for the aspect ratio."
+              }
+            },
+            "enum": [
+              {
+                "horizontalFactor": 1,
+                "verticalFactor": 1
+              },
+              {
+                "horizontalFactor": 4,
+                "verticalFactor": 3
+              },
+              {
+                "horizontalFactor": 3,
+                "verticalFactor": 2
+              },
+              {
+                "horizontalFactor": 5,
+                "verticalFactor": 3
+              },
+              {
+                "horizontalFactor": 16,
+                "verticalFactor": 9
+              },
+              {
+                "horizontalFactor": 3,
+                "verticalFactor": 1
+              },
+              {
+                "horizontalFactor": 2,
+                "verticalFactor": 3
+              },
+              {
+                "horizontalFactor": 5,
+                "verticalFactor": 7
+              },
+              {
+                "horizontalFactor": 4,
+                "verticalFactor": 5
+              },
+              {
+                "horizontalFactor": 16,
+                "verticalFactor": 10
+              }
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 1
+        },
+        "unconstrainedAspectRatioAllowed": {
+          "type": "boolean",
+          "description": "Flag to determine if a custom aspect ratio is supported by this image."
+        },
+        "noAllowedAspectRatios": {
+          "type": "boolean",
+          "description": "Flag to determine if any aspect ratio is allowed."
+        }
+      },
+      "additionalProperties": false,
+      "$comment": "Validates that an image type has 1 and only 1 aspect ratio",
+      "allOf": [
+        {
+          "not": {
+            "properties": {
+              "unconstrainedAspectRatioAllowed": {
+                "const": true
+              },
+              "allowedAspectRatio": {
+                "minItems": 1
+              }
+            },
+            "required": [
+              "allowedAspectRatio"
+            ]
+          }
+        },
+        {
+          "not": {
+            "properties": {
+              "unconstrainedAspectRatioAllowed": {
+                "const": false
+              },
+              "allowedAspectRatio": {
+                "maxItems": 0
+              }
+            }
+          }
+        }
+      ]
+    },
+    "listType": {
+      "type": "object",
+      "description": "A List type.",
+      "properties": {
+        "typeId": {
+          "type": "string",
+          "description": "The type ID of the list items.",
+          "format": "km/field-type"
+        },
+        "minLength": {
+          "type": "integer",
+          "description": "Minimum size of the list.",
+          "minimum": 0
+        },
+        "maxLength": {
+          "type": "integer",
+          "description": "Maximum size of the list.",
+          "minimum": 0
+        },
+        "type": {
+          "description": "The type of the list items.",
+          "oneOf": [
+            {
+              "$ref": "#/definitions/type"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "entityReferenceType": {
+                  "type": "object",
+                  "description": "An Entity reference type.",
+                  "properties": {
+                    "supportedEntityTypeIds": {
+                      "type": "array",
+                      "description": "List of support entity type IDs.",
+                      "items": {
+                        "type": "string",
+                        "format": "km/entity-type"
+                      }
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      },
+      "required": [
+        "typeId"
+      ],
+      "additionalProperties": false
+    },
+    "optionType": {
+      "type": "object",
+      "description": "An Option type that contains a list of values (options) that a user can select from.",
+      "properties": {
+        "option": {
+          "type": "array",
+          "description": "A list of available options for this type.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "displayName": {
+                "type": "string",
+                "description": "The display name of an option."
+              },
+              "textValue": {
+                "type": "string",
+                "description": "The value of an option."
+              },
+              "displayNameTranslation": {
+                "type": "array",
+                "description": "Translations of the displayName for different locale codes.",
+                "items": {
+                  "$ref": "#/definitions/translation"
+                }
+              }
+            },
+            "required": [
+              "displayName",
+              "textValue"
+            ],
+            "additionalProperties": false,
+            "minProperties": 1
+          }
+        },
+        "noOptions": {
+          "type": "boolean",
+          "description": "Flag that determines if this type has no options."
+        }
+      },
+      "additionalProperties": false
+    },
+    "richTextType": {
+      "type": "object",
+      "description": "A Rich Text type, which contains a text that can be decorated with common formatting options such as bold and italics.",
+      "properties": {
+        "minLength": {
+          "type": "integer",
+          "description": "The minimum length of the text.",
+          "minimum": 0
+        },
+        "maxLength": {
+          "type": "integer",
+          "description": "The maximum length of the text.",
+          "minimum": 0
+        },
+        "supportedFormat": {
+          "type": "array",
+          "description": "List of supported rich text formats.",
+          "unordered": true,
+          "items": {
+            "type": "string",
+            "description": "Supported rich text format.",
+            "enum": [
+              "BOLD",
+              "ITALICS",
+              "UNDERLINE",
+              "BULLETED_LIST",
+              "NUMBERED_LIST",
+              "HYPERLINK",
+              "IMAGE",
+              "CODE_SPAN",
+              "HEADINGS",
+              "HORIZONTAL_LINE",
+              "STRIKETHROUGH",
+              "BLOCK_QUOTE",
+              "SUPERSCRIPT",
+              "SUBSCRIPT",
+              "CODE_BLOCK"
+            ]
+          }
+        },
+        "noSupportedFormats": {
+          "type": "boolean",
+          "description": "A flag determining if this type supports no rich text formats."
+        }
+      },
+      "additionalProperties": false
+    },
+    "stringType": {
+      "type": "object",
+      "description": "A String type.",
+      "properties": {
+        "stereotype": {
+          "type": "string",
+          "description": "The stereotype of the value for this field type, which can be a single-line text (SIMPLE), multiline text (MULTILINE) or a url (URL).",
+          "enum": [
+            "SIMPLE",
+            "MULTILINE",
+            "URL"
+          ]
+        },
+        "minLength": {
+          "type": "integer",
+          "description": "The minimum length of the text.",
+          "minimum": 0
+        },
+        "maxLength": {
+          "type": "integer",
+          "description": "The maximum length of the text.",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "stereotype"
+      ],
+      "additionalProperties": false
+    },
+    "structType": {
+      "type": "object",
+      "description": "A Struct type which contains a group of subfields that each have a unique subfield ID.",
+      "properties": {
+        "property": {
+          "type": "array",
+          "description": "List of subfields of the struct type.",
+          "items": {
+            "type": "object",
+            "description": "A subfield of the struct type.",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The name of the subfield."
+              },
+              "displayName": {
+                "type": "string",
+                "description": "The display name of the subfield."
+              },
+              "displayNameTranslation": {
+                "type": "array",
+                "description": "Translations of the displayName for different locale codes.",
+                "items": {
+                  "$ref": "#/definitions/translation"
+                }
+              },
+              "isRequired": {
+                "type": "boolean",
+                "description": "Flag that determines if this subfield is required."
+              },
+              "typeId": {
+                "type": "string",
+                "description": "The type ID of the subfield.",
+                "format": "km/field-type"
+              },
+              "type": {
+                "$ref": "#/definitions/type"
+              }
+            },
+            "required": [
+              "name",
+              "displayName",
+              "isRequired",
+              "typeId"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1
+        }
+      },
+      "required": [
+        "property"
+      ],
+      "additionalProperties": false
+    },
+    "videoType": {
+      "type": "object",
+      "description": "A Video type.",
+      "properties": {
+        "isSimpleVideo": {
+          "type": "boolean",
+          "description": "A flag determining if the video is simple or complex. A simple video contains a source url a video. A complex image contains a simple video and a description."
+        },
+        "descriptionType": {
+          "type": "object",
+          "description": "Type of description of the video.",
+          "properties": {
+            "stereotype": {
+              "type": "string",
+              "description": "The stereotype of the description of the video.",
+              "enum": [
+                "MULTILINE"
+              ]
+            },
+            "minLength": {
+              "type": "integer",
+              "description": "Minimum length of the description.",
+              "minimum": 0
+            },
+            "maxLength": {
+              "type": "integer",
+              "description": "Maximum length of the description.",
+              "minimum": 0
+            }
+          },
+          "required": [
+            "stereotype"
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "isSimpleVideo": {
+                "const": true
+              }
+            },
+            "required": [
+              "isSimpleVideo"
+            ]
+          },
+          "then": {
+            "not": {
+              "required": [
+                "descriptionType"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "isSimpleVideo": {
+                "const": false
+              }
+            },
+            "required": [
+              "isSimpleVideo"
+            ]
+          },
+          "then": {
+            "required": [
+              "descriptionType"
+            ]
+          }
+        }
+      ]
+    },
+    "translation": {
+      "type": "object",
+      "properties": {
+        "localeCode": {
+          "type": "string",
+          "description": "The locale code of the translation."
+        },
+        "value": {
+          "type": "string",
+          "description": "The value of the translation."
+        }
+      },
+      "required": [
+        "localeCode",
+        "value"
+      ]
+    }
+  }
+}

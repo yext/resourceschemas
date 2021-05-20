@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://schema.yext.com/config/km/settings",
+  "$version": "1",
+  "type": "object",
+  "title": "Knowledge Graph Settings",
+  "description": "Resource that defines Knowledge Graph business level configuration shared by resources.",
+  "properties": {
+    "$schema": {
+      "const": "https://schema.yext.com/config/km/settings/v1"
+    },
+    "primaryEntityType": {
+      "type": "string",
+      "description": "The primary entity type of the account."
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "primaryEntityType"
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://schema.yext.com/config/pages/domain",
+  "$version": "1.3",
+  "type": "object",
+  "title": "Domain",
+  "description": "The domain of a site e.g. \"answers.company.com.\"",
+  "additionalProperties": false,
+  "properties": {
+    "$id": {
+      "type": "string"
+    },
+    "$schema": {
+      "const": "https://schema.yext.com/config/pages/domain/v1"
+    },
+    "domainName": {
+      "type": "string",
+      "description": "The URL of the domain. Web pages will be published to this domain."
+    },
+    "autoGenerateSitemap": {
+      "type": "boolean",
+      "description": "Specifies whether a sitemap will be generated automatically"
+    },
+    "domainAccess": {
+      "type": "boolean",
+      "description": "Specifies whether the domain can be accessed via `domainName`"
+    },
+    "pagesCDNAccess": {
+      "type": "boolean",
+      "description": "Specifies whether the domain can be accessed through domainName.pagescdn.com"
+    },
+    "answersIntegration": {
+      "type": "boolean",
+      "description": "Specifies whether the domain is intended for use by an answers integration"
+    },
+    "reverseProxy": {
+      "type": "boolean",
+      "description": "Specifies whether the domain is set up as a reverse proxy"
+    }
+  }
+}

@@ -1,0 +1,111 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://schema.yext.com/config/crawler/site-crawler",
+  "$version": "1.3",
+  "type": "object",
+  "additionalProperties": false,
+  "title": "Yext Crawler",
+  "description": "The Yext Crawler helps you automatically populate your Knowledge Graph based on websites that you can crawl.",
+  "properties": {
+    "$id": {
+      "type": "string",
+      "description": "The unique identifier for the Yext Crawler resource."
+    },
+    "$schema": {
+      "const": "https://schema.yext.com/config/crawler/site-crawler/v1"
+    },
+    "name": {
+      "type": "string",
+      "title": "Crawler Name",
+      "description": "The display name of the crawler."
+    },
+    "enabled": {
+      "type": "boolean",
+      "title": "Crawler Enabled",
+      "description": "If true, the crawler will run according to its crawl schedule.",
+      "default": true
+    },
+    "crawlSchedule": {
+      "type": "string",
+      "title": "Crawl Schedule",
+      "description": "Defines how often the crawler will index the website.",
+      "enum": [
+        "once",
+        "daily",
+        "weekly"
+      ],
+      "enumNames": [
+        "Once",
+        "Daily",
+        "Weekly"
+      ],
+      "default": "weekly"
+    },
+    "crawlStrategy": {
+      "type": "string",
+      "title": "Crawl Strategy",
+      "description": "Specifies the crawl strategy of the crawler",
+      "enum": [
+        "allPages",
+        "subPages",
+        "specificPages"
+      ],
+      "enumNames": [
+        "All Pages",
+        "Sub Pages",
+        "Specific Pages"
+      ],
+      "default": "subPages"
+    },
+    "domains": {
+      "type": "array",
+      "additionalItems": false,
+      "title": "Domains",
+      "description": "A list of domains or URLs to crawl, e.g. https://www.example.com",
+      "unordered": true,
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      }
+    },
+    "ignoreQueryParameterOption": {
+      "type": "string",
+      "title": "Ignore Query Parameter Option",
+      "description": "Option for ignoring query parameters when differentiating crawled URLs",
+      "enum": [
+        "none",
+        "all",
+        "specificParameters"
+      ],
+      "enumNames": [
+        "None",
+        "All",
+        "Specific Parameters"
+      ],
+      "default": "none"
+    },
+    "ignoreQueryParametersList": {
+      "type": "array",
+      "title": "Ignored Query Parameters",
+      "description": "Any query parameters specified in the list will be ignored when differentiating crawled URLs.",
+      "additionalItems": false,
+      "unordered": true,
+      "items": {
+        "type": "string"
+      }
+    },
+    "blacklistedUrls": {
+      "type": "array",
+      "additionalItems": false,
+      "title": "Blacklisted URLs",
+      "description": "Any URLs that match any regex rule in the list will be omitted from the crawl.",
+      "unordered": true,
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "name"
+  ]
+}

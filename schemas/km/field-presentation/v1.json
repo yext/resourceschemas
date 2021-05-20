@@ -1,0 +1,160 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://schema.yext.com/config/km/field-presentation",
+  "$version": "1",
+  "type": "object",
+  "title": "Field Presentation",
+  "description": "Resource that represents a field presentation for an entity type.",
+  "properties": {
+    "$id": {
+      "type": "string"
+    },
+    "$schema": {
+      "const": "https://schema.yext.com/config/km/field-presentation/v1"
+    },
+    "entityType": {
+      "type": "string",
+      "format": "km/entity-type",
+      "description": "Reference to the entity type that this field presentation belongs to."
+    },
+    "displayName": {
+      "type": "string",
+      "description": "Display name of this field presentation."
+    },
+    "displayNameTranslations": {
+      "type": "array",
+      "description": "Translations of this field presentation\u0027s display name.",
+      "unordered": true,
+      "items": {
+        "$ref": "#/definitions/translation"
+      },
+      "additionalItems": false
+    },
+    "presentationEntries": {
+      "type": "array",
+      "description": "The list of presentation entries.",
+      "items": {
+        "oneOf": [
+          {
+            "$ref": "#/definitions/section"
+          },
+          {
+            "$ref": "#/definitions/divider"
+          }
+        ]
+      },
+      "additionalItems": false
+    }
+  },
+  "required": [
+    "$id",
+    "$schema",
+    "entityType",
+    "displayName"
+  ],
+  "additionalProperties": false,
+  "definitions": {
+    "divider": {
+      "type": "object",
+      "description": "A field section divider.",
+      "properties": {
+        "entryType": {
+          "const": "DIVIDER",
+          "description": "The type of this presentation entry."
+        },
+        "displayName": {
+          "type": "string",
+          "description": "Display name of the field section divider."
+        },
+        "displayNameTranslations": {
+          "type": "array",
+          "description": "Translations of the display name for different locale codes.",
+          "unordered": true,
+          "items": {
+            "$ref": "#/definitions/translation"
+          },
+          "additionalItems": false
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "entryType",
+        "displayName"
+      ]
+    },
+    "section": {
+      "type": "object",
+      "description": "A field section.",
+      "properties": {
+        "entryType": {
+          "const": "SECTION",
+          "description": "The type of this presentation entry."
+        },
+        "fields": {
+          "type": "array",
+          "description": "List of field entries.",
+          "items": {
+            "$ref": "#/definitions/field"
+          },
+          "additionalItems": false
+        },
+        "displayName": {
+          "type": "string",
+          "description": "Display name of the field section."
+        },
+        "displayNameTranslations": {
+          "type": "array",
+          "description": "Translations of the display name for different locale codes.",
+          "unordered": true,
+          "items": {
+            "$ref": "#/definitions/translation"
+          },
+          "additionalItems": false
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "entryType",
+        "displayName"
+      ]
+    },
+    "field": {
+      "type": "object",
+      "description": "A field section entry",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "km/field",
+          "description": "The ID of a field"
+        },
+        "visibleOnAdd": {
+          "type": "boolean",
+          "description": "Flag that determines if this field is visible on the Entity Add UI"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "id"
+      ]
+    },
+    "translation": {
+      "type": "object",
+      "description": "A pair of locale code and the translation for this locale",
+      "properties": {
+        "localeCode": {
+          "type": "string",
+          "description": "The locale code of the translation."
+        },
+        "value": {
+          "type": "string",
+          "description": "The value of the translation."
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "localeCode",
+        "value"
+      ]
+    }
+  }
+}

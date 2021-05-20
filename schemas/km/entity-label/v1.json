@@ -1,0 +1,27 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://schema.yext.com/config/km/entity-label",
+  "$version": "1",
+  "type": "object",
+  "title": "Entity Label",
+  "description": "Labels for tagging entities",
+  "properties": {
+    "$id": {
+      "type": "string",
+      "description": "Unique identifier of the label resource"
+    },
+    "$schema": {
+      "const": "https://schema.yext.com/config/km/entity-label/v1"
+    },
+    "name": {
+      "type": "string",
+      "description": "Label text"
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "$id",
+    "$schema",
+    "name"
+  ]
+}

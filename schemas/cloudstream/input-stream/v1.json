@@ -1,0 +1,137 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://schema.yext.com/config/cloudstream/input-stream",
+  "$version": "1",
+  "type": "object",
+  "title": "Input Stream",
+  "properties": {
+    "$id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64
+    },
+    "$schema": {
+      "const": "https://schema.yext.com/config/cloudstream/input-stream/v1"
+    },
+    "schema": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https://schema.yext.com/schemas/",
+      "description": "A schema describing the input records for this stream, after the inputTransform (if any) is applied"
+    },
+    "labels": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "The labels applied to records produced by this input stream"
+    },
+    "inputTransform": {
+      "type": "object",
+      "properties": {
+        "jsonpatch": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/jsonpatchOperation"
+          }
+        },
+        "jmespath": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "oneOf": [
+        {
+          "required": [
+            "jsonpatch"
+          ]
+        },
+        {
+          "required": [
+            "jmespath"
+          ]
+        }
+      ],
+      "description": "A transformation applied to each record of this stream. Can be either a jsonpatch or jmespath transformation."
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "$id",
+    "$schema",
+    "schema"
+  ],
+  "definitions": {
+    "jsonpatchOperation": {
+      "type": "object",
+      "required": [
+        "op",
+        "path"
+      ],
+      "allOf": [
+        {
+          "$ref": "#/definitions/path"
+        }
+      ],
+      "oneOf": [
+        {
+          "required": [
+            "value"
+          ],
+          "properties": {
+            "op": {
+              "description": "The operation to perform.",
+              "type": "string",
+              "enum": [
+                "add",
+                "replace",
+                "test"
+              ]
+            },
+            "value": {
+              "description": "The value to add, replace or test."
+            }
+          }
+        },
+        {
+          "properties": {
+            "op": {
+              "description": "The operation to perform.",
+              "type": "string",
+              "enum": [
+                "remove"
+              ]
+            }
+          }
+        },
+        {
+          "required": [
+            "from"
+          ],
+          "properties": {
+            "op": {
+              "description": "The operation to perform.",
+              "type": "string",
+              "enum": [
+                "move",
+                "copy"
+              ]
+            },
+            "from": {
+              "description": "A JSON Pointer path pointing to the location to move/copy from.",
+              "type": "string"
+            }
+          }
+        }
+      ]
+    },
+    "path": {
+      "properties": {
+        "path": {
+          "description": "A JSON Pointer path.",
+          "type": "string"
+        }
+      }
+    }
+  }
+}

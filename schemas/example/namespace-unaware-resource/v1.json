@@ -1,0 +1,19 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://schema.yext.com/config/example/namespace-unaware-resource",
+  "$version": "1",
+  "type": "object",
+  "title": "Namespace-Unaware Resource",
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "const": "https://schema.yext.com/config/example/namespace-unaware-resource/v1"
+    },
+    "$id": {
+      "type": "string"
+    },
+    "value": {
+      "type": "integer"
+    }
+  }
+}

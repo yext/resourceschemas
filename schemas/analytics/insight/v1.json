@@ -1,0 +1,584 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://schema.yext.com/config/analytics/insight",
+  "$version": "1",
+  "type": "object",
+  "title": "Insight",
+  "description": "Configures an analytics insight.",
+  "properties": {
+    "$id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 97,
+      "description": "The unique identifier for the insight resource."
+    },
+    "$schema": {
+      "const": "https://schema.yext.com/config/analytics/insight/v1"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 100,
+      "description": "The human-readable name of the insight."
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 500,
+      "description": "A description of the insight."
+    },
+    "query": {
+      "type": "object",
+      "description": "Configures the query to populate data for the insight.",
+      "properties": {
+        "metrics": {
+          "type": "array",
+          "description": "An array of metric resource identifiers for the metrics to include in the insight.",
+          "items": {
+            "type": "string",
+            "format": "analytics/metric"
+          },
+          "minItems": 1,
+          "maxItems": 10
+        },
+        "fields": {
+          "type": "array",
+          "description": "An array of additional Knowledge Graph fields to include in the data. Fields can only be specified when using the `table` display option, and when including the `yext/entity` dimension.",
+          "items": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "km/field",
+                "description": "A field resource identifier."
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "yext/derivedField-city",
+                  "yext/derivedField-entityType",
+                  "yext/derivedField-postalCode",
+                  "yext/derivedField-state"
+                ],
+                "description": "A derived field identifier."
+              }
+            ]
+          },
+          "minItems": 1,
+          "maxItems": 10
+        },
+        "dimensions": {
+          "type": "array",
+          "description": "An array of dimension resource identifiers for the dimensions to use for the insight.",
+          "items": {
+            "type": "string",
+            "format": "analytics/dimension"
+          },
+          "minItems": 1,
+          "maxItems": 3
+        },
+        "filters": {
+          "type": "array",
+          "description": "An array of filtering clauses which comprise the filter for the query. Records are returned only when every clause in this list is satisfied. Each clause object must contain the `filter` property and a single operator property.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "filter": {
+                "type": "string",
+                "format": "analytics/filter",
+                "description": "The filter resource identifier for the filter used in this filter clause."
+              },
+              "between": {
+                "type": "array",
+                "description": "For the `yext/date` filter, this is the start and end dates in `YYYY-MM-DD` format.",
+                "items": {
+                  "type": "string",
+                  "format": "date"
+                },
+                "minItems": 2,
+                "maxItems": 2
+              },
+              "in": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "description": "An array of values; this filter must equal any one of the values.",
+                    "items": {
+                      "type": "string"
+                    },
+                    "minItems": 1
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "DAYS_7",
+                      "DAYS_14",
+                      "DAYS_30",
+                      "DAYS_90",
+                      "WEEKS_4",
+                      "WEEKS_8",
+                      "WEEKS_12",
+                      "WEEKS_16",
+                      "MONTHS_1",
+                      "MONTHS_4",
+                      "MONTHS_12",
+                      "MONTHS_13",
+                      "QUARTERS_1"
+                    ],
+                    "description": "For the `yext/date` filter, the name of a preset date range."
+                  }
+                ]
+              },
+              "entityIn": {
+                "type": "array",
+                "description": "An array of entity resource identifiers for the `yext/entity` filter.",
+                "items": {
+                  "type": "string",
+                  "format": "km/entity"
+                },
+                "minItems": 1
+              },
+              "entityFolderIn": {
+                "type": "array",
+                "description": "An array of entity-folder resource identifiers for the `yext/entityFolder` filter.",
+                "items": {
+                  "type": "string",
+                  "format": "km/entity-folder"
+                },
+                "minItems": 1
+              },
+              "entityLabelIn": {
+                "type": "array",
+                "description": "An array of entity-label resource identifiers for the `yext/entityLabel` filter.",
+                "items": {
+                  "type": "string",
+                  "format": "km/entity-label"
+                },
+                "minItems": 1
+              },
+              "entityTypeIn": {
+                "type": "array",
+                "description": "An array of entity-type resource identifiers for the `yext/entityType` filter.",
+                "items": {
+                  "type": "string",
+                  "format": "km/entity-type"
+                },
+                "minItems": 1
+              }
+            },
+            "additionalProperties": false,
+            "minProperties": 2,
+            "maxProperties": 2,
+            "required": [
+              "filter"
+            ]
+          },
+          "minItems": 1,
+          "maxItems": 10
+        },
+        "comparison": {
+          "oneOf": [
+            {
+              "type": "string",
+              "enum": [
+                "PREVIOUS_PERIOD",
+                "PREVIOUS_YEAR",
+                "PREVIOUS_FULL_YEAR"
+              ],
+              "description": "The period to compare to."
+            },
+            {
+              "type": "array",
+              "description": "The inclusive interval of dates specifying the period to compare to, with start and end dates in `YYYY-MM-DD` format.",
+              "items": {
+                "type": "string",
+                "format": "date"
+              },
+              "minItems": 2,
+              "maxItems": 2
+            }
+          ]
+        },
+        "normalize": {
+          "type": "boolean",
+          "default": false,
+          "description": "Whether to normalize values, when the dimension supports it."
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "metrics",
+        "dimensions"
+      ]
+    },
+    "display": {
+      "oneOf": [
+        {
+          "type": "object",
+          "description": "Configures a table.",
+          "properties": {
+            "table": {
+              "type": "object",
+              "properties": {
+                "sort": {
+                  "type": "object",
+                  "description": "Configures a sorted table",
+                  "properties": {
+                    "column": {
+                      "oneOf": [
+                        {
+                          "type": "object",
+                          "properties": {
+                            "metric": {
+                              "type": "string",
+                              "format": "analytics/metric",
+                              "description": "The metric resource name for the metric to sort by."
+                            }
+                          },
+                          "additionalProperties": false,
+                          "required": [
+                            "metric"
+                          ]
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "field": {
+                              "description": "The field to sort by.",
+                              "anyOf": [
+                                {
+                                  "type": "string",
+                                  "format": "km/field",
+                                  "description": "The field resource name for the field to sort by."
+                                },
+                                {
+                                  "type": "string",
+                                  "enum": [
+                                    "yext/derivedField-city",
+                                    "yext/derivedField-entityType",
+                                    "yext/derivedField-postalCode",
+                                    "yext/derivedField-state"
+                                  ],
+                                  "description": "A derived field identifier for the field to sort by."
+                                }
+                              ]
+                            }
+                          },
+                          "additionalProperties": false,
+                          "required": [
+                            "field"
+                          ]
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "dimension": {
+                              "type": "string",
+                              "format": "analytics/dimension",
+                              "description": "The dimension resource name for the dimension to sort by."
+                            }
+                          },
+                          "additionalProperties": false,
+                          "required": [
+                            "dimension"
+                          ]
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "comparison": {
+                              "oneOf": [
+                                {
+                                  "type": "object",
+                                  "properties": {
+                                    "metric": {
+                                      "type": "string",
+                                      "format": "analytics/metric",
+                                      "description": "The metric resource name for the metric comparison column to sort by."
+                                    }
+                                  },
+                                  "additionalProperties": false,
+                                  "required": [
+                                    "metric"
+                                  ]
+                                }
+                              ]
+                            }
+                          },
+                          "additionalProperties": false,
+                          "required": [
+                            "comparison"
+                          ]
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "percentChange": {
+                              "type": "object",
+                              "description": "The percent change column",
+                              "additionalProperties": false,
+                              "properties": {}
+                            }
+                          },
+                          "additionalProperties": false,
+                          "required": [
+                            "percentChange"
+                          ]
+                        }
+                      ],
+                      "description": "The column to sort rows by."
+                    },
+                    "descending": {
+                      "type": "boolean",
+                      "default": false,
+                      "description": "Whether to sort in descending order instead of ascending order."
+                    },
+                    "rank": {
+                      "type": "boolean",
+                      "default": false,
+                      "description": "Whether to add columns to show ranking."
+                    }
+                  },
+                  "additionalProperties": false,
+                  "required": [
+                    "column"
+                  ]
+                },
+                "limit": {
+                  "oneOf": [
+                    {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 1000
+                    },
+                    {
+                      "const": "FIT_TO_HEIGHT"
+                    }
+                  ],
+                  "description": "Number of rows to display."
+                },
+                "showSummary": {
+                  "type": "boolean",
+                  "default": false,
+                  "description": "Whether to show the grand total row for the insight at the end of the table."
+                },
+                "sparklines": {
+                  "type": "object",
+                  "description": "Configures sparklines for the table.",
+                  "properties": {
+                    "metrics": {
+                      "type": "array",
+                      "description": "The metric resource names for the metrics to display sparklines for",
+                      "items": {
+                        "type": "string",
+                        "format": "analytics/metric"
+                      },
+                      "minItems": 1,
+                      "maxItems": 10
+                    }
+                  },
+                  "additionalProperties": false,
+                  "required": [
+                    "metrics"
+                  ]
+                }
+              },
+              "dependencies": {
+                "limit": [
+                  "sort"
+                ]
+              },
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "table"
+          ]
+        },
+        {
+          "type": "object",
+          "description": "Configures a line chart.",
+          "properties": {
+            "line": {
+              "type": "object",
+              "properties": {
+                "area": {
+                  "type": "boolean",
+                  "default": false,
+                  "description": "Whether the line chart should color the area beneath the lines."
+                },
+                "independentAxes": {
+                  "type": "boolean",
+                  "default": false,
+                  "description": "Whether the line chart should have independent axes."
+                },
+                "showLabels": {
+                  "type": "boolean",
+                  "default": false,
+                  "description": "Whether data labels should be displayed."
+                },
+                "heroNumbers": {
+                  "type": "object",
+                  "properties": {
+                    "show": {
+                      "type": "boolean",
+                      "default": false,
+                      "description": "Whether line hero numbers should be displayed."
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "line"
+          ]
+        },
+        {
+          "type": "object",
+          "description": "Configures a bar chart.",
+          "properties": {
+            "bar": {
+              "type": "object",
+              "properties": {
+                "style": {
+                  "type": "string",
+                  "enum": [
+                    "NORMAL",
+                    "STACKED",
+                    "PERCENT"
+                  ],
+                  "default": "NORMAL",
+                  "description": "The style of bar chart."
+                },
+                "horizontal": {
+                  "type": "boolean",
+                  "default": false,
+                  "description": "Whether the bar chart should be oriented horizontally; if `false`, bars will be oriented vertically."
+                },
+                "showLabels": {
+                  "type": "boolean",
+                  "default": false,
+                  "description": "Whether data labels should be displayed."
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "bar"
+          ]
+        },
+        {
+          "type": "object",
+          "description": "Configures a pie chart.",
+          "properties": {
+            "pie": {
+              "type": "object",
+              "properties": {
+                "style": {
+                  "style": "string",
+                  "enum": [
+                    "SOLID",
+                    "DOUGHNUT"
+                  ],
+                  "default": "SOLID"
+                },
+                "showLabels": {
+                  "type": "boolean",
+                  "default": false,
+                  "description": "Whether data labels should be displayed."
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "pie"
+          ]
+        },
+        {
+          "type": "object",
+          "description": "Reserved; must not be present.",
+          "properties": {
+            "scatterplot": {
+              "type": "object"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "scatterplot"
+          ]
+        },
+        {
+          "type": "object",
+          "description": "Configures a hero number.",
+          "properties": {
+            "hero": {
+              "type": "object",
+              "properties": {
+                "aggregation": {
+                  "style": "string",
+                  "enum": [
+                    "SUM",
+                    "MEAN"
+                  ]
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "aggregation"
+              ]
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "hero"
+          ]
+        },
+        {
+          "type": "object",
+          "description": "Configures a map.",
+          "properties": {
+            "map": {
+              "type": "object",
+              "properties": {
+                "scale": {
+                  "type": "string",
+                  "enum": [
+                    "LINEAR",
+                    "LOGARITHMIC"
+                  ],
+                  "default": "LINEAR",
+                  "description": "Configures the scale of the map\u0027s color bar."
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "map"
+          ]
+        }
+      ]
+    },
+    "visibility": {
+      "type": "object",
+      "description": "Reserved; must not be present."
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "$id",
+    "$schema",
+    "name",
+    "query",
+    "display"
+  ]
+}
