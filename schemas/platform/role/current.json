@@ -1,0 +1,46 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://schema.yext.com/config/platform/role",
+  "$version": "1",
+  "type": "object",
+  "title": "Role",
+  "description": "Configures a role resource.",
+  "properties": {
+    "$id": {
+      "type": "string",
+      "description": "The unique identifier for the role resource."
+    },
+    "$schema": {
+      "const": "https://schema.yext.com/config/platform/role/v1"
+    },
+    "name": {
+      "type": "string",
+      "description": "The display name of the role."
+    },
+    "description": {
+      "type": "string",
+      "description": "A brief description of the role. This description will show up in the UI when assigning roles to users."
+    },
+    "permissionIds": {
+      "type": "array",
+      "unordered": true,
+      "description": "The ids of the permissions that a user is granted when assigned the role. A full list of permission ids can be found under Account Settings \u003e Role Management by clicking on the `Export Permission IDs (For Developers)` button.",
+      "items": {
+        "type": "number",
+        "description": "The id of an individual permission that belongs to the role."
+      }
+    },
+    "availableToSubAccounts": {
+      "type": "boolean",
+      "description": "True if the role should be available to sub-accounts, false otherwise."
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "$id",
+    "$schema",
+    "name",
+    "description",
+    "permissionIds"
+  ]
+}

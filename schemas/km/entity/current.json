@@ -1,0 +1,68 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://schema.yext.com/config/km/entity",
+  "$version": "1.1",
+  "title": "Entity",
+  "type": "object",
+  "description": "The details of the Entity.",
+  "properties": {
+    "$id": {
+      "type": "string"
+    },
+    "$schema": {
+      "const": "https://schema.yext.com/config/km/entity/v1"
+    },
+    "primaryLocale": {
+      "type": "string"
+    },
+    "content": {
+      "type": "object",
+      "description": "Content of the entity.",
+      "additionalProperties": true
+    },
+    "entityType": {
+      "type": "string",
+      "description": "The type of entity. For example: atm, event, healthcareFacility, healthcareProfessional, job, location, restaurant",
+      "format": "km/entity-type"
+    },
+    "folder": {
+      "type": "string",
+      "description": "The folder of the entity.",
+      "format": "km/entity-folder"
+    },
+    "labels": {
+      "type": "array",
+      "description": "The labels of the entity.",
+      "items": {
+        "type": "string",
+        "format": "km/entity-label"
+      }
+    },
+    "alternateProfiles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "locale": {
+            "type": "string"
+          },
+          "content": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "locale",
+          "content"
+        ]
+      }
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "$id",
+    "$schema",
+    "entityType"
+  ]
+}

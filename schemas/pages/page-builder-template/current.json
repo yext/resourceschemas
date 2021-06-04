@@ -1,0 +1,37 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://schema.yext.com/config/pages/page-builder-template",
+  "$version": "1.1",
+  "type": "object",
+  "title": "Page Builder Template",
+  "description": "Configures a page builder template.",
+  "properties": {
+    "$id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64
+    },
+    "$schema": {
+      "const": "https://schema.yext.com/config/pages/page-builder-template/v1"
+    },
+    "PageSetType": {
+      "type": "string",
+      "description": "The type of page builder template.",
+      "enum": [
+        "TEMPLATE",
+        "SINGLE_PAGE"
+      ]
+    },
+    "Name": {
+      "type": "string",
+      "description": "The name of the page builder template. The name does not show up anywhere public."
+    }
+  },
+  "additionalProperties": true,
+  "required": [
+    "$id",
+    "$schema",
+    "PageSetType",
+    "Name"
+  ]
+}

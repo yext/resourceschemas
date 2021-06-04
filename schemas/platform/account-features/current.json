@@ -1,0 +1,33 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://schema.yext.com/config/platform/account-features",
+  "$version": "1",
+  "type": "object",
+  "title": "Account Features",
+  "description": "Configures the account features.",
+  "properties": {
+    "$schema": {
+      "const": "https://schema.yext.com/config/platform/account-features/v1"
+    },
+    "enabled": {
+      "type": "array",
+      "description": "The list of feature IDs that are enabled for the account.",
+      "items": {
+        "type": "integer"
+      }
+    },
+    "disabled": {
+      "type": "array",
+      "description": "The list of feature IDs that are disabled for the account.",
+      "items": {
+        "type": "integer"
+      }
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "enabled",
+    "disabled"
+  ]
+}

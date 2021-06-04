@@ -1,0 +1,178 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://schema.yext.com/config/analytics/dashboard",
+  "$version": "1",
+  "type": "object",
+  "title": "Dashboard",
+  "description": "Configures an analytics dashboard.",
+  "properties": {
+    "$id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 97,
+      "description": "The unique identifier for the dashboard resource."
+    },
+    "$schema": {
+      "const": "https://schema.yext.com/config/analytics/dashboard/v1"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 25,
+      "description": "The human-readable name of the dashboard."
+    },
+    "insights": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "description": "Includes an insight on the dashboard.",
+        "properties": {
+          "insight": {
+            "type": "string",
+            "format": "analytics/insight",
+            "description": "An insight resource identifier for the insight to include in the dashboard."
+          },
+          "caption": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500,
+            "description": "A caption to give the insight on the dashboard."
+          },
+          "x": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 4,
+            "description": "The x-position of the top-left corner of the insight on the dashboard, in grid units."
+          },
+          "y": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100,
+            "description": "The y-position of the top-left corner of the insight on the dashboard, in grid units."
+          },
+          "width": {
+            "type": "integer",
+            "minimum": 2,
+            "maximum": 6,
+            "description": "The width of the insight on the dashboard, in grid units."
+          },
+          "height": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 5,
+            "description": "The height of the insight on the dashboard, in grid units."
+          },
+          "icon": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100,
+            "description": "The icon to use for the insight on the dashboard."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "insight",
+          "x",
+          "y",
+          "width",
+          "height"
+        ]
+      }
+    },
+    "filters": {
+      "type": "array",
+      "description": "An array of filtering clauses which override insight filters. Each clause object must contain the `filter` property and a single operator property.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "filter": {
+            "type": "string",
+            "format": "analytics/filter",
+            "enum": [
+              "yext/date",
+              "yext/entity",
+              "yext/entityFolder",
+              "yext/entityLabel",
+              "yext/entityType"
+            ],
+            "description": "The filter resource identifier, which must be a filter override supported by dashboards."
+          },
+          "between": {
+            "type": "array",
+            "description": "For the `yext/date` filter, this is the start and end dates in `YYYY-MM-DD` format.",
+            "items": {
+              "type": "string",
+              "format": "date"
+            },
+            "minItems": 2,
+            "maxItems": 2
+          },
+          "in": {
+            "type": "string",
+            "enum": [
+              "DAYS_7",
+              "DAYS_30",
+              "DAYS_90",
+              "WEEKS_12",
+              "MONTHS_1",
+              "MONTHS_13",
+              "QUARTERS_1"
+            ],
+            "description": "For the `yext/date` filter, the name of a preset date range."
+          },
+          "entityIn": {
+            "type": "array",
+            "description": "An array of entity resource identifiers for the `yext/entity` filter.",
+            "items": {
+              "type": "string",
+              "format": "km/entity"
+            },
+            "minItems": 1
+          },
+          "entityFolderIn": {
+            "type": "array",
+            "description": "An array of entity-folder resource identifiers for the `yext/entityFolder` filter.",
+            "items": {
+              "type": "string",
+              "format": "km/entity-folder"
+            },
+            "minItems": 1
+          },
+          "entityLabelIn": {
+            "type": "array",
+            "description": "An array of entity-label resource identifiers for the `yext/entityLabel` filter.",
+            "items": {
+              "type": "string",
+              "format": "km/entity-label"
+            },
+            "minItems": 1
+          },
+          "entityTypeIn": {
+            "type": "array",
+            "description": "An array of entity-type resource identifiers for the `yext/entityType` filter.",
+            "items": {
+              "type": "string",
+              "format": "km/entity-type"
+            },
+            "minItems": 1
+          }
+        },
+        "additionalProperties": false,
+        "minProperties": 2,
+        "maxProperties": 2,
+        "required": [
+          "filter"
+        ]
+      },
+      "minItems": 1,
+      "maxItems": 5
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "$id",
+    "$schema",
+    "name",
+    "insights"
+  ]
+}
