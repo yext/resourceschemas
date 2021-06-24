@@ -465,6 +465,25 @@
               "type": "string"
             }
           }
+        },
+        "normalization": {
+          "description": "A collection of phrases that, whenever any is present in a user\u0027s query, is expanded to include one synonym associated with the phrases.",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": true,
+            "properties": {
+              "from": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "to": {
+                "type": "string"
+              }
+            }
+          }
         }
       }
     }

@@ -110,6 +110,10 @@
             "$ref": "#/definitions/translation"
           },
           "additionalItems": false
+        },
+        "defaultCollapsed": {
+          "type": "boolean",
+          "description": "A boolean to determine if the section is collapsed when the user first enters the page."
         }
       },
       "additionalProperties": false,

@@ -17,14 +17,49 @@
       "type": "string",
       "description": "The name of the streams API."
     },
-    "sourceStreams": {
-      "type": "array",
-      "description": "The names of streams that should be included in this API.",
-      "items": {
-        "type": "string",
-        "minLength": 1,
-        "maxLength": 64,
-        "format": "streams/stream-config"
+    "stream": {
+      "type": "object",
+      "description": "Properties required to configure the data stream for this API.",
+      "properties": {
+        "source": {
+          "type": "string",
+          "enum": [
+            "knowledgeGraph",
+            "reviews",
+            "reviewsAgg"
+          ],
+          "description": "The source of data to stream."
+        },
+        "fields": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "The subset of fields and projections from the source data that should be streamed."
+        },
+        "filter": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/filters/kg"
+            },
+            {
+              "$ref": "#/definitions/filters/publishers"
+            }
+          ]
+        },
+        "transform": {
+          "type": "object",
+          "properties": {
+            "jsonpatch": {
+              "type": "array",
+              "items": {
+                "type": "object"
+              },
+              "description": "A series of JSON Patch transforms to apply on the document."
+            }
+          },
+          "description": "The transforms that need to be applied to documents before they are indexed."
+        }
       }
     },
     "fieldIndexes": {
@@ -49,6 +84,44 @@
   "required": [
     "$id",
     "$schema",
-    "sourceStreams"
-  ]
+    "stream"
+  ],
+  "definitions": {
+    "filters": {
+      "kg": {
+        "type": "object",
+        "properties": {
+          "entityTypes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Entity type IDs to allow."
+          },
+          "savedFilterIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "IDs of the saved filters to apply on entities."
+          }
+        },
+        "description": "Filter configuration for knowledgeGraph.",
+        "additionalProperties": false
+      },
+      "publishers": {
+        "type": "object",
+        "properties": {
+          "publishers": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Publisher IDs to allow."
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  }
 }

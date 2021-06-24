@@ -95,12 +95,28 @@
         "properties": {
           "cleanDataCapitalization": {
             "$ref": "#/definitions/transform/cleanDataCapitalization"
+          },
+          "removeUnwantedChars": {
+            "$ref": "#/definitions/transform/removeUnwantedChars"
+          },
+          "extractText": {
+            "$ref": "#/definitions/transform/extractText"
           }
         },
         "oneOf": [
           {
             "required": [
               "cleanDataCapitalization"
+            ]
+          },
+          {
+            "required": [
+              "removeUnwantedChars"
+            ]
+          },
+          {
+            "required": [
+              "extractText"
             ]
           }
         ]
@@ -474,6 +490,43 @@
       ]
     },
     "transform": {
+      "inputHeaders": {
+        "type": "object",
+        "additionalProperties": false,
+        "title": "Input Headers",
+        "description": "Specifies which columns should have their values transformed.",
+        "properties": {
+          "headers": {
+            "type": "array",
+            "additionalProperties": false,
+            "title": "Headers",
+            "description": "The names of the columns containing values to transform.",
+            "items": {
+              "type": "string",
+              "title": "Header",
+              "description": "The name of the column containing values to transform."
+            }
+          },
+          "allColumns": {
+            "const": true,
+            "additionalProperties": false,
+            "title": "All Columns",
+            "description": "True if all columns should be transformed, including any added in the future."
+          }
+        },
+        "oneof": [
+          {
+            "required": [
+              "headers"
+            ]
+          },
+          {
+            "required": [
+              "allColumns"
+            ]
+          }
+        ]
+      },
       "cleanDataCapitalization": {
         "type": "object",
         "additionalProperties": false,
@@ -481,15 +534,7 @@
         "description": "Transforms the text of the inputted columns by applying the selected capitalization options.",
         "properties": {
           "inputHeaders": {
-            "type": "array",
-            "additionalProperties": false,
-            "title": "Input Headers",
-            "description": "The names of the columns containing values to transform.",
-            "items": {
-              "type": "string",
-              "title": "Input Header",
-              "description": "The name of the column containing values to transform."
-            }
+            "$ref": "#/definitions/transform/inputHeaders"
           },
           "cleanOption": {
             "type": "string",
@@ -506,6 +551,160 @@
           "inputHeaders",
           "cleanOption"
         ]
+      },
+      "removeUnwantedChars": {
+        "type": "object",
+        "additionalProperties": false,
+        "title": "Clean Data Unwanted Characters Removal",
+        "description": "Transforms the text of the input columns by applying the selected character removal options.",
+        "properties": {
+          "inputHeaders": {
+            "$ref": "#/definitions/transform/inputHeaders"
+          },
+          "cleanOptions": {
+            "type": "array",
+            "title": "Clean Options",
+            "description": "How the data should be cleaned.",
+            "uniqueItems": true,
+            "additionalProperties": false,
+            "items": {
+              "type": "string",
+              "title": "Unwanted Character Removal Options",
+              "description": "The unwanted character removal options to be applied.",
+              "enum": [
+                "TRIM_WHITESPACE",
+                "REMOVE_WHITESPACE",
+                "REMOVE_NUMBERS",
+                "REMOVE_NON_NUMERICS",
+                "REMOVE_PUNCTUATION"
+              ]
+            }
+          }
+        },
+        "required": [
+          "inputHeaders",
+          "cleanOptions"
+        ]
+      },
+      "extractText": {
+        "type": "object",
+        "additionalProperties": false,
+        "title": "Clean Data Extract Text",
+        "description": "Transforms the text of the input column by extracting text and creating a new column.",
+        "properties": {
+          "inputHeader": {
+            "type": "string",
+            "title": "Input Column Header",
+            "description": "The header of the column from which text should be extracted"
+          },
+          "newColumnHeader": {
+            "type": "string",
+            "title": "New Column Header",
+            "description": "The header for the new column that will be populated with extracted data"
+          },
+          "extractOperation": {
+            "$ref": "#/definitions/transform/extractOperation"
+          },
+          "extractFrom": {
+            "$ref": "#/definitions/transform/extractFrom"
+          },
+          "matchingText": {
+            "$ref": "#/definitions/transform/matchingText"
+          },
+          "offsetLength": {
+            "$ref": "#/definitions/transform/offsetLength"
+          },
+          "maxLengthTextToKeep": {
+            "$ref": "#/definitions/transform/maxLengthTextToKeep"
+          }
+        },
+        "required": [
+          "inputHeader",
+          "newColumnHeader",
+          "extractOperation",
+          "extractFrom"
+        ],
+        "anyOf": [
+          {
+            "if": {
+              "properties": {
+                "extractFrom": {
+                  "pattern": "[*_INSTANCE_MATCHING_TEXT]"
+                }
+              }
+            },
+            "then": {
+              "required": [
+                "matchingText"
+              ]
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "extractFrom": {
+                  "pattern": "[OFFSET_FROM_*]"
+                }
+              }
+            },
+            "then": {
+              "required": [
+                "offsetLength"
+              ]
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "extractOperation": {
+                  "pattern": "[SOME_TEXT_*]"
+                }
+              }
+            },
+            "then": {
+              "required": [
+                "maxLengthTextToKeep"
+              ]
+            }
+          }
+        ]
+      },
+      "extractOperation": {
+        "type": "string",
+        "title": "The Extraction Operation",
+        "description": "The strategy to be used when determining the quantity of text to extract.",
+        "enum": [
+          "ALL_TEXT_AFTER",
+          "ALL_TEXT_BEFORE",
+          "SOME_TEXT_AFTER",
+          "SOME_TEXT_BEFORE"
+        ]
+      },
+      "extractFrom": {
+        "type": "string",
+        "title": "The Extraction Location",
+        "description": "From where the extraction operation should occur",
+        "enum": [
+          "FIRST_INSTANCE_MATCHING_TEXT",
+          "LAST_INSTANCE_MATCHING_TEXT",
+          "OFFSET_FROM_BEGINNING",
+          "OFFSET_FROM_END"
+        ]
+      },
+      "matchingText": {
+        "type": "string",
+        "title": "The Extraction Matching Text",
+        "description": "Defines a delimiter to match"
+      },
+      "offsetLength": {
+        "type": "number",
+        "title": "The Extraction Offset",
+        "description": "How many characters from the starting point that the extraction should begin."
+      },
+      "maxLengthTextToKeep": {
+        "type": "number",
+        "title": "The Extraction Length",
+        "description": "The max number of characters that should be extracted. No limit if 0."
       }
     },
     "mapping": {
