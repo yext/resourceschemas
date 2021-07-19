@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://schema.yext.com/config/km/field-presentation",
-  "$version": "1",
+  "$version": "1.1",
   "type": "object",
   "title": "Field Presentation",
   "description": "Resource that represents a field presentation for an entity type.",

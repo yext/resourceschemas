@@ -269,6 +269,14 @@
                   }
                 }
               }
+            },
+            "displayFields": {
+              "description": "KNOWLEDGE_MANAGER only. Fields on the profile that are returned to the frontend. If ommitted or empty, all fields will be returned.",
+              "type": "array",
+              "items": {
+                "type": "string",
+                "description": "The api name of the display field to include. You can use dot notation to specify substructures."
+              }
             }
           }
         }

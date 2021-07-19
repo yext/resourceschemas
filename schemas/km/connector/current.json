@@ -93,20 +93,32 @@
         "description": "A transform to apply to the data output by the previous step.",
         "unordered": false,
         "properties": {
-          "cleanDataCapitalization": {
-            "$ref": "#/definitions/transform/cleanDataCapitalization"
+          "fixCapitalization": {
+            "$ref": "#/definitions/transform/fixCapitalization"
           },
           "removeUnwantedChars": {
             "$ref": "#/definitions/transform/removeUnwantedChars"
           },
           "extractText": {
             "$ref": "#/definitions/transform/extractText"
+          },
+          "plugin": {
+            "$ref": "#/definitions/transform/plugin"
+          },
+          "findAndReplace": {
+            "$ref": "#/definitions/transform/findAndReplace"
+          },
+          "addColumn": {
+            "$ref": "#/definitions/transform/addColumn"
+          },
+          "filterRow": {
+            "$ref": "#/definitions/transform/filterRow"
           }
         },
         "oneOf": [
           {
             "required": [
-              "cleanDataCapitalization"
+              "fixCapitalization"
             ]
           },
           {
@@ -117,6 +129,26 @@
           {
             "required": [
               "extractText"
+            ]
+          },
+          {
+            "required": [
+              "plugin"
+            ]
+          },
+          {
+            "required": [
+              "findAndReplace"
+            ]
+          },
+          {
+            "required": [
+              "addColumn"
+            ]
+          },
+          {
+            "required": [
+              "filterRow"
             ]
           }
         ]
@@ -144,6 +176,15 @@
         },
         "customSchedule": {
           "$ref": "#/definitions/customSchedule"
+        },
+        "runMode": {
+          "type": "string",
+          "title": "runMode",
+          "description": "Indicates the run mode.",
+          "enum": [
+            "DEFAULT",
+            "COMPREHENSIVE"
+          ]
         }
       },
       "oneOf": [
@@ -527,10 +568,10 @@
           }
         ]
       },
-      "cleanDataCapitalization": {
+      "fixCapitalization": {
         "type": "object",
         "additionalProperties": false,
-        "title": "Clean Data Capitalization",
+        "title": "Fix Capitalization",
         "description": "Transforms the text of the inputted columns by applying the selected capitalization options.",
         "properties": {
           "inputHeaders": {
@@ -555,7 +596,7 @@
       "removeUnwantedChars": {
         "type": "object",
         "additionalProperties": false,
-        "title": "Clean Data Unwanted Characters Removal",
+        "title": "Unwanted Characters Removal",
         "description": "Transforms the text of the input columns by applying the selected character removal options.",
         "properties": {
           "inputHeaders": {
@@ -589,7 +630,7 @@
       "extractText": {
         "type": "object",
         "additionalProperties": false,
-        "title": "Clean Data Extract Text",
+        "title": "Extract Text",
         "description": "Transforms the text of the input column by extracting text and creating a new column.",
         "properties": {
           "inputHeader": {
@@ -705,6 +746,234 @@
         "type": "number",
         "title": "The Extraction Length",
         "description": "The max number of characters that should be extracted. No limit if 0."
+      },
+      "plugin": {
+        "type": "object",
+        "additionalProperties": false,
+        "title": "Plugin",
+        "description": "Invokes a Plugin function to transform values.",
+        "properties": {
+          "inputHeaders": {
+            "$ref": "#/definitions/transform/inputHeaders"
+          },
+          "plugin": {
+            "type": "string",
+            "title": "Plugin",
+            "description": "The reference to a Plugin resource.",
+            "format": "platform/plugin"
+          },
+          "function": {
+            "type": "string",
+            "title": "Function",
+            "description": "The function to invoke."
+          }
+        },
+        "required": [
+          "inputHeaders",
+          "plugin",
+          "function"
+        ]
+      },
+      "findAndReplace": {
+        "type": "object",
+        "additionalProperties": false,
+        "title": "Find and Replace",
+        "description": "Finds a specified pattern or text and replaces it with a specified value.",
+        "properties": {
+          "inputHeaders": {
+            "$ref": "#/definitions/transform/inputHeaders"
+          },
+          "valueToFind": {
+            "type": "object",
+            "additionalProperties": false,
+            "title": "Value to Find",
+            "description": "The pattern or text to be replaced.",
+            "properties": {
+              "plainText": {
+                "type": "object",
+                "additionalProperties": false,
+                "title": "Plain Text",
+                "description": "A literal text value to be matched. If the value is the empty string, only empty cells in the table will be matched.",
+                "properties": {
+                  "value": {
+                    "type": "string",
+                    "title": "Value",
+                    "description": "Text to be matched."
+                  },
+                  "ignoreCase": {
+                    "type": "boolean",
+                    "default": true,
+                    "title": "Ignore Case",
+                    "description": "True if matching should be case-insensitive, false otherwise."
+                  }
+                },
+                "required": [
+                  "value"
+                ]
+              },
+              "regex": {
+                "type": "string",
+                "title": "Regex",
+                "description": "Regular expression to be matched (in accordance with the java.util.regex engine)."
+              }
+            },
+            "oneof": [
+              {
+                "required": [
+                  "plainText"
+                ]
+              },
+              {
+                "required": [
+                  "regex"
+                ]
+              }
+            ]
+          },
+          "replacement": {
+            "type": "string",
+            "title": "Replacement",
+            "description": "The text that will replace all found matches."
+          }
+        },
+        "required": [
+          "inputHeaders",
+          "valueToFind",
+          "replacement"
+        ]
+      },
+      "addColumn": {
+        "type": "object",
+        "additionalProperties": false,
+        "title": "Add Column",
+        "description": "Adds a new column and populate the column with a static value",
+        "properties": {
+          "newColumnHeader": {
+            "type": "string",
+            "title": "New Column Header",
+            "description": "The new column\u0027s header."
+          },
+          "columnValue": {
+            "type": "string",
+            "title": "Column Value",
+            "description": "The column value to be added."
+          }
+        },
+        "required": [
+          "newColumnHeader",
+          "columnValue"
+        ]
+      },
+      "filterRow": {
+        "type": "object",
+        "additionalProperties": false,
+        "title": "Filter Row",
+        "description": "Filters rows based on specified conditionals",
+        "properties": {
+          "action": {
+            "type": "string",
+            "title": "The Row Action",
+            "description": "The action to perform on rows that satisfy the evaluation of rules",
+            "enum": [
+              "KEEP",
+              "REMOVE"
+            ]
+          },
+          "combinator": {
+            "type": "string",
+            "title": "The Rule Combinator",
+            "description": "The combinator connecting all rules.",
+            "enum": [
+              "OR",
+              "AND"
+            ]
+          },
+          "rules": {
+            "type": "array",
+            "additionalItems": false,
+            "title": "The Rules to Apply",
+            "description": "A list of rules to be applied to filter rows.",
+            "unordered": true,
+            "minItems": 1,
+            "items": {
+              "$ref": "#/definitions/transform/rule"
+            }
+          }
+        },
+        "required": [
+          "action",
+          "combinator",
+          "rules"
+        ]
+      },
+      "rule": {
+        "type": "object",
+        "additionalProperties": false,
+        "title": "Filter Row Sub Rule",
+        "description": "A single rule to be applied to filter row.",
+        "properties": {
+          "columnHeader": {
+            "type": "string",
+            "title": "The Column Header",
+            "description": "The column header to apply the rule."
+          },
+          "conditional": {
+            "type": "string",
+            "title": "The Conditional",
+            "description": "The conditional to apply. For conditionals that compare values, the value being processed is on the left, and the conditional input is on the right. When data is in the format of numbers or dates in ISO format (YYYY-MM-DD), they will be compared as numbers or dates respectively. Otherwise, they will be compared as strings",
+            "enum": [
+              "IS_BLANK",
+              "IS_NOT_BLANK",
+              "EQUALS",
+              "DOES_NOT_EQUAL",
+              "CONTAINS",
+              "DOES_NOT_CONTAIN",
+              "GREATER_THAN",
+              "GREATER_THAN_OR_EQUAL_TO",
+              "LESS_THAN",
+              "LESS_THAN_OR_EQUAL_TO"
+            ]
+          },
+          "conditionalInput": {
+            "type": "string",
+            "title": "The Conditional Input",
+            "description": "The conditional input value to apply the conditional against."
+          }
+        },
+        "required": [
+          "columnHeader",
+          "conditional"
+        ],
+        "anyOf": [
+          {
+            "if": {
+              "properties": {
+                "conditional": {
+                  "const": "IS_BLANK"
+                }
+              }
+            },
+            "else": {
+              "required": [
+                "conditionalInput"
+              ]
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "conditional": {
+                  "const": "IS_NOT_BLANK"
+                }
+              }
+            },
+            "else": {
+              "required": [
+                "conditionalInput"
+              ]
+            }
+          }
+        ]
       }
     },
     "mapping": {
