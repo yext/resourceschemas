@@ -113,6 +113,9 @@
           },
           "filterRow": {
             "$ref": "#/definitions/transform/filterRow"
+          },
+          "formatDates": {
+            "$ref": "#/definitions/transform/formatDates"
           }
         },
         "oneOf": [
@@ -149,6 +152,11 @@
           {
             "required": [
               "filterRow"
+            ]
+          },
+          {
+            "required": [
+              "formatDates"
             ]
           }
         ]
@@ -568,6 +576,53 @@
           }
         ]
       },
+      "valueToFind": {
+        "type": "object",
+        "additionalProperties": false,
+        "title": "Value to Find",
+        "description": "The pattern or text to be replaced.",
+        "properties": {
+          "plainText": {
+            "type": "object",
+            "additionalProperties": false,
+            "title": "Plain Text",
+            "description": "A literal text value to be matched. If the value is the empty string, only empty cells in the table will be matched.",
+            "properties": {
+              "value": {
+                "type": "string",
+                "title": "Value",
+                "description": "Text to be matched."
+              },
+              "ignoreCase": {
+                "type": "boolean",
+                "default": true,
+                "title": "Ignore Case",
+                "description": "True if matching should be case-insensitive, false otherwise."
+              }
+            },
+            "required": [
+              "value"
+            ]
+          },
+          "regex": {
+            "type": "string",
+            "title": "Regex",
+            "description": "Regular expression to be matched (in accordance with the java.util.regex engine)."
+          }
+        },
+        "oneof": [
+          {
+            "required": [
+              "plainText"
+            ]
+          },
+          {
+            "required": [
+              "regex"
+            ]
+          }
+        ]
+      },
       "fixCapitalization": {
         "type": "object",
         "additionalProperties": false,
@@ -644,19 +699,41 @@
             "description": "The header for the new column that will be populated with extracted data"
           },
           "extractOperation": {
-            "$ref": "#/definitions/transform/extractOperation"
+            "type": "string",
+            "title": "The Extraction Operation",
+            "description": "The strategy to be used when determining the quantity of text to extract.",
+            "enum": [
+              "ALL_TEXT_AFTER",
+              "ALL_TEXT_BEFORE",
+              "SOME_TEXT_AFTER",
+              "SOME_TEXT_BEFORE"
+            ]
           },
           "extractFrom": {
-            "$ref": "#/definitions/transform/extractFrom"
+            "type": "string",
+            "title": "The Extraction Location",
+            "description": "From where the extraction operation should occur",
+            "enum": [
+              "FIRST_INSTANCE_MATCHING_TEXT",
+              "LAST_INSTANCE_MATCHING_TEXT",
+              "OFFSET_FROM_BEGINNING",
+              "OFFSET_FROM_END"
+            ]
           },
           "matchingText": {
-            "$ref": "#/definitions/transform/matchingText"
+            "type": "string",
+            "title": "The Extraction Matching Text",
+            "description": "Defines a delimiter to match"
           },
           "offsetLength": {
-            "$ref": "#/definitions/transform/offsetLength"
+            "type": "number",
+            "title": "The Extraction Offset",
+            "description": "How many characters from the starting point that the extraction should begin."
           },
           "maxLengthTextToKeep": {
-            "$ref": "#/definitions/transform/maxLengthTextToKeep"
+            "type": "number",
+            "title": "The Extraction Length",
+            "description": "The max number of characters that should be extracted. No limit if 0."
           }
         },
         "required": [
@@ -710,43 +787,6 @@
           }
         ]
       },
-      "extractOperation": {
-        "type": "string",
-        "title": "The Extraction Operation",
-        "description": "The strategy to be used when determining the quantity of text to extract.",
-        "enum": [
-          "ALL_TEXT_AFTER",
-          "ALL_TEXT_BEFORE",
-          "SOME_TEXT_AFTER",
-          "SOME_TEXT_BEFORE"
-        ]
-      },
-      "extractFrom": {
-        "type": "string",
-        "title": "The Extraction Location",
-        "description": "From where the extraction operation should occur",
-        "enum": [
-          "FIRST_INSTANCE_MATCHING_TEXT",
-          "LAST_INSTANCE_MATCHING_TEXT",
-          "OFFSET_FROM_BEGINNING",
-          "OFFSET_FROM_END"
-        ]
-      },
-      "matchingText": {
-        "type": "string",
-        "title": "The Extraction Matching Text",
-        "description": "Defines a delimiter to match"
-      },
-      "offsetLength": {
-        "type": "number",
-        "title": "The Extraction Offset",
-        "description": "How many characters from the starting point that the extraction should begin."
-      },
-      "maxLengthTextToKeep": {
-        "type": "number",
-        "title": "The Extraction Length",
-        "description": "The max number of characters that should be extracted. No limit if 0."
-      },
       "plugin": {
         "type": "object",
         "additionalProperties": false,
@@ -784,51 +824,7 @@
             "$ref": "#/definitions/transform/inputHeaders"
           },
           "valueToFind": {
-            "type": "object",
-            "additionalProperties": false,
-            "title": "Value to Find",
-            "description": "The pattern or text to be replaced.",
-            "properties": {
-              "plainText": {
-                "type": "object",
-                "additionalProperties": false,
-                "title": "Plain Text",
-                "description": "A literal text value to be matched. If the value is the empty string, only empty cells in the table will be matched.",
-                "properties": {
-                  "value": {
-                    "type": "string",
-                    "title": "Value",
-                    "description": "Text to be matched."
-                  },
-                  "ignoreCase": {
-                    "type": "boolean",
-                    "default": true,
-                    "title": "Ignore Case",
-                    "description": "True if matching should be case-insensitive, false otherwise."
-                  }
-                },
-                "required": [
-                  "value"
-                ]
-              },
-              "regex": {
-                "type": "string",
-                "title": "Regex",
-                "description": "Regular expression to be matched (in accordance with the java.util.regex engine)."
-              }
-            },
-            "oneof": [
-              {
-                "required": [
-                  "plainText"
-                ]
-              },
-              {
-                "required": [
-                  "regex"
-                ]
-              }
-            ]
+            "$ref": "#/definitions/transform/valueToFind"
           },
           "replacement": {
             "type": "string",
@@ -973,6 +969,26 @@
               ]
             }
           }
+        ]
+      },
+      "formatDates": {
+        "type": "object",
+        "additionalProperties": false,
+        "title": "Format Dates",
+        "description": "Formats dates of the specified input into yyyy-MM-dd",
+        "properties": {
+          "inputHeaders": {
+            "$ref": "#/definitions/transform/inputHeaders"
+          },
+          "inputFormat": {
+            "type": "string",
+            "title": "Input Format",
+            "description": "The date format pattern of the input values."
+          }
+        },
+        "required": [
+          "inputHeaders",
+          "inputFormat"
         ]
       }
     },
