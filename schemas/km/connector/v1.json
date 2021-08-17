@@ -5,7 +5,7 @@
   "type": "object",
   "additionalProperties": false,
   "title": "Connector",
-  "description": "A resource that represents the configuration of a connector.",
+  "description": "A resource that represents the configuration of a Connector.",
   "properties": {
     "$id": {
       "type": "string"
@@ -16,7 +16,7 @@
     "displayName": {
       "type": "string",
       "title": "Display Name",
-      "description": "Display name of this connector."
+      "description": "Display name of this Connector."
     },
     "entityType": {
       "type": "string",
@@ -102,8 +102,8 @@
           "extractText": {
             "$ref": "#/definitions/transform/extractText"
           },
-          "plugin": {
-            "$ref": "#/definitions/transform/plugin"
+          "function": {
+            "$ref": "#/definitions/transform/function"
           },
           "findAndReplace": {
             "$ref": "#/definitions/transform/findAndReplace"
@@ -111,8 +111,8 @@
           "addColumn": {
             "$ref": "#/definitions/transform/addColumn"
           },
-          "filterRow": {
-            "$ref": "#/definitions/transform/filterRow"
+          "filterRows": {
+            "$ref": "#/definitions/transform/filterRows"
           },
           "formatDates": {
             "$ref": "#/definitions/transform/formatDates"
@@ -136,7 +136,7 @@
           },
           {
             "required": [
-              "plugin"
+              "function"
             ]
           },
           {
@@ -151,7 +151,7 @@
           },
           {
             "required": [
-              "filterRow"
+              "filterRows"
             ]
           },
           {
@@ -371,7 +371,7 @@
         "type": "object",
         "title": "API Push Configuration",
         "additionalProperties": false,
-        "description": "Configuration used to connect to an app and push data from an API.",
+        "description": "Configuration used to connect to an app and receive data pushed to the Connectors API endpoint.",
         "properties": {
           "app": {
             "type": "string",
@@ -413,7 +413,7 @@
         "type": "object",
         "additionalProperties": false,
         "title": "API Key",
-        "description": "An api key will be used to authenticate requests. The API-key can be appended in the header or as a query param depending on the source API.",
+        "description": "An API key will be used to authenticate requests. The API-key can be appended in the header or as a query param depending on the source API.",
         "properties": {
           "key": {
             "type": "string",
@@ -443,7 +443,7 @@
         "type": "object",
         "additionalProperties": false,
         "title": "Page-Based Pagination",
-        "description": "Page-based pagination will increment the Page Key query parameter value until all pages are returned.",
+        "description": "Page-based pagination will increment the page key query parameter value until all pages are returned.",
         "properties": {
           "pageKey": {
             "type": "string",
@@ -453,7 +453,7 @@
           "pageStartValue": {
             "type": "number",
             "title": "Page Key Start Value",
-            "description": "Initial value for the Page Key. If specified, this value will be used as the query parameter value for the Page Key in the first request. If not specified, 0 will be used by default."
+            "description": "Initial value for the page key. If specified, this value will be used as the query parameter value for the Page Key in the first request. If not specified, 0 will be used by default."
           },
           "totalPages": {
             "type": "object",
@@ -485,7 +485,7 @@
           "limitValue": {
             "type": "number",
             "title": "Limit Value",
-            "description": "Value for the Limit Key which specifies the max number of entries returned per page."
+            "description": "Value for the limit key which specifies the max number of entries returned per page."
           }
         },
         "required": [
@@ -506,7 +506,7 @@
           "cursor": {
             "type": "string",
             "title": "Cursor",
-            "description": "The key that contains the cursor in the response.  If detectCursorInHeader is set to true, the key will be searched for in the header.  If not set or set to false, the key will be searched for in the response body."
+            "description": "The key that contains the cursor in the response. If detectCursorInHeader is set to true, the key will be searched for in the header. If not set or set to false, the key will be searched for in the response body."
           },
           "cursorType": {
             "type": "string",
@@ -521,7 +521,7 @@
           "detectCursorInHeader": {
             "type": "boolean",
             "title": "Detect Cursor in Header",
-            "description": "Indicates if the Cursor key will be contained in the response header or the response body."
+            "description": "Indicates if the cursor key will be contained in the response header or the response body."
           }
         },
         "required": [
@@ -586,7 +586,7 @@
             "type": "object",
             "additionalProperties": false,
             "title": "Plain Text",
-            "description": "A literal text value to be matched. If the value is the empty string, only empty cells in the table will be matched.",
+            "description": "A literal text value to be matched. If the value is the empty string, only empty cells in the input columns will be matched.",
             "properties": {
               "value": {
                 "type": "string",
@@ -595,7 +595,7 @@
               },
               "ignoreCase": {
                 "type": "boolean",
-                "default": true,
+                "default": false,
                 "title": "Ignore Case",
                 "description": "True if matching should be case-insensitive, false otherwise."
               }
@@ -627,7 +627,7 @@
         "type": "object",
         "additionalProperties": false,
         "title": "Fix Capitalization",
-        "description": "Transforms the text of the inputted columns by applying the selected capitalization options.",
+        "description": "Transforms the text of the input columns by applying the selected capitalization option.",
         "properties": {
           "inputHeaders": {
             "$ref": "#/definitions/transform/inputHeaders"
@@ -635,7 +635,7 @@
           "cleanOption": {
             "type": "string",
             "title": "Clean Option",
-            "description": "How the data should be cleaned.",
+            "description": "The clean option to be applied.",
             "enum": [
               "ALL_CAPS",
               "ALL_LOWER",
@@ -701,7 +701,7 @@
           "extractOperation": {
             "type": "string",
             "title": "The Extraction Operation",
-            "description": "The strategy to be used when determining the quantity of text to extract.",
+            "description": "The strategy to be used when determining how much of the text to extract.",
             "enum": [
               "ALL_TEXT_AFTER",
               "ALL_TEXT_BEFORE",
@@ -720,10 +720,8 @@
               "OFFSET_FROM_END"
             ]
           },
-          "matchingText": {
-            "type": "string",
-            "title": "The Extraction Matching Text",
-            "description": "Defines a delimiter to match"
+          "valueToFind": {
+            "$ref": "#/definitions/transform/valueToFind"
           },
           "offsetLength": {
             "type": "number",
@@ -733,7 +731,7 @@
           "maxLengthTextToKeep": {
             "type": "number",
             "title": "The Extraction Length",
-            "description": "The max number of characters that should be extracted. No limit if 0."
+            "description": "The max number of characters that should be extracted. No limit if 0 or unspecified."
           }
         },
         "required": [
@@ -753,7 +751,7 @@
             },
             "then": {
               "required": [
-                "matchingText"
+                "valueToFind"
               ]
             }
           },
@@ -787,11 +785,11 @@
           }
         ]
       },
-      "plugin": {
+      "function": {
         "type": "object",
         "additionalProperties": false,
-        "title": "Plugin",
-        "description": "Invokes a Plugin function to transform values.",
+        "title": "Function",
+        "description": "Invokes a function to transform values.",
         "properties": {
           "inputHeaders": {
             "$ref": "#/definitions/transform/inputHeaders"
@@ -799,7 +797,7 @@
           "plugin": {
             "type": "string",
             "title": "Plugin",
-            "description": "The reference to a Plugin resource.",
+            "description": "The reference to a Plugin resource that contains a desired function.",
             "format": "platform/plugin"
           },
           "function": {
@@ -829,7 +827,7 @@
           "replacement": {
             "type": "string",
             "title": "Replacement",
-            "description": "The text that will replace all found matches."
+            "description": "The text that will replace all found matches. If the replacement value is the empty string, the transform will clear all values that match the valueToFind."
           }
         },
         "required": [
@@ -860,16 +858,16 @@
           "columnValue"
         ]
       },
-      "filterRow": {
+      "filterRows": {
         "type": "object",
         "additionalProperties": false,
-        "title": "Filter Row",
-        "description": "Filters rows based on specified conditionals",
+        "title": "Filter Rows",
+        "description": "Filters rows based on specified conditionals.",
         "properties": {
           "action": {
             "type": "string",
             "title": "The Row Action",
-            "description": "The action to perform on rows that satisfy the evaluation of rules",
+            "description": "The action to perform on rows that satisfy the evaluation of rules.",
             "enum": [
               "KEEP",
               "REMOVE"
@@ -911,7 +909,7 @@
           "columnHeader": {
             "type": "string",
             "title": "The Column Header",
-            "description": "The column header to apply the rule."
+            "description": "The column header to which to apply the rule."
           },
           "conditional": {
             "type": "string",
@@ -983,7 +981,7 @@
           "inputFormat": {
             "type": "string",
             "title": "Input Format",
-            "description": "The date format pattern of the input values."
+            "description": "The date format pattern of the input values (in accordance with java.time.format.DateTimeFormatter)"
           }
         },
         "required": [
@@ -1087,7 +1085,7 @@
     "customSchedule": {
       "type": "object",
       "title": "Custom Schedule",
-      "description": "The custom schedule that the connector will follow. The Connector can be configured to run daily, weekly, monthly or a custom frequency. Currently, this is only supported for API Connectors.",
+      "description": "The custom schedule that the Connector will follow. The Connector can be configured to run daily, weekly, monthly or a custom frequency. Currently, this is only supported for API Connectors.",
       "properties": {
         "timeZone": {
           "type": "string",
