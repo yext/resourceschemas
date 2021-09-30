@@ -154,6 +154,13 @@
                   "direction": {
                     "description": "ASC or DESC",
                     "type": "string"
+                  },
+                  "buckets": {
+                    "description": "If the type is ENTITY_DISTANCE and buckets are being used, the buckets to use",
+                    "type": "array",
+                    "items": {
+                      "type": "number"
+                    }
                   }
                 }
               }
@@ -276,6 +283,19 @@
               "items": {
                 "type": "string",
                 "description": "The api name of the display field to include. You can use dot notation to specify substructures."
+              }
+            },
+            "semanticThresholds": {
+              "description": "KNOWLEDGE_MANAGER only. Thresholds to be used for semantic search.",
+              "type": "object",
+              "additionalProperties": true,
+              "properties": {
+                "showFirst": {
+                  "type": "number"
+                },
+                "showVertical": {
+                  "type": "number"
+                }
               }
             }
           }

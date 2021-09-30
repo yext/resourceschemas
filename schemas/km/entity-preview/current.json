@@ -1,0 +1,334 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://schema.yext.com/config/km/entity-preview",
+  "$version": "1",
+  "type": "object",
+  "title": "Entity Preview",
+  "description": "Resource that represents an entity preview for an entity type.",
+  "properties": {
+    "$id": {
+      "type": "string"
+    },
+    "$schema": {
+      "const": "https://schema.yext.com/config/km/entity-preview/v1"
+    },
+    "displayName": {
+      "$ref": "#/definitions/localizedString"
+    },
+    "entityType": {
+      "type": "string",
+      "format": "km/entity-type",
+      "description": "Reference to the entity type that this  preview corresponds to."
+    },
+    "previewType": {
+      "description": "The type of this preview",
+      "type": "string",
+      "enum": [
+        "ROW",
+        "CARD"
+      ]
+    },
+    "previewSettings": {
+      "type": "object",
+      "description": "The preview settings for this entity type",
+      "properties": {
+        "showEntityTypeName": {
+          "type": "boolean",
+          "description": "True to show the entity type name, false otherwise.",
+          "default": true
+        },
+        "showEntityTypeSymbol": {
+          "type": "boolean",
+          "description": "True to show the entity type symbol, false otherwise.",
+          "default": true
+        },
+        "fieldSettingsList": {
+          "type": "array",
+          "description": "The list of field settings for this entity type",
+          "items": {
+            "$ref": "#/definitions/fieldSettings"
+          }
+        }
+      },
+      "required": [
+        "showEntityTypeName",
+        "showEntityTypeSymbol",
+        "fieldSettingsList"
+      ]
+    }
+  },
+  "required": [
+    "$id",
+    "$schema",
+    "displayName",
+    "entityType",
+    "previewType",
+    "previewSettings"
+  ],
+  "additionalProperties": false,
+  "definitions": {
+    "localizedString": {
+      "type": "object",
+      "description": "A localized string with a default value and zero or more translations",
+      "properties": {
+        "default": {
+          "type": "string",
+          "description": "The default value"
+        },
+        "translations": {
+          "type": "array",
+          "description": "The list of translations",
+          "items": {
+            "type": "object",
+            "properties": {
+              "localeCode": {
+                "type": "string",
+                "description": "The locale for this translation"
+              },
+              "value": {
+                "type": "string",
+                "description": "The value of this translation"
+              }
+            },
+            "required": [
+              "localeCode",
+              "value"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "default"
+      ],
+      "minProperties": 1,
+      "additionalProperties": false
+    },
+    "fieldSettings": {
+      "type": "object",
+      "description": "Settings for one field",
+      "properties": {
+        "fieldIdentifier": {
+          "type": "object",
+          "description": "The identifier for the field",
+          "properties": {
+            "fieldId": {
+              "type": "string",
+              "format": "km/field",
+              "description": "The ID of a field"
+            },
+            "propertyNames": {
+              "type": "array",
+              "description": "A list of property names which define the path for the field",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": [
+            "fieldId"
+          ],
+          "additionalProperties": false
+        },
+        "fieldKind": {
+          "description": "The kind of the field",
+          "type": "string",
+          "enum": [
+            "STRING",
+            "LIST",
+            "IMAGE",
+            "ENTITY_REFERENCE"
+          ]
+        },
+        "stringConfiguration": {
+          "$ref": "#/definitions/stringConfiguration"
+        },
+        "listConfiguration": {
+          "$ref": "#/definitions/listConfiguration"
+        },
+        "imageConfiguration": {
+          "$ref": "#/definitions/imageConfiguration"
+        },
+        "entityReferenceConfiguration": {
+          "$ref": "#/definitions/entityReferenceConfiguration"
+        },
+        "displayedSubfields": {
+          "type": "array",
+          "description": "A list of subfields to display for a single field. This only applies to address and hours-like fields.",
+          "items": {
+            "type": "string",
+            "description": "Property name of the subfield"
+          }
+        }
+      },
+      "required": [
+        "fieldIdentifier",
+        "fieldKind"
+      ],
+      "oneOf": [
+        {
+          "required": [
+            "stringConfiguration"
+          ]
+        },
+        {
+          "required": [
+            "listConfiguration"
+          ]
+        },
+        {
+          "required": [
+            "imageConfiguration"
+          ]
+        },
+        {
+          "required": [
+            "entityReferenceConfiguration"
+          ]
+        }
+      ],
+      "additionalProperties": false
+    },
+    "stringConfiguration": {
+      "type": "object",
+      "description": "A configuration for string fields",
+      "properties": {
+        "isEmphasizedField": {
+          "type": "boolean",
+          "description": "True to emphasize the field, false otherwise. Only one field may be emphasized and if so showFieldName must be false",
+          "default": false
+        },
+        "showFieldName": {
+          "type": "boolean",
+          "description": "True to show the field name, false otherwise.",
+          "default": true
+        },
+        "fieldNameAlias": {
+          "$ref": "#/definitions/localizedString"
+        },
+        "lineHeight": {
+          "type": "number",
+          "description": "An integer value between 1 and 5 that determines the max number of lines in the preview that the field\u0027s content should take up.",
+          "default": 1
+        }
+      },
+      "required": [
+        "showFieldName",
+        "lineHeight"
+      ],
+      "additionalProperties": false
+    },
+    "listConfiguration": {
+      "type": "object",
+      "description": "A configuration for list fields",
+      "properties": {
+        "isEmphasizedField": {
+          "type": "boolean",
+          "description": "True to emphasize the field, false otherwise. Only one field may be emphasized and if so showFieldName must be false",
+          "default": false
+        },
+        "showFieldName": {
+          "type": "boolean",
+          "description": "True to show the field name, false otherwise.",
+          "default": true
+        },
+        "fieldNameAlias": {
+          "$ref": "#/definitions/localizedString"
+        },
+        "lineHeight": {
+          "type": "number",
+          "description": "An integer value between 1 and 5 that determines the max number of lines in the preview that the field\u0027s content should take up.",
+          "default": 1
+        },
+        "showListValue": {
+          "type": "boolean",
+          "description": "True to show the list value, false otherwise.",
+          "default": true
+        },
+        "showListCount": {
+          "type": "boolean",
+          "description": "True to show the list count, false otherwise.",
+          "default": true
+        }
+      },
+      "required": [
+        "showFieldName",
+        "lineHeight",
+        "showListValue",
+        "showListCount"
+      ],
+      "additionalProperties": false
+    },
+    "imageConfiguration": {
+      "type": "object",
+      "description": "A configuration for image fields",
+      "properties": {
+        "showFieldName": {
+          "type": "boolean",
+          "description": "True to show the field name, false otherwise.",
+          "default": false
+        },
+        "fieldNameAlias": {
+          "$ref": "#/definitions/localizedString"
+        },
+        "fitImage": {
+          "type": "boolean",
+          "description": "True to fit the image, false otherwise.",
+          "default": false
+        }
+      },
+      "required": [
+        "fitImage",
+        "showFieldName"
+      ],
+      "additionalProperties": false
+    },
+    "entityReferenceConfiguration": {
+      "type": "object",
+      "description": "A configuration for entity reference fields",
+      "properties": {
+        "isEmphasizedField": {
+          "type": "boolean",
+          "description": "True to emphasize the field, false otherwise. Only one field may be emphasized and if so showFieldName must be false",
+          "default": false
+        },
+        "showFieldName": {
+          "type": "boolean",
+          "description": "True to show the field name, false otherwise.",
+          "default": true
+        },
+        "fieldNameAlias": {
+          "$ref": "#/definitions/localizedString"
+        },
+        "lineHeight": {
+          "type": "number",
+          "description": "An integer value between 1 and 5 that determines the max number of lines in the preview that the field\u0027s content should take up.",
+          "default": 1
+        },
+        "showEntityCount": {
+          "type": "boolean",
+          "description": "True to show the number of entities that this field references, false otherwise.",
+          "default": false
+        },
+        "showEntityName": {
+          "type": "boolean",
+          "description": "True to show the name of the entity that this field references, false otherwise.",
+          "default": false
+        },
+        "showEntityId": {
+          "type": "boolean",
+          "description": "True to show the id of the entity that this field references, false otherwise.",
+          "default": false
+        }
+      },
+      "required": [
+        "showFieldName",
+        "lineHeight",
+        "showEntityCount",
+        "showEntityName",
+        "showEntityId"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

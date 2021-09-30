@@ -1,0 +1,85 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://schema.yext.com/config/pages/authentication-policy",
+  "$version": "1",
+  "type": "object",
+  "title": "Authentication Policy",
+  "description": "Configures an authentication policy.",
+  "properties": {
+    "$id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64
+    },
+    "$schema": {
+      "const": "https://schema.yext.com/config/pages/authentication-policy/v1"
+    },
+    "name": {
+      "type": "string",
+      "description": "The name of the authentication policy",
+      "minLength": 1,
+      "maxLength": 255
+    },
+    "authentication": {
+      "type": "object",
+      "properties": {
+        "yext": {
+          "type": "boolean"
+        },
+        "oidc": {
+          "type": "object",
+          "properties": {
+            "clientId": {
+              "type": "string"
+            },
+            "clientSecret": {
+              "type": "string"
+            },
+            "loginUrl": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "clientId",
+            "clientSecret",
+            "loginUrl"
+          ]
+        },
+        "password": {
+          "type": "object",
+          "properties": {
+            "passwordValue": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "passwordValue"
+          ]
+        }
+      },
+      "oneOf": [
+        {
+          "required": [
+            "yext"
+          ]
+        },
+        {
+          "required": [
+            "oidc"
+          ]
+        },
+        {
+          "required": [
+            "password"
+          ]
+        }
+      ]
+    }
+  },
+  "required": [
+    "$id",
+    "$schema",
+    "name",
+    "authentication"
+  ]
+}

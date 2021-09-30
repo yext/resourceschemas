@@ -44,6 +44,9 @@
             },
             "apiPushConfig": {
               "$ref": "#/definitions/configs/apiPushConfig"
+            },
+            "functionConfig": {
+              "$ref": "#/definitions/configs/functionConfig"
             }
           },
           "oneOf": [
@@ -60,6 +63,11 @@
             {
               "required": [
                 "apiPushConfig"
+              ]
+            },
+            {
+              "required": [
+                "functionConfig"
               ]
             }
           ]
@@ -116,6 +124,9 @@
           },
           "formatDates": {
             "$ref": "#/definitions/transform/formatDates"
+          },
+          "mergeColumns": {
+            "$ref": "#/definitions/transform/mergeColumns"
           }
         },
         "oneOf": [
@@ -158,6 +169,11 @@
             "required": [
               "formatDates"
             ]
+          },
+          {
+            "required": [
+              "mergeColumns"
+            ]
           }
         ]
       }
@@ -187,7 +203,7 @@
         },
         "runMode": {
           "type": "string",
-          "title": "runMode",
+          "title": "Run Mode",
           "description": "Indicates the run mode.",
           "enum": [
             "DEFAULT",
@@ -315,6 +331,12 @@
               },
               "cursorPagination": {
                 "$ref": "#/definitions/pagination/cursorPagination"
+              },
+              "linkHeaderPagination": {
+                "$ref": "#/definitions/pagination/linkHeaderPagination"
+              },
+              "offsetPagination": {
+                "$ref": "#/definitions/pagination/offsetPagination"
               }
             },
             "oneOf": [
@@ -326,6 +348,16 @@
               {
                 "required": [
                   "cursorPagination"
+                ]
+              },
+              {
+                "required": [
+                  "linkHeaderPagination"
+                ]
+              },
+              {
+                "required": [
+                  "offsetPagination"
                 ]
               }
             ]
@@ -375,6 +407,7 @@
         "properties": {
           "app": {
             "type": "string",
+            "title": "App",
             "description": "The reference to the app resource."
           },
           "dataFormat": {
@@ -383,6 +416,33 @@
         },
         "required": [
           "app",
+          "dataFormat"
+        ]
+      },
+      "functionConfig": {
+        "type": "object",
+        "title": "Function Configuration",
+        "additionalProperties": false,
+        "description": "Configuration used to invoke a function.",
+        "properties": {
+          "plugin": {
+            "type": "string",
+            "title": "Plugin",
+            "description": "The reference to a Plugin resource that contains a desired function.",
+            "format": "platform/plugin"
+          },
+          "function": {
+            "type": "string",
+            "title": "Function",
+            "description": "The function to invoke."
+          },
+          "dataFormat": {
+            "$ref": "#/definitions/dataFormat"
+          }
+        },
+        "required": [
+          "plugin",
+          "function",
           "dataFormat"
         ]
       }
@@ -528,6 +588,115 @@
           "cursor",
           "cursorType"
         ]
+      },
+      "linkHeaderPagination": {
+        "type": "object",
+        "additionalProperties": false,
+        "title": "Link Header Pagination",
+        "description": "Link header pagination will use a link with a specified relation provided in the response header to fetch the next page.",
+        "properties": {
+          "relationLabel": {
+            "type": "string",
+            "title": "Relation Label",
+            "description": "The label of the link that should be used. In most cases, this will be \"next\"."
+          },
+          "linkType": {
+            "type": "string",
+            "title": "Link Type",
+            "description": "Indicates if the link is a full URL or a relative URL.",
+            "enum": [
+              "FULL_URL",
+              "RELATIVE_URL"
+            ],
+            "default": "FULL_URL"
+          }
+        },
+        "required": [
+          "relationLabel"
+        ]
+      },
+      "offsetPagination": {
+        "type": "object",
+        "additionalProperties": false,
+        "title": "Offset Pagination",
+        "description": "Offset pagination will use the offset and limit query parameters to paginate through all the items in a collection.",
+        "properties": {
+          "offsetKey": {
+            "type": "string",
+            "title": "Offset Key",
+            "description": "Offset key to be passed as a query parameter in the request."
+          },
+          "limitKey": {
+            "type": "string",
+            "title": "Limit Key",
+            "description": "Key to specify the max number of entries returned per page, passed as a query parameter in the request."
+          },
+          "offsetStartValue": {
+            "type": "number",
+            "title": "Offset Start Value",
+            "description": "Value for the offset to be used in the initial request.",
+            "default": 0
+          },
+          "limitValue": {
+            "type": "number",
+            "title": "Limit Value",
+            "description": "Value for the limit which specifies the max number of entries returned per page."
+          },
+          "totalPages": {
+            "type": "object",
+            "title": "Total Pages",
+            "description": "Points to the total number of pages either in the response body or the response headers.",
+            "additionalProperties": false,
+            "properties": {
+              "key": {
+                "type": "string",
+                "title": "Key",
+                "description": "The key for the total number of pages. A JMES path expression."
+              },
+              "inHeader": {
+                "type": "boolean",
+                "title": "Value is in Response Header",
+                "default": false,
+                "description": "Indicates if the total number of pages value is located in the response headers or the response body."
+              }
+            },
+            "required": [
+              "key"
+            ]
+          },
+          "totalItems": {
+            "type": "object",
+            "title": "Total Items",
+            "description": "Points to the total number of items either in the response body or the response headers.",
+            "additionalProperties": false,
+            "properties": {
+              "key": {
+                "type": "string",
+                "title": "Key",
+                "description": "The key for the total number of items. A JMES path expression."
+              },
+              "inHeader": {
+                "type": "boolean",
+                "title": "Value is in Response Header",
+                "default": false,
+                "description": "Indicates if the total number of items value is located in the response headers or the response body."
+              }
+            },
+            "required": [
+              "key"
+            ]
+          }
+        },
+        "required": [
+          "offsetKey",
+          "limitKey"
+        ],
+        "not": {
+          "required": [
+            "totalPages",
+            "totalItems"
+          ]
+        }
       }
     },
     "dataFormat": {
@@ -981,12 +1150,51 @@
           "inputFormat": {
             "type": "string",
             "title": "Input Format",
-            "description": "The date format pattern of the input values (in accordance with java.time.format.DateTimeFormatter)"
+            "description": "The date format pattern of the input values (in accordance with java.time.format.DateTimeFormatter)."
+          },
+          "inputLocale": {
+            "type": "string",
+            "title": "Input Locale",
+            "description": "The locale of the input values."
           }
         },
         "required": [
           "inputHeaders",
           "inputFormat"
+        ]
+      },
+      "mergeColumns": {
+        "type": "object",
+        "additionalProperties": false,
+        "title": "Merge Columns",
+        "description": "Merges multiple columns together into a new column separated by a specified delimiter.",
+        "properties": {
+          "inputHeaders": {
+            "type": "array",
+            "additionalProperties": false,
+            "title": "Input Headers",
+            "description": "The names of the columns to merge together.",
+            "items": {
+              "type": "string",
+              "title": "Header",
+              "description": "The name of the column containing values to merge."
+            }
+          },
+          "newColumnHeader": {
+            "type": "string",
+            "title": "New Column Header",
+            "description": "The new column\u0027s header."
+          },
+          "delimiter": {
+            "type": "string",
+            "title": "Delimiter",
+            "description": "The delimiter that separates the merged columns\u0027 values."
+          }
+        },
+        "required": [
+          "inputHeaders",
+          "newColumnHeader",
+          "delimiter"
         ]
       }
     },
@@ -1107,6 +1315,7 @@
           "title": "Frequency Type",
           "description": "The schedule config frequency type.",
           "enum": [
+            "HOURLY",
             "DAILY",
             "MONTHLY",
             "WEEKLY"

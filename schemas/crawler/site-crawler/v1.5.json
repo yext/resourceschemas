@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://schema.yext.com/config/crawler/site-crawler",
-  "$version": "1.3",
+  "$version": "1.5",
   "type": "object",
   "additionalProperties": false,
   "title": "Yext Crawler",
@@ -102,6 +102,39 @@
       "unordered": true,
       "items": {
         "type": "string"
+      }
+    },
+    "subPagesUrlStructures": {
+      "type": "array",
+      "additionalItems": false,
+      "title": "Sub Pages URL Structure",
+      "description": "Specified wildcard URLs will also be considered when using the Sub Pages crawl strategy, e.g. www.yext.com/bad-website/blog/*",
+      "unordered": true,
+      "items": {
+        "type": "string"
+      }
+    },
+    "headers": {
+      "type": "array",
+      "additionalItems": false,
+      "title": "HTTP Request Headers",
+      "description": "Custom header values that will be passed to each crawled page.",
+      "unordered": true,
+      "items": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "key",
+          "value"
+        ]
       }
     }
   },
