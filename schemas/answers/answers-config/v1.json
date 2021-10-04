@@ -297,6 +297,19 @@
                   "type": "number"
                 }
               }
+            },
+            "authorization": {
+              "description": "KNOWLEDGE_MANAGER only. Indicates choice of authorization scheme.",
+              "type": "object",
+              "additionalProperties": true,
+              "properties": {
+                "useExternalAuthorization": {
+                  "type": "boolean"
+                },
+                "useYextAuthorization": {
+                  "type": "boolean"
+                }
+              }
             }
           }
         }

@@ -74,6 +74,13 @@
           ]
         }
       ]
+    },
+    "apiTokens": {
+      "type": "array",
+      "description": "A list of all api tokens for the policy",
+      "items": {
+        "$ref": "#/definitions/token"
+      }
     }
   },
   "required": [
@@ -81,5 +88,51 @@
     "$schema",
     "name",
     "authentication"
-  ]
+  ],
+  "definitions": {
+    "token": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "keyId": {
+          "type": "string"
+        },
+        "claims": {
+          "type": "object",
+          "properties": {
+            "aud": {
+              "type": "string"
+            },
+            "exp": {
+              "type": "string"
+            },
+            "query": {
+              "type": "object",
+              "properties": {
+                "experienceKey": {
+                  "type": "string"
+                },
+                "visitorId": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "required": [
+            "aud"
+          ]
+        },
+        "scope": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "keyId",
+        "claims"
+      ]
+    }
+  }
 }
