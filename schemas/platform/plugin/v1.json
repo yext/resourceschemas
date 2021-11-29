@@ -1,0 +1,37 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://schema.yext.com/config/platform/plugin",
+  "$version": "1",
+  "type": "object",
+  "title": "Plugin",
+  "properties": {
+    "$id": {
+      "type": "string"
+    },
+    "$schema": {
+      "const": "https://schema.yext.com/config/platform/plugin/v1"
+    },
+    "globals": {
+      "type": "object",
+      "description": "Values to set on the global object for plugin invocations",
+      "additionalProperties": true
+    },
+    "memoryLimitMB": {
+      "type": "number",
+      "description": "The memory limit for the plugin instance, in megabytes",
+      "minimum": 1,
+      "maximum": 1000
+    },
+    "concurrency": {
+      "type": "number",
+      "description": "A hint to suggest the number of worker instances to create",
+      "minimum": 1,
+      "maximum": 50
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "$id",
+    "$schema"
+  ]
+}

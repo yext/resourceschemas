@@ -127,6 +127,15 @@
           },
           "mergeColumns": {
             "$ref": "#/definitions/transform/mergeColumns"
+          },
+          "splitColumn": {
+            "$ref": "#/definitions/transform/splitColumn"
+          },
+          "fillInEmptyCells": {
+            "$ref": "#/definitions/transform/fillInEmptyCells"
+          },
+          "splitIntoRows": {
+            "$ref": "#/definitions/transform/splitIntoRows"
           }
         },
         "oneOf": [
@@ -173,6 +182,16 @@
           {
             "required": [
               "mergeColumns"
+            ]
+          },
+          {
+            "required": [
+              "splitColumns"
+            ]
+          },
+          {
+            "required": [
+              "fillInEmptyCells"
             ]
           }
         ]
@@ -412,6 +431,11 @@
           },
           "dataFormat": {
             "$ref": "#/definitions/dataFormat"
+          },
+          "enabled": {
+            "type": "boolean",
+            "title": "Enabled",
+            "description": "If enabled, a new run will be initiated every time a request is sent to this Connector and the data provided in the request will be processed."
           }
         },
         "required": [
@@ -1194,6 +1218,82 @@
         "required": [
           "inputHeaders",
           "newColumnHeader",
+          "delimiter"
+        ]
+      },
+      "splitColumn": {
+        "type": "object",
+        "additionalProperties": false,
+        "title": "Split Column",
+        "description": "Split a column into one or more columns based on a specified delimiter.",
+        "properties": {
+          "inputHeader": {
+            "type": "string",
+            "title": "Input Column Header",
+            "description": "The column containing the data that needs to be split."
+          },
+          "newColumnHeaders": {
+            "type": "array",
+            "additionalProperties": false,
+            "title": "New Column Headers",
+            "description": "The names of the columns to split into.",
+            "items": {
+              "type": "string",
+              "title": "Header",
+              "description": "The name of the column containing split values."
+            }
+          },
+          "delimiter": {
+            "type": "string",
+            "title": "Delimiter",
+            "description": "The delimiter used to split the column\u0027s value into new ones."
+          }
+        },
+        "required": [
+          "inputHeader",
+          "newColumnHeaders",
+          "delimiter"
+        ]
+      },
+      "fillInEmptyCells": {
+        "type": "object",
+        "additionalProperties": false,
+        "title": "Fill in Empty Cells",
+        "description": "Finds empty cells and fills them in with a specified default value.",
+        "properties": {
+          "inputHeaders": {
+            "$ref": "#/definitions/transform/inputHeaders"
+          },
+          "value": {
+            "type": "string",
+            "title": "Value",
+            "description": "The text that will replace all empty cells."
+          }
+        },
+        "required": [
+          "inputHeaders",
+          "value"
+        ]
+      },
+      "splitIntoRows": {
+        "type": "object",
+        "additionalProperties": false,
+        "title": "Split Into Rows",
+        "description": "Splits a column into one or more rows based on a specified delimiter.",
+        "properties": {
+          "inputHeader": {
+            "type": "string",
+            "title": "Input Column Header",
+            "description": "The header of the column containing the values to split."
+          },
+          "delimiter": {
+            "type": "string",
+            "title": "Delimiter",
+            "description": "The character on which the values should be split."
+          }
+        },
+        "required": [
+          "inputHeader",
           "delimiter"
         ]
       }

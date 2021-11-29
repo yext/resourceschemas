@@ -106,18 +106,10 @@
               "type": "string"
             },
             "exp": {
-              "type": "string"
+              "type": "integer"
             },
             "query": {
-              "type": "object",
-              "properties": {
-                "experienceKey": {
-                  "type": "string"
-                },
-                "visitorId": {
-                  "type": "string"
-                }
-              }
+              "type": "object"
             }
           },
           "required": [

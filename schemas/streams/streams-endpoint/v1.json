@@ -29,7 +29,9 @@
             "reviewsAgg",
             "userAcl",
             "accounts",
-            "userRoles"
+            "userRoles",
+            "users",
+            "listings"
           ],
           "description": "The source of data to stream."
         },
@@ -53,6 +55,22 @@
         "transform": {
           "type": "object",
           "properties": {
+            "expandOptionFields": {
+              "type": "array",
+              "description": "The option fields that need to be expanded to include the display fields, numeric values, and selected boolean.",
+              "items": {
+                "type": "string",
+                "description": "The option field name"
+              }
+            },
+            "replaceOptionValuesWithDisplayNames": {
+              "type": "array",
+              "description": "The option fields that need to be replaced with their display names.",
+              "items": {
+                "type": "string",
+                "description": "The option field name"
+              }
+            },
             "jsonpatch": {
               "$ref": "#/definitions/jsonpatch"
             }

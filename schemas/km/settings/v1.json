@@ -12,11 +12,49 @@
     "primaryEntityType": {
       "type": "string",
       "description": "The primary entity type of the account."
+    },
+    "entityTypeSettings": {
+      "type": "array",
+      "additionalItems": false,
+      "title": "Entity Type Settings",
+      "description": "A list of settings for some entity types in the account.",
+      "items": {
+        "$ref": "#/entityTypeSetting"
+      }
     }
   },
   "additionalProperties": false,
   "required": [
     "$schema",
     "primaryEntityType"
-  ]
+  ],
+  "entityTypeSetting": {
+    "type": "object",
+    "additionalProperties": false,
+    "title": "Entity Type Setting",
+    "description": "An entity type setting.",
+    "properties": {
+      "entityType": {
+        "type": "string",
+        "format": "km/entity-type",
+        "title": "Entity Type",
+        "description": "Reference to the entity type that this setting belongs to."
+      },
+      "defaultFieldEligibilityGroup": {
+        "type": "string",
+        "format": "km/field-eligibility-group",
+        "title": "Default Field Eligibility Group",
+        "description": "The default field eligibility group of this entity type."
+      },
+      "disabled": {
+        "type": "boolean",
+        "title": "Disabled",
+        "default": false,
+        "description": "Whether this entity type is disabled."
+      }
+    },
+    "required": [
+      "entityType"
+    ]
+  }
 }
