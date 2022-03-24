@@ -165,6 +165,76 @@
                 }
               }
             },
+            "facets": {
+              "description": "KNOWLEDGE_MANAGER only. Specification for facets",
+              "type": "object",
+              "additionalProperties": true,
+              "properties": {
+                "fields": {
+                  "description": "An array of facets for specific fields",
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": true,
+                    "properties": {
+                      "fieldId": {
+                        "description": "The field being used for the facet",
+                        "type": "string"
+                      },
+                      "sortCriteria": {
+                        "description": "Which way to order. Either \u0027ASC\u0027 or \u0027DESC\u0027",
+                        "type": "string"
+                      },
+                      "ranges": {
+                        "oneOf": [
+                          {
+                            "description": "An object describing generated ranges",
+                            "type": "object",
+                            "additionalProperties": true,
+                            "properties": {
+                              "algorithm": {
+                                "description": "The algorithm to use. Either \u0027DYNAMIC\u0027 or \u0027STATIC\u0027",
+                                "type": "string"
+                              },
+                              "bucketCount": {
+                                "description": "The number of buckets to generate. Only valid for DYNAMIC algorithms.",
+                                "type": "number"
+                              },
+                              "bucketLength": {
+                                "description": "The length of buckets to generate. Only valid for STATIC algorithms.",
+                                "type": "number"
+                              }
+                            }
+                          },
+                          {
+                            "description": "An array of ranges",
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "additionalProperties": true,
+                              "properties": {
+                                "start": {
+                                  "description": "The start of the range",
+                                  "type": "number"
+                                },
+                                "end": {
+                                  "description": "The end of the range",
+                                  "type": "number"
+                                },
+                                "displayName": {
+                                  "description": "The name of the range",
+                                  "type": "string"
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            },
             "searchableFields": {
               "description": "KNOWLEDGE_MANAGER only. Map of field api names to field configurations.",
               "type": "object",
@@ -309,6 +379,30 @@
                 "useYextAuthorization": {
                   "type": "boolean"
                 }
+              }
+            },
+            "semanticVerticalBias": {
+              "description": "KNOWLEDGE_MANAGER only. A value that will always be added to the semantic vertical relevance score.",
+              "type": "number"
+            },
+            "semanticVerticalThreshold": {
+              "description": "KNOWLEDGE_MANAGER only. Verticals with semantic relevance scores less than the threshold will not show.",
+              "type": "number"
+            },
+            "semanticVerticalIntents": {
+              "description": "KNOWLEDGE_MANAGER only. An array of strings that will contribute to semantic vertical ranking.",
+              "type": "array",
+              "items": {
+                "type": "string",
+                "description": "A string used to calculate the semantic vertical relevance."
+              }
+            },
+            "semanticVerticalRankingPriorityFields": {
+              "description": "KNOWLEDGE_MANAGER only. An array of field IDs, used as a tiebreaker for ranking verticals when multiple have the same score.  Verticals with semantic values associated with these fields will be prioritized.",
+              "type": "array",
+              "items": {
+                "type": "string",
+                "description": "A searchable field."
               }
             }
           }

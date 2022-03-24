@@ -108,12 +108,39 @@
             "exp": {
               "type": "integer"
             },
+            "expiresIn": {
+              "type": "integer"
+            },
             "query": {
               "type": "object"
             }
           },
           "required": [
             "aud"
+          ],
+          "anyOf": [
+            {
+              "oneOf": [
+                {
+                  "required": [
+                    "exp"
+                  ]
+                },
+                {
+                  "required": [
+                    "expiresIn"
+                  ]
+                }
+              ]
+            },
+            {
+              "not": {
+                "required": [
+                  "exp",
+                  "expiresIn"
+                ]
+              }
+            }
           ]
         },
         "scope": {

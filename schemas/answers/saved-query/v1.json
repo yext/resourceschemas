@@ -2,6 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://schema.yext.com/config/answers/saved-query",
   "$version": "1",
+  "$deprecationDate": "2022-03-31",
   "type": "object",
   "title": "Saved Query",
   "additionalProperties": false,

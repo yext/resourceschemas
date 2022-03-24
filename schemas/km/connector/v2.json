@@ -47,6 +47,9 @@
             },
             "functionConfig": {
               "$ref": "#/definitions/configs/functionConfig"
+            },
+            "nativeSourceConfig": {
+              "$ref": "#/definitions/configs/nativeSourceConfig"
             }
           },
           "oneOf": [
@@ -68,6 +71,11 @@
             {
               "required": [
                 "functionConfig"
+              ]
+            },
+            {
+              "required": [
+                "nativeSourceConfig"
               ]
             }
           ]
@@ -136,6 +144,12 @@
           },
           "splitIntoRows": {
             "$ref": "#/definitions/transform/splitIntoRows"
+          },
+          "formatTimes": {
+            "$ref": "#/definitions/transform/formatTimes"
+          },
+          "ignoreColumns": {
+            "$ref": "#/definitions/transform/ignoreColumns"
           }
         },
         "oneOf": [
@@ -186,7 +200,7 @@
           },
           {
             "required": [
-              "splitColumns"
+              "splitColumn"
             ]
           },
           {
@@ -197,6 +211,16 @@
           {
             "required": [
               "splitIntoRows"
+            ]
+          },
+          {
+            "required": [
+              "formatTimes"
+            ]
+          },
+          {
+            "required": [
+              "ignoreColumns"
             ]
           }
         ]
@@ -253,7 +277,6 @@
     "$id",
     "$schema",
     "displayName",
-    "entityType",
     "source"
   ],
   "definitions": {
@@ -295,13 +318,36 @@
             "title": "Request Type",
             "description": "The request method type.",
             "enum": [
-              "GET"
+              "GET",
+              "POST"
             ]
           },
           "url": {
             "type": "string",
             "title": "Request URL",
             "description": "The request URL to use."
+          },
+          "requestBody": {
+            "type": "object",
+            "additionalProperties": false,
+            "title": "Request Body",
+            "description": "The request body used to make a POST request.",
+            "properties": {
+              "contentType": {
+                "type": "string",
+                "title": "Content Type",
+                "description": "The Content-Type used to describe the request body."
+              },
+              "requestBody": {
+                "type": "string",
+                "title": "Value",
+                "description": "The value of the request body."
+              }
+            },
+            "required": [
+              "contentType",
+              "value"
+            ]
           },
           "authentication": {
             "type": "object",
@@ -319,6 +365,9 @@
               },
               "apiKey": {
                 "$ref": "#/definitions/authentications/apiKey"
+              },
+              "oauth": {
+                "$ref": "#/definitions/authentications/oauth"
               }
             },
             "oneOf": [
@@ -335,6 +384,11 @@
               {
                 "required": [
                   "apiKey"
+                ]
+              },
+              {
+                "required": [
+                  "oauth"
                 ]
               }
             ]
@@ -495,6 +549,35 @@
           "function",
           "dataFormat"
         ]
+      },
+      "nativeSourceConfig": {
+        "type": "object",
+        "title": "Native Source Configuration",
+        "additionalProperties": false,
+        "description": "Configuration used to extract data from a native data source.",
+        "properties": {
+          "source": {
+            "type": "string",
+            "title": "Source",
+            "description": "The reference to the native source."
+          },
+          "operation": {
+            "type": "string",
+            "title": "Operation",
+            "description": "The method that determines what data to fetch from the native source."
+          },
+          "inputs": {
+            "type": "object",
+            "title": "Inputs",
+            "description": "User-provided inputs required to extract data from the native source.",
+            "additionalProperties": true
+          }
+        },
+        "required": [
+          "source",
+          "operation",
+          "inputs"
+        ]
       }
     },
     "authentications": {
@@ -545,6 +628,22 @@
           "key",
           "value",
           "setAsHeader"
+        ]
+      },
+      "oauth": {
+        "type": "object",
+        "additionalProperties": false,
+        "title": "OAuth 2.0",
+        "description": "OAuth 2.0 authentication using Linked Accounts.",
+        "properties": {
+          "linkedAccount": {
+            "type": "string",
+            "title": "Linked Account",
+            "description": "A reference to the linked account."
+          }
+        },
+        "required": [
+          "linkedAccount"
         ]
       }
     },
@@ -1321,6 +1420,52 @@
         "required": [
           "inputHeader",
           "delimiter"
+        ]
+      },
+      "formatTimes": {
+        "type": "object",
+        "additionalProperties": false,
+        "title": "Format Times",
+        "description": "Formats times of the specified input into HH:mm:ss",
+        "properties": {
+          "inputHeaders": {
+            "$ref": "#/definitions/transform/inputHeaders"
+          },
+          "inputFormat": {
+            "type": "string",
+            "title": "Input Format",
+            "description": "The time format pattern of the input values (in accordance with java.time.format.DateTimeFormatter)."
+          },
+          "inputLocale": {
+            "type": "string",
+            "title": "Input Locale",
+            "description": "The locale of the input values."
+          }
+        },
+        "required": [
+          "inputHeaders",
+          "inputFormat"
+        ]
+      },
+      "ignoreColumns": {
+        "type": "object",
+        "additionalProperties": false,
+        "title": "Ignore Columns",
+        "description": "Remove the given column(s) from the data set",
+        "properties": {
+          "columns": {
+            "type": "array",
+            "additionalItems": false,
+            "title": "Columns to be removed from the data set",
+            "description": "Remove the given column(s) from the data set",
+            "items": {
+              "type": "string",
+              "description": "The column to remove"
+            }
+          }
+        },
+        "required": [
+          "columns"
         ]
       }
     },

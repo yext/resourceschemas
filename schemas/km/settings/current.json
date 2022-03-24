@@ -25,8 +25,7 @@
   },
   "additionalProperties": false,
   "required": [
-    "$schema",
-    "primaryEntityType"
+    "$schema"
   ],
   "entityTypeSetting": {
     "type": "object",

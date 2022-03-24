@@ -74,7 +74,7 @@
             "format": "analytics/dimension"
           },
           "minItems": 1,
-          "maxItems": 3
+          "maxItems": 10
         },
         "filters": {
           "type": "array",

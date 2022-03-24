@@ -93,18 +93,6 @@
                 "description": "Valid BCP-47 locale identifiers."
               }
             },
-            "fallback": {
-              "type": "object",
-              "description": "A mapping of locales to other locales to use when data in that exact locale is unavailable. Primary field values are always the final fallback.",
-              "additionalProperties": {
-                "type": "array",
-                "description": "The ordered list of fallback locales.",
-                "items": {
-                  "type": "string",
-                  "description": "Valid BCP-47 locale identifiers."
-                }
-              }
-            },
             "excludePrimary": {
               "type": "boolean",
               "default": false,
@@ -144,6 +132,13 @@
       "kg": {
         "type": "object",
         "properties": {
+          "entityIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Entity IDs to allow."
+          },
           "entityTypes": {
             "type": "array",
             "items": {
