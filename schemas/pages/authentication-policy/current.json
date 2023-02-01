@@ -30,13 +30,20 @@
           "type": "object",
           "properties": {
             "clientId": {
-              "type": "string"
+              "type": "string",
+              "description": "The Client ID provided by the OIDC Identity Provider."
             },
             "clientSecret": {
-              "type": "string"
+              "type": "string",
+              "description": "The Client Secret provided by the OIDC Identity Provider."
             },
             "loginUrl": {
-              "type": "string"
+              "type": "string",
+              "description": "The login URL provided by the OIDC Identity Provider."
+            },
+            "configurationEndpoint": {
+              "type": "string",
+              "description": "An optional endpoint used for OIDC configuration discovery. This endpoint may be needed for some Identity Providers where the configuration endpoint cannot be derived from the loginURL. When this endpoint is provided, the loginURL will be used as the issuer endpoint regardless of the one provided in the discovery document."
             }
           },
           "required": [
@@ -105,42 +112,27 @@
             "aud": {
               "type": "string"
             },
-            "exp": {
-              "type": "integer"
-            },
             "expiresIn": {
               "type": "integer"
             },
             "query": {
-              "type": "object"
+              "type": "object",
+              "properties": {
+                "experienceVersion": {
+                  "type": "string",
+                  "minimum": 1,
+                  "maximum": 50,
+                  "description": "The version label of the Answers experience associated with the event."
+                }
+              },
+              "default": {
+                "experienceVersion": "STAGING"
+              }
             }
           },
           "required": [
-            "aud"
-          ],
-          "anyOf": [
-            {
-              "oneOf": [
-                {
-                  "required": [
-                    "exp"
-                  ]
-                },
-                {
-                  "required": [
-                    "expiresIn"
-                  ]
-                }
-              ]
-            },
-            {
-              "not": {
-                "required": [
-                  "exp",
-                  "expiresIn"
-                ]
-              }
-            }
+            "aud",
+            "expiresIn"
           ]
         },
         "scope": {

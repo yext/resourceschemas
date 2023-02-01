@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://schema.yext.com/config/km/field-type",
-  "$version": "1",
+  "$version": "1.1",
   "type": "object",
   "title": "Field Type",
   "description": "Resource that represents a field type definition. These types can be assigned to custom fields, permitting businesses to create unique and complex ways to model their profile data.",
@@ -320,6 +320,11 @@
                         "type": "string",
                         "format": "km/entity-type"
                       }
+                    },
+                    "type": {
+                      "type": "string",
+                      "description": "The type of entity reference relationship.",
+                      "const": "ONE_WAY"
                     }
                   },
                   "additionalProperties": false

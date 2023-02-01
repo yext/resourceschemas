@@ -1,20 +1,20 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://schema.yext.com/config/km/field-type",
-  "$version": "1",
+  "$id": "https://schema.yext.com/config/km/field",
+  "$version": "1.1",
   "type": "object",
-  "title": "Field Type",
-  "description": "Resource that represents a field type definition. These types can be assigned to custom fields, permitting businesses to create unique and complex ways to model their profile data.",
+  "title": "Field",
+  "description": "Resource that represents a custom field.",
   "properties": {
     "$id": {
       "type": "string"
     },
     "$schema": {
-      "const": "https://schema.yext.com/config/km/field-type/v1"
+      "const": "https://schema.yext.com/config/km/field/v1"
     },
     "description": {
       "type": "string",
-      "description": "Optional property describing the type."
+      "description": "Description of the custom field ."
     },
     "descriptionTranslation": {
       "type": "array",
@@ -25,7 +25,7 @@
     },
     "displayName": {
       "type": "string",
-      "description": "Display name of the type."
+      "description": "Display name of the field."
     },
     "displayNameTranslation": {
       "type": "array",
@@ -34,20 +34,68 @@
         "$ref": "#/definitions/translation"
       }
     },
+    "group": {
+      "type": "string",
+      "description": "The ID of the custom field group for which this field belongs, NONE if this field isn\u0027t in a custom field group. Custom fields that are in the same group are displayed in a section together in the entity page and have the same permissions",
+      "enum": [
+        "NONE",
+        "GROUP1",
+        "GROUP2",
+        "GROUP3",
+        "GROUP4",
+        "GROUP5",
+        "GROUP6",
+        "GROUP7",
+        "GROUP8",
+        "GROUP9",
+        "GROUP10",
+        "GROUP11",
+        "GROUP12",
+        "GROUP13",
+        "GROUP14",
+        "GROUP15",
+        "GROUP16",
+        "GROUP17",
+        "GROUP18",
+        "GROUP19",
+        "GROUP20",
+        "GROUP21",
+        "GROUP22",
+        "GROUP23",
+        "GROUP24",
+        "GROUP25",
+        "GROUP26",
+        "GROUP27",
+        "GROUP28",
+        "GROUP29",
+        "GROUP30"
+      ]
+    },
+    "localization": {
+      "type": "string",
+      "enum": [
+        "PRIMARY_ONLY",
+        "OVERRIDABLE",
+        "LOCALE_SPECIFIC"
+      ],
+      "description": "Custom Field multi-language profile behavior. PRIMARY_ONLY: The Custom Field can only have a value set on its primary language profile. OVERRIDABLE: The Custom Field can have a value set on any alternate language profiles, which will override the primary language profile value when the alternate language profile is requested. When requested, if a value is not set for an alternate language profile, the primary language profile value will be returned. LANGUAGE_SPECIFIC: The Custom Field can have a value set on any alternate language profiles. When requested, if a value is not set for an alternate language profile, no value will be returned."
+    },
     "type": {
-      "type": "object",
-      "description": "Property that contains the subfields for this type.",
-      "properties": {
-        "structType": {
-          "$ref": "#/definitions/structType"
-        }
-      },
-      "additionalProperties": false
+      "$ref": "#/definitions/type",
+      "description": "Property that defines data type for this field\u0027s content."
+    },
+    "typeId": {
+      "type": "string",
+      "format": "km/field-type",
+      "description": "The ID of this field\u0027s type."
     }
   },
   "additionalProperties": false,
   "required": [
-    "displayName"
+    "displayName",
+    "typeId",
+    "localization",
+    "group"
   ],
   "definitions": {
     "type": {
@@ -315,11 +363,24 @@
                   "properties": {
                     "supportedEntityTypeIds": {
                       "type": "array",
-                      "description": "List of support entity type IDs.",
+                      "description": "List of supported entity type IDs.",
                       "items": {
                         "type": "string",
                         "format": "km/entity-type"
                       }
+                    },
+                    "type": {
+                      "type": "string",
+                      "description": "The type of entity reference relationship.",
+                      "enum": [
+                        "ONE_WAY",
+                        "TWO_WAY"
+                      ]
+                    },
+                    "relatedFieldId": {
+                      "type": "string",
+                      "format": "km/field",
+                      "description": "The related field id in TWO_WAY entity reference relationship."
                     }
                   },
                   "additionalProperties": false
@@ -429,7 +490,7 @@
       "properties": {
         "stereotype": {
           "type": "string",
-          "description": "The stereotype of the value for this field type, which can be a single-line text (SIMPLE), multiline text (MULTILINE), url (URL) or a slug string (SLUG).",
+          "description": "The stereotype of the value for this field type, which can be a single-line text (SIMPLE), multiline text (MULTILINE), url (URL) or a slug type (SLUG).",
           "enum": [
             "SIMPLE",
             "MULTILINE",

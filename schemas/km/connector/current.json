@@ -50,6 +50,9 @@
             },
             "nativeSourceConfig": {
               "$ref": "#/definitions/configs/nativeSourceConfig"
+            },
+            "fileUploadConfig": {
+              "$ref": "#/definitions/configs/fileUploadConfig"
             }
           },
           "oneOf": [
@@ -76,6 +79,11 @@
             {
               "required": [
                 "nativeSourceConfig"
+              ]
+            },
+            {
+              "required": [
+                "fileUploadConfig"
               ]
             }
           ]
@@ -150,6 +158,12 @@
           },
           "ignoreColumns": {
             "$ref": "#/definitions/transform/ignoreColumns"
+          },
+          "mapPublisherCategories": {
+            "$ref": "#/definitions/transform/mapPublisherCategories"
+          },
+          "aIDataCleaning": {
+            "$ref": "#/definitions/transform/aIDataCleaning"
           }
         },
         "oneOf": [
@@ -221,6 +235,16 @@
           {
             "required": [
               "ignoreColumns"
+            ]
+          },
+          {
+            "required": [
+              "mapPublisherCategories"
+            ]
+          },
+          {
+            "required": [
+              "aIDataCleaning"
             ]
           }
         ]
@@ -301,6 +325,22 @@
               "type": "string",
               "description": "The URL to extract data for."
             }
+          },
+          "fileTypes": {
+            "type": "array",
+            "title": "File Types",
+            "description": "Specifies which file types to include in your connector if present in your selected crawler. This setting does not have to match your crawler settings",
+            "default": [
+              "HTML"
+            ],
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "enum": [
+                "HTML",
+                "PDF"
+              ]
+            }
           }
         },
         "required": [
@@ -338,7 +378,7 @@
                 "title": "Content Type",
                 "description": "The Content-Type used to describe the request body."
               },
-              "requestBody": {
+              "value": {
                 "type": "string",
                 "title": "Value",
                 "description": "The value of the request body."
@@ -573,6 +613,107 @@
           "operation",
           "inputs"
         ]
+      },
+      "fileUploadConfig": {
+        "type": "object",
+        "title": "File Upload Configuration",
+        "additionalProperties": false,
+        "description": "Configuration used to extract data from your uploaded file.",
+        "properties": {
+          "dataFormat": {
+            "$ref": "#/definitions/dataFormat"
+          },
+          "config": {
+            "type": "object",
+            "title": "Config",
+            "additionalProperties": false,
+            "description": "Specifies configuration on how a file should be processed.",
+            "properties": {
+              "csv": {
+                "$ref": "#/definitions/fileType/csvConfig"
+              },
+              "excel": {
+                "ref$": "#/definitions/fileType/excelConfig"
+              }
+            },
+            "oneOf": [
+              {
+                "required": [
+                  "csv"
+                ]
+              },
+              {
+                "required": [
+                  "excel"
+                ]
+              }
+            ]
+          }
+        },
+        "required": [
+          "dataFormat"
+        ]
+      }
+    },
+    "fileType": {
+      "hasHeader": {
+        "type": "boolean",
+        "additionalProperties": false,
+        "default": true,
+        "title": "Has Header Row",
+        "description": "Specify if the first row of your data contains the headers for your columns."
+      },
+      "excelConfig": {
+        "type": "object",
+        "additionalProperties": false,
+        "title": "Excel File",
+        "description": "Configuration settings to extract data from your Excel file",
+        "properties": {
+          "hasHeader": {
+            "$ref": "#/definitions/fileType/hasHeader"
+          },
+          "sheetIndices": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "integer"
+            },
+            "default": [
+              0
+            ],
+            "title": "Sheet Indices",
+            "description": "Specify the indices of the sheets to extract from your excel file. If left empty, the entire workbook will be extracted."
+          },
+          "sheetMergeMode": {
+            "type": "string",
+            "additionalProperties": false,
+            "title": "Merge Sheets Horizontally or Vertically",
+            "description": "If multiple worksheets are present, choose to merge sheets horizontally or vertically.",
+            "default": "HORIZONTAL",
+            "enum": [
+              "HORIZONTAL",
+              "VERTICAL"
+            ]
+          }
+        }
+      },
+      "csvConfig": {
+        "type": "object",
+        "additionalProperties": false,
+        "title": "CSV File",
+        "description": "Configuration settings to extract data from your CSV file",
+        "properties": {
+          "columnDelimiter": {
+            "type": "string",
+            "additionalProperties": false,
+            "default": ",",
+            "title": "Column Delimiter",
+            "description": "Specify the delimiter of your CSV file. By default, a comma will be used."
+          },
+          "hasHeader": {
+            "$ref": "#/definitions/fileType/hasHeader"
+          }
+        }
       }
     },
     "authentications": {
@@ -848,7 +989,9 @@
       "title": "Data Format",
       "description": "The data format of the response.",
       "enum": [
-        "JSON"
+        "JSON",
+        "EXCEL",
+        "CSV"
       ]
     },
     "transform": {
@@ -1462,6 +1605,100 @@
         "required": [
           "columns"
         ]
+      },
+      "mapPublisherCategories": {
+        "type": "object",
+        "additionalProperties": false,
+        "title": "Map Publisher Categories",
+        "description": "Converts your Publisher Input Category IDs to Yext Categories",
+        "properties": {
+          "inputHeaders": {
+            "$ref": "#/definitions/transform/inputHeaders"
+          },
+          "publisherId": {
+            "type": "string",
+            "title": "Publisher",
+            "description": "The Publisher of your data source",
+            "enum": [
+              "GOOGLEMYBUSINESS",
+              "FACEBOOK",
+              "BING",
+              "TRIPADVISORREVIEWS"
+            ]
+          }
+        },
+        "required": [
+          "inputHeaders",
+          "publisherId"
+        ]
+      },
+      "aIDataCleaning": {
+        "type": "object",
+        "additionalProperties": false,
+        "title": "AI Data Cleaning",
+        "description": "Clean your data with an AI model generated by providing sample inputs and outputs.",
+        "properties": {
+          "inputHeader": {
+            "type": "string",
+            "title": "Input Column Header",
+            "description": "The header of the column to transform with the AI model."
+          },
+          "newColumnHeader": {
+            "type": "string",
+            "title": "New Column Header",
+            "description": "The header for the new column that will be populated with the transformed data. If no header is provided, then the transformed data will overwrite the input column."
+          },
+          "taskDescription": {
+            "type": "string",
+            "title": "Task Description",
+            "description": "A description of the type of data transformation."
+          },
+          "inputLabel": {
+            "type": "string",
+            "title": "Input Label",
+            "description": "A label that describes the input data, e.g., Product URL."
+          },
+          "outputLabel": {
+            "type": "string",
+            "title": "Output Label",
+            "description": "A label that describes your output data, e.g., Product Category."
+          },
+          "inputOutputExamples": {
+            "type": "array",
+            "title": "Input / Output Examples",
+            "description": "Sample input and output values to generate a model.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "input": {
+                  "type": "string",
+                  "title": "Input",
+                  "description": "The sample input value."
+                },
+                "output": {
+                  "type": "string",
+                  "title": "Output",
+                  "description": "The sample output value."
+                }
+              },
+              "required": [
+                "input",
+                "output"
+              ],
+              "additionalProperties": false
+            },
+            "uniqueItems": true,
+            "minItems": 3,
+            "maxItems": 3
+          }
+        },
+        "required": [
+          "inputHeader",
+          "taskDescription",
+          "inputLabel",
+          "outputLabel",
+          "inputOutputExamples"
+        ]
       }
     },
     "mapping": {
@@ -1520,7 +1757,10 @@
             "PAGE_TITLE",
             "CLEANED_BODY",
             "PAGE_ID",
-            "ITEM_ID"
+            "ITEM_ID",
+            "AUTHOR",
+            "CREATED_DATE",
+            "COLUMN"
           ]
         },
         "header": {
@@ -1532,6 +1772,36 @@
           "type": "string",
           "title": "Path",
           "description": "The selector content path."
+        },
+        "column": {
+          "type": "object",
+          "additionalProperties": false,
+          "title": "Column",
+          "description": "The specific table column from which to select values.",
+          "properties": {
+            "index": {
+              "type": "number",
+              "title": "Index",
+              "description": "The zero-base column index."
+            },
+            "header": {
+              "type": "string",
+              "title": "Header",
+              "description": "The header based column content."
+            }
+          },
+          "oneOf": [
+            {
+              "required": [
+                "index"
+              ]
+            },
+            {
+              "required": [
+                "header"
+              ]
+            }
+          ]
         },
         "mode": {
           "type": "string",

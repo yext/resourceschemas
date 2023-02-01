@@ -515,6 +515,18 @@
       },
       "additionalItems": false
     },
+    "customPhrases": {
+      "description": "Add custom phrases that should be treated as single entities (e.g., My Product Name).",
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "additionalItems": false
+    },
+    "disableAutomaticPhraseDetection": {
+      "description": "Disables automatic phase detection",
+      "type": "boolean"
+    },
     "querySuggestions": {
       "type": "object",
       "title": "Query Suggestions",

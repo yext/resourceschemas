@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://schema.yext.com/config/pages/domain",
-  "$version": "1.3",
+  "$version": "1.5",
   "type": "object",
   "title": "Domain",
   "description": "The domain of a site e.g. \"answers.company.com.\"",
@@ -36,6 +36,13 @@
     "reverseProxy": {
       "type": "boolean",
       "description": "Specifies whether the domain is set up as a reverse proxy"
+    },
+    "siteVersion": {
+      "type": [
+        "string",
+        "integer"
+      ],
+      "description": "Specifies whether the domain is a classic Pages domain or new Pages domain. \u0027classic\u0027 refers to classic pages and \u0027pages\u0027 refers to new pages."
     }
   }
 }

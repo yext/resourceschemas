@@ -1,0 +1,188 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://schema.yext.com/config/km/provider",
+  "$version": "1",
+  "type": "object",
+  "additionalProperties": false,
+  "title": "Provider",
+  "description": "A resource that represents the configuration of a Provider.",
+  "properties": {
+    "$id": {
+      "type": "string"
+    },
+    "$schema": {
+      "const": "https://schema.yext.com/config/km/provider/v1"
+    },
+    "displayName": {
+      "type": "string",
+      "title": "Display Name",
+      "description": "Display name of the Provider."
+    },
+    "clientId": {
+      "type": "string",
+      "title": "Client ID",
+      "description": "The client ID for the Provider app."
+    },
+    "clientSecret": {
+      "type": "string",
+      "title": "Client Secret",
+      "description": "The client secret for the Provider app."
+    },
+    "allowedScopes": {
+      "type": "array",
+      "additionalItems": false,
+      "title": "Allowed Scopes",
+      "description": "The list of scopes that a Linked Account can potentially have with this Provider.",
+      "minItems": 1,
+      "items": {
+        "scope": {
+          "title": "Scope",
+          "description": "A single scope.",
+          "type": "object",
+          "properties": {
+            "name": {
+              "title": "Scope Name",
+              "description": "The scope name, i.e. \u0027refresh_token\u0027 for Salesforce.",
+              "type": "string"
+            },
+            "description": {
+              "title": "Description",
+              "description": "The description of the scope.",
+              "type": "string"
+            },
+            "isRequired": {
+              "title": "Is Required",
+              "description": "Determines whether this scope is required.",
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "name",
+            "isRequired"
+          ]
+        }
+      }
+    },
+    "authorizationUrlConfig": {
+      "$ref": "#/definitions/authorizationConfig"
+    },
+    "tokenUrlConfig": {
+      "$ref": "#/definitions/tokenConfig"
+    }
+  },
+  "required": [
+    "$id",
+    "$schema",
+    "displayName",
+    "clientId",
+    "clientSecret",
+    "allowedScopes",
+    "authorizationUrlConfig",
+    "tokenUrlConfig"
+  ],
+  "definitions": {
+    "authorizationConfig": {
+      "type": "object",
+      "title": "Authorization Config",
+      "description": "The URL configuration used to direct a user to the Provider’s authentication page.",
+      "additionalProperties": false,
+      "properties": {
+        "url": {
+          "title": "Authorization URL",
+          "description": "The URL used to direct a user to the Provider’s authentication page.",
+          "type": "string"
+        },
+        "queryParams": {
+          "type": "object",
+          "additionalProperties": false,
+          "title": "Query Parameters",
+          "description": "Query parameters to pass along with the request.",
+          "patternProperties": {
+            "^.*$": {
+              "type": "string"
+            }
+          }
+        },
+        "scopeDelimiter": {
+          "title": "Scope Delimiter",
+          "description": "The delimiter that indicates the separation between each scope. If not set, space will be used.",
+          "type": "string",
+          "default": " "
+        }
+      },
+      "required": [
+        "url",
+        "scopeDelimiter"
+      ]
+    },
+    "tokenConfig": {
+      "type": "object",
+      "title": "Token Config",
+      "description": "The URL configuration used to extract tokens during authentication \u0026 refresh.",
+      "additionalProperties": false,
+      "properties": {
+        "url": {
+          "title": "Token URL",
+          "description": "The URL used to fetch tokens from a provider.",
+          "type": "string"
+        },
+        "queryParams": {
+          "type": "object",
+          "additionalProperties": false,
+          "title": "Query Parameters",
+          "description": "Query parameters to pass along with the request.",
+          "patternProperties": {
+            "^.*$": {
+              "type": "string"
+            }
+          }
+        },
+        "credentialLocation": {
+          "type": "string",
+          "title": "Client Credentials Location",
+          "description": "Indicates where/how the client-id/secret should be passed.",
+          "enum": [
+            "HEADER_BASIC_AUTH",
+            "BODY"
+          ]
+        },
+        "scopeDelimiter": {
+          "title": "Scope Delimiter",
+          "description": "The delimiter that indicates the separation between each scope if returned in the response. If not set, space will be used.",
+          "type": "string",
+          "default": " "
+        },
+        "errorParsingConfig": {
+          "title": "Error Parsing Configuration",
+          "description": "The configuration used to find the errors to parse in the response.",
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "errorCode": {
+              "type": "string",
+              "title": "Error Code",
+              "description": "The JMES path to the error code to get from the response.",
+              "default": "error"
+            },
+            "errorDescription": {
+              "type": "string",
+              "title": "Error Description",
+              "description": "The JMES path to the error description to get from the response.",
+              "default": "error_description"
+            }
+          },
+          "required": [
+            "errorCode",
+            "errorDescription"
+          ]
+        }
+      },
+      "required": [
+        "url",
+        "credentialLocation",
+        "scopeDelimiter",
+        "errorParsingConfig"
+      ]
+    }
+  }
+}

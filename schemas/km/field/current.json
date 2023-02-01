@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://schema.yext.com/config/km/field",
-  "$version": "1",
+  "$version": "1.1",
   "type": "object",
   "title": "Field",
   "description": "Resource that represents a custom field.",
@@ -363,11 +363,24 @@
                   "properties": {
                     "supportedEntityTypeIds": {
                       "type": "array",
-                      "description": "List of support entity type IDs.",
+                      "description": "List of supported entity type IDs.",
                       "items": {
                         "type": "string",
                         "format": "km/entity-type"
                       }
+                    },
+                    "type": {
+                      "type": "string",
+                      "description": "The type of entity reference relationship.",
+                      "enum": [
+                        "ONE_WAY",
+                        "TWO_WAY"
+                      ]
+                    },
+                    "relatedFieldId": {
+                      "type": "string",
+                      "format": "km/field",
+                      "description": "The related field id in TWO_WAY entity reference relationship."
                     }
                   },
                   "additionalProperties": false

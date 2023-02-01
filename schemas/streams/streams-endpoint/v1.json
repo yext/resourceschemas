@@ -26,12 +26,7 @@
           "enum": [
             "knowledgeGraph",
             "reviews",
-            "reviewsAgg",
-            "userAcl",
-            "accounts",
-            "userRoles",
-            "users",
-            "listings"
+            "reviewsAgg"
           ],
           "description": "The source of data to stream."
         },
@@ -70,17 +65,9 @@
                 "type": "string",
                 "description": "The option field name"
               }
-            },
-            "jsonpatch": {
-              "$ref": "#/definitions/jsonpatch"
             }
           },
           "description": "The transforms that need to be applied to documents before they are produced."
-        },
-        "includeSubAccounts": {
-          "type": "boolean",
-          "default": false,
-          "description": "Indicates whether data from sub-accounts should also be streamed."
         },
         "localization": {
           "type": "object",
@@ -97,6 +84,17 @@
               "type": "boolean",
               "default": false,
               "description": "Determines whether primary profiles should be excluded from the endpoint."
+            }
+          },
+          "additionalProperties": false
+        },
+        "compatibilityFlags": {
+          "type": "object",
+          "properties": {
+            "lowercasePublisher": {
+              "type": "boolean",
+              "default": false,
+              "description": "Determines whether the publisher fields should be transformed to lowercase"
             }
           },
           "additionalProperties": false
@@ -170,43 +168,6 @@
         },
         "additionalProperties": false
       }
-    },
-    "jsonpatch": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "op": {
-            "type": "string"
-          },
-          "path": {
-            "type": "string"
-          },
-          "from": {
-            "type": "string"
-          },
-          "value": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "boolean"
-              },
-              {
-                "type": "array"
-              },
-              {
-                "type": "number"
-              },
-              {
-                "type": "object"
-              }
-            ]
-          }
-        }
-      },
-      "description": "A series of JSON Patch transforms to apply on the document."
     }
   }
 }

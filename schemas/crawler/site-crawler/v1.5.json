@@ -136,6 +136,45 @@
           "value"
         ]
       }
+    },
+    "fileTypes": {
+      "title": "File Types",
+      "description": "Specifies which file types, if encountered, to crawl",
+      "default": "allTypes",
+      "oneOf": [
+        {
+          "type": "array",
+          "description": "Specifies which file types should be crawled",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "enum": [
+              "HTML",
+              "PDF"
+            ]
+          }
+        },
+        {
+          "description": "If selected, all supported file types will be crawled, including any added in the future",
+          "const": "allTypes"
+        }
+      ]
+    },
+    "rateLimit": {
+      "type": "integer",
+      "title": "Rate Limit",
+      "description": "Specifies the maximum number of concurrent crawls",
+      "default": 100,
+      "minimum": 1,
+      "maximum": 15000
+    },
+    "maxDepth": {
+      "type": "integer",
+      "title": "Maximum Depth",
+      "description": "Specifies the number of levels past your root URLs for the crawler to index",
+      "default": 10,
+      "minimum": 0,
+      "maximum": 100
     }
   },
   "required": [
