@@ -2,6 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://schema.yext.com/config/km/connector",
   "$version": "2",
+  "$deprecationDate": "2023-07-28",
   "type": "object",
   "additionalProperties": false,
   "title": "Connector",
@@ -53,6 +54,9 @@
             },
             "fileUploadConfig": {
               "$ref": "#/definitions/configs/fileUploadConfig"
+            },
+            "ftpConfig": {
+              "$ref": "#/definitions/configs/ftpConfig"
             }
           },
           "oneOf": [
@@ -85,6 +89,11 @@
               "required": [
                 "fileUploadConfig"
               ]
+            },
+            {
+              "required": [
+                "ftpConfig"
+              ]
             }
           ]
         },
@@ -106,149 +115,7 @@
       ]
     },
     "transforms": {
-      "type": "array",
-      "additionalItems": false,
-      "title": "Transforms",
-      "description": "Transforms to sequentially apply to data produced by selectors.",
-      "items": {
-        "type": "object",
-        "additionalProperties": false,
-        "title": "Transform",
-        "description": "A transform to apply to the data output by the previous step.",
-        "unordered": false,
-        "properties": {
-          "fixCapitalization": {
-            "$ref": "#/definitions/transform/fixCapitalization"
-          },
-          "removeUnwantedChars": {
-            "$ref": "#/definitions/transform/removeUnwantedChars"
-          },
-          "extractText": {
-            "$ref": "#/definitions/transform/extractText"
-          },
-          "function": {
-            "$ref": "#/definitions/transform/function"
-          },
-          "findAndReplace": {
-            "$ref": "#/definitions/transform/findAndReplace"
-          },
-          "addColumn": {
-            "$ref": "#/definitions/transform/addColumn"
-          },
-          "filterRows": {
-            "$ref": "#/definitions/transform/filterRows"
-          },
-          "formatDates": {
-            "$ref": "#/definitions/transform/formatDates"
-          },
-          "mergeColumns": {
-            "$ref": "#/definitions/transform/mergeColumns"
-          },
-          "splitColumn": {
-            "$ref": "#/definitions/transform/splitColumn"
-          },
-          "fillInEmptyCells": {
-            "$ref": "#/definitions/transform/fillInEmptyCells"
-          },
-          "splitIntoRows": {
-            "$ref": "#/definitions/transform/splitIntoRows"
-          },
-          "formatTimes": {
-            "$ref": "#/definitions/transform/formatTimes"
-          },
-          "ignoreColumns": {
-            "$ref": "#/definitions/transform/ignoreColumns"
-          },
-          "mapPublisherCategories": {
-            "$ref": "#/definitions/transform/mapPublisherCategories"
-          },
-          "aIDataCleaning": {
-            "$ref": "#/definitions/transform/aIDataCleaning"
-          }
-        },
-        "oneOf": [
-          {
-            "required": [
-              "fixCapitalization"
-            ]
-          },
-          {
-            "required": [
-              "removeUnwantedChars"
-            ]
-          },
-          {
-            "required": [
-              "extractText"
-            ]
-          },
-          {
-            "required": [
-              "function"
-            ]
-          },
-          {
-            "required": [
-              "findAndReplace"
-            ]
-          },
-          {
-            "required": [
-              "addColumn"
-            ]
-          },
-          {
-            "required": [
-              "filterRows"
-            ]
-          },
-          {
-            "required": [
-              "formatDates"
-            ]
-          },
-          {
-            "required": [
-              "mergeColumns"
-            ]
-          },
-          {
-            "required": [
-              "splitColumn"
-            ]
-          },
-          {
-            "required": [
-              "fillInEmptyCells"
-            ]
-          },
-          {
-            "required": [
-              "splitIntoRows"
-            ]
-          },
-          {
-            "required": [
-              "formatTimes"
-            ]
-          },
-          {
-            "required": [
-              "ignoreColumns"
-            ]
-          },
-          {
-            "required": [
-              "mapPublisherCategories"
-            ]
-          },
-          {
-            "required": [
-              "aIDataCleaning"
-            ]
-          }
-        ]
-      }
+      "$ref": "#/definitions/transforms"
     },
     "mappings": {
       "type": "array",
@@ -292,6 +159,133 @@
         {
           "required": [
             "customSchedule"
+          ]
+        }
+      ]
+    },
+    "runBreakers": {
+      "type": "array",
+      "additionalProperties": false,
+      "title": "Run Breakers",
+      "description": "The configuration of the set of conditions that will break your run and prevent changes to the Knowledge Graph.",
+      "items": {
+        "$ref": "#/definitions/runBreaker"
+      }
+    },
+    "comprehensiveModeConfig": {
+      "type": "object",
+      "additionalProperties": false,
+      "title": "Comprehensive Mode Config",
+      "description": "The configuration for running the Connector in Comprehensive Mode.",
+      "properties": {
+        "comprehensiveSet": {
+          "title": "Comprehensive Set",
+          "description": "The comprehensive set of entities used to determine entities that are missing.",
+          "additionalProperties": false,
+          "type": "string",
+          "default": "ENTITIES_CREATED_BY_THIS_CONNECTOR",
+          "enum": [
+            "ENTITIES_CREATED_BY_THIS_CONNECTOR",
+            "ENTITIES_IN_SAVED_FILTER"
+          ]
+        },
+        "savedFilter": {
+          "type": "string",
+          "title": "Saved Filter",
+          "description": "The reference to the saved filter resources if missing set type is set to ENTITIES_IN_SAVED_FILTER",
+          "format": "km/saved-filter"
+        },
+        "actionOnMissingEntities": {
+          "title": "Action on Missing Entities",
+          "description": "Specifies whether entities missing from the comprehensive set should be deleted or updated when running the Connector in Comprehensive Mode.",
+          "type": "string",
+          "default": "DELETE",
+          "enum": [
+            "DELETE",
+            "UPDATE"
+          ]
+        },
+        "missingUpdateConfig": {
+          "type": "object",
+          "title": "Missing Update Config",
+          "description": "The configuration to update entities missing from the comprehensive set IF the action is \u0027UPDATE\u0027.",
+          "additionalProperties": false,
+          "properties": {
+            "selectors": {
+              "type": "array",
+              "additionalItems": false,
+              "title": "Selectors",
+              "description": "An ordered list of selectors to apply and extract from your set of missing entities",
+              "items": {
+                "$ref": "#/definitions/selector"
+              }
+            },
+            "transforms": {
+              "$ref": "#/definitions/transforms"
+            },
+            "mappings": {
+              "type": "array",
+              "additionalItems": false,
+              "title": "Mapping",
+              "description": "The mapping of columns to fields in Knowledge Graph",
+              "items": {
+                "$ref": "#/definitions/mapping"
+              }
+            }
+          }
+        }
+      },
+      "default": {
+        "comprehensiveSet": "ENTITIES_CREATED_BY_THIS_CONNECTOR",
+        "actionOnMissingEntities": "DELETE"
+      },
+      "required": [
+        "comprehensiveSet",
+        "actionOnMissingEntities"
+      ],
+      "allOf": [
+        {
+          "anyOf": [
+            {
+              "properties": {
+                "comprehensiveSet": {
+                  "const": "ENTITIES_IN_SAVED_FILTER"
+                }
+              },
+              "required": [
+                "savedFilter"
+              ]
+            },
+            {
+              "properties": {
+                "comprehensiveSet": {
+                  "const": "ENTITIES_CREATED_BY_THIS_CONNECTOR"
+                }
+              },
+              "required": []
+            }
+          ]
+        },
+        {
+          "anyOf": [
+            {
+              "properties": {
+                "actionOnMissingEntities": {
+                  "const": "UPDATE"
+                }
+              },
+              "required": [
+                "missingUpdateConfig"
+              ]
+            },
+            {
+              "properties": {
+                "actionOnMissingEntities": {
+                  "const": "DELETE"
+                }
+              },
+              "required": []
+            }
           ]
         }
       ]
@@ -638,7 +632,7 @@
                 "$ref": "#/definitions/fileType/csvConfig"
               },
               "excel": {
-                "ref$": "#/definitions/fileType/excelConfig"
+                "$ref": "#/definitions/fileType/excelConfig"
               }
             },
             "oneOf": [
@@ -656,6 +650,133 @@
           }
         },
         "required": [
+          "dataFormat"
+        ]
+      },
+      "ftpConfig": {
+        "type": "object",
+        "title": "FTP/SFTP Configuration",
+        "additionalProperties": false,
+        "description": "Configuration used to extract data from files fetched from your remote Server.",
+        "properties": {
+          "protocol": {
+            "type": "string",
+            "title": "Protocol",
+            "description": "The protocol to use for establishing connection to your Server.",
+            "enum": [
+              "SFTP",
+              "FTPS",
+              "FTP"
+            ]
+          },
+          "host": {
+            "type": "string",
+            "title": "Host",
+            "description": "The host address without the protocol."
+          },
+          "port": {
+            "type": "number",
+            "title": "Port",
+            "description": "The port of your Server (default 21 for FTP, 990 for FTPS or 22 for SFTP)."
+          },
+          "username": {
+            "type": "string",
+            "title": "Username",
+            "description": "The username to authenticate access to the Server."
+          },
+          "credential": {
+            "type": "object",
+            "title": "Credential",
+            "description": "The credential method to authenticate access to the Server, either via password or an SSH Private Key.",
+            "properties": {
+              "password": {
+                "type": "string",
+                "title": "Password",
+                "description": "The password to authenticate access to the Server."
+              },
+              "sshPrivateKey": {
+                "type": "string",
+                "title": "SSH Private Key",
+                "description": "The SSH Private Key that will grant access to the Server."
+              }
+            },
+            "oneOf": [
+              {
+                "required": [
+                  "password"
+                ]
+              },
+              {
+                "required": [
+                  "sshPrivateKey"
+                ]
+              }
+            ]
+          },
+          "fileLocation": {
+            "type": "object",
+            "additionalProperties": false,
+            "title": "File Location",
+            "description": "The file location in the Server, including the file extension.",
+            "properties": {
+              "exactFilePath": {
+                "type": "string",
+                "title": "File Path",
+                "description": "The exact path to a specific file in your Server."
+              },
+              "searchByCriteria": {
+                "$ref": "#/definitions/searchByCriteria"
+              }
+            },
+            "oneOf": [
+              {
+                "required": [
+                  "exactFilePath"
+                ]
+              },
+              {
+                "required": [
+                  "searchByCriteria"
+                ]
+              }
+            ]
+          },
+          "dataFormat": {
+            "$ref": "#/definitions/dataFormat"
+          },
+          "config": {
+            "type": "object",
+            "title": "Config",
+            "additionalProperties": false,
+            "description": "Specifies configuration on how a file should be processed.",
+            "properties": {
+              "csv": {
+                "$ref": "#/definitions/fileType/csvConfig"
+              },
+              "excel": {
+                "$ref": "#/definitions/fileType/excelConfig"
+              }
+            },
+            "oneOf": [
+              {
+                "required": [
+                  "csv"
+                ]
+              },
+              {
+                "required": [
+                  "excel"
+                ]
+              }
+            ]
+          }
+        },
+        "required": [
+          "protocol",
+          "host",
+          "username",
+          "credential",
+          "fileLocation",
           "dataFormat"
         ]
       }
@@ -706,14 +827,14 @@
         "type": "object",
         "additionalProperties": false,
         "title": "CSV File",
-        "description": "Configuration settings to extract data from your CSV file",
+        "description": "Configuration settings to extract data from your CSV file or any delimited file",
         "properties": {
           "columnDelimiter": {
             "type": "string",
             "additionalProperties": false,
             "default": ",",
             "title": "Column Delimiter",
-            "description": "Specify the delimiter of your CSV file. By default, a comma will be used."
+            "description": "Specify the delimiter of your file. By default, a comma will be used."
           },
           "hasHeaderRow": {
             "$ref": "#/definitions/fileType/hasHeaderRow"
@@ -1704,41 +1825,430 @@
           "outputLabel",
           "inputOutputExamples"
         ]
+      },
+      "duplicateColumn": {
+        "type": "object",
+        "additionalProperties": false,
+        "title": "Duplicate Column",
+        "description": "Duplicate a column to create a new column with the same data.",
+        "properties": {
+          "inputHeader": {
+            "type": "string",
+            "title": "Input Column Header",
+            "description": "The column containing the data that needs to be duplicated."
+          },
+          "newColumnHeader": {
+            "type": "string",
+            "title": "New Column Header",
+            "description": "The header for the new column that will be populated with duplicated data"
+          }
+        },
+        "required": [
+          "inputHeader",
+          "newColumnHeader"
+        ]
+      },
+      "functionOnARow": {
+        "type": "object",
+        "additionalProperties": false,
+        "title": "Function on a Row",
+        "description": "Invokes a custom Typescript function to transform an entire row of data.",
+        "properties": {
+          "plugin": {
+            "type": "string",
+            "title": "Plugin",
+            "description": "The reference to a Plugin resource that contains a desired function.",
+            "format": "platform/plugin"
+          },
+          "function": {
+            "type": "string",
+            "title": "Function",
+            "description": "The function to invoke."
+          },
+          "inputMappings": {
+            "type": "array",
+            "title": "Input Mappings",
+            "additionalItems": false,
+            "description": "The Column headers containing the values to map to the specified input Keys in the function.",
+            "items": {
+              "$ref": "#/definitions/transform/keyHeaderMapping"
+            }
+          },
+          "outputMappings": {
+            "type": "array",
+            "title": "Output Mappings",
+            "additionalItems": false,
+            "description": "The Column headers containing the values to map to the specified output Keys in the function.",
+            "items": {
+              "$ref": "#/definitions/transform/keyHeaderMapping"
+            }
+          },
+          "dropUnspecifiedOutputColumns": {
+            "type": "boolean",
+            "title": "Drop Unspecified Output Columns",
+            "description": "If true, any columns not specified as part of the output of the function will be dropped from the table.",
+            "default": "false"
+          }
+        },
+        "required": [
+          "outputMappings",
+          "plugin",
+          "function"
+        ]
+      },
+      "keyHeaderMapping": {
+        "type": "object",
+        "title": "Key-Header Mapping",
+        "additionalProperties": false,
+        "description": "The mapping between a key defined in the function and a Column Header within the Connector.",
+        "properties": {
+          "functionKey": {
+            "type": "string",
+            "title": "Function Key",
+            "description": "The Key that your function specifies."
+          },
+          "columnHeader": {
+            "type": "string",
+            "title": "Column Header",
+            "description": "The Column Header that contains data that maps to the value of the key in your function."
+          }
+        },
+        "required": [
+          "functionKey",
+          "columnHeader"
+        ]
+      },
+      "conditionalExecution": {
+        "type": "object",
+        "additionalProperties": false,
+        "title": "Conditional Execution",
+        "description": "Specifies the logic driving the conditional execution of a transform on a given row.",
+        "properties": {
+          "clause": {
+            "$ref": "#/definitions/transform/clause"
+          }
+        },
+        "required": [
+          "clause"
+        ]
+      },
+      "clause": {
+        "type": "object",
+        "additionalProperties": false,
+        "title": "Clause",
+        "description": "Specifies a set of conditions, and the operator to join them on if more than one condition is present.",
+        "properties": {
+          "boolOperator": {
+            "type": "string",
+            "title": "Boolean Operator",
+            "description": "Specifies whether to join conditions via AND or OR logic.",
+            "enum": [
+              "AND",
+              "OR"
+            ]
+          },
+          "conditions": {
+            "type": "array",
+            "additionalProperties": false,
+            "title": "Conditions",
+            "description": "Specifies the conditions that must be met in order for the transform to be executed on a given row.",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "title": "Condition",
+              "description": "A condition that must be met in order for the transform to be executed.",
+              "properties": {
+                "inputColumn": {
+                  "type": "string",
+                  "title": "Input Column",
+                  "description": "The input column containing the value for the condition to meet."
+                },
+                "comparator": {
+                  "type": "string",
+                  "title": "Comparator",
+                  "description": "The comparator used when specifying a condition to be met.",
+                  "enum": [
+                    "CONTAINS",
+                    "STARTS_WITH",
+                    "ENDS_WITH",
+                    "EQUALS",
+                    "DOES_NOT_EQUAL",
+                    "IS_NOT_BLANK",
+                    "DOES_NOT_CONTAIN",
+                    "IS_BLANK",
+                    "MATCHES_REGEX",
+                    "GREATER_THAN",
+                    "GREATER_THAN_OR_EQUAL_TO",
+                    "LESS_THAN",
+                    "LESS_THAN_OR_EQUAL_TO"
+                  ]
+                },
+                "comparisonValue": {
+                  "type": "string",
+                  "title": "Comparison Value",
+                  "description": "The value to compare the input column to to determine if the condition is met. Column headers may be embedded here."
+                }
+              },
+              "required": [
+                "inputColumn",
+                "comparator"
+              ]
+            },
+            "minItems": 1
+          }
+        },
+        "required": [
+          "conditions"
+        ]
+      },
+      "checkEntityExistence": {
+        "type": "object",
+        "additionalProperties": false,
+        "title": "Check Entity Existence",
+        "description": "Adds a column that checks whether a row represents an entity that currently exists in your Knowledge Graph, by returning a value of true or false.",
+        "properties": {
+          "inputHeader": {
+            "type": "string",
+            "title": "Input Column Header",
+            "description": "The column that contains the value for Entity ID."
+          },
+          "newColumnHeader": {
+            "type": "string",
+            "title": "New Column Header",
+            "description": "The header of your new column that will be populated with true/false values, based on whether the entity ID provided exists or does not exist in your Knowledge Graph."
+          }
+        },
+        "required": [
+          "inputHeader",
+          "newColumnHeader"
+        ]
+      },
+      "convertToRichText": {
+        "type": "object",
+        "additionalProperties": false,
+        "title": "Convert to Rich Text",
+        "description": "Convert your data to the JSON AST format to populate fields of type Rich Text v2.",
+        "properties": {
+          "inputHeaders": {
+            "$ref": "#/definitions/transform/inputHeaders"
+          },
+          "inputFormat": {
+            "type": "string",
+            "description": "The input format of your data, either HTML or Markdown.",
+            "enum": [
+              "HTML",
+              "MARKDOWN"
+            ]
+          }
+        },
+        "required": [
+          "inputHeaders",
+          "inputFormat"
+        ]
+      }
+    },
+    "transforms": {
+      "type": "array",
+      "additionalItems": false,
+      "title": "Transforms",
+      "description": "Transforms to sequentially apply to data produced by selectors.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "title": "Transform",
+        "description": "A transform to apply to the data output by the previous step.",
+        "unordered": false,
+        "properties": {
+          "fixCapitalization": {
+            "$ref": "#/definitions/transform/fixCapitalization"
+          },
+          "removeUnwantedChars": {
+            "$ref": "#/definitions/transform/removeUnwantedChars"
+          },
+          "extractText": {
+            "$ref": "#/definitions/transform/extractText"
+          },
+          "function": {
+            "$ref": "#/definitions/transform/function"
+          },
+          "findAndReplace": {
+            "$ref": "#/definitions/transform/findAndReplace"
+          },
+          "addColumn": {
+            "$ref": "#/definitions/transform/addColumn"
+          },
+          "filterRows": {
+            "$ref": "#/definitions/transform/filterRows"
+          },
+          "formatDates": {
+            "$ref": "#/definitions/transform/formatDates"
+          },
+          "mergeColumns": {
+            "$ref": "#/definitions/transform/mergeColumns"
+          },
+          "splitColumn": {
+            "$ref": "#/definitions/transform/splitColumn"
+          },
+          "fillInEmptyCells": {
+            "$ref": "#/definitions/transform/fillInEmptyCells"
+          },
+          "splitIntoRows": {
+            "$ref": "#/definitions/transform/splitIntoRows"
+          },
+          "formatTimes": {
+            "$ref": "#/definitions/transform/formatTimes"
+          },
+          "ignoreColumns": {
+            "$ref": "#/definitions/transform/ignoreColumns"
+          },
+          "mapPublisherCategories": {
+            "$ref": "#/definitions/transform/mapPublisherCategories"
+          },
+          "aIDataCleaning": {
+            "$ref": "#/definitions/transform/aIDataCleaning"
+          },
+          "duplicateColumn": {
+            "$ref": "#/definitions/transform/duplicateColumn"
+          },
+          "functionOnARow": {
+            "$ref": "#/definitions/transform/functionOnARow"
+          },
+          "conditionalExecution": {
+            "$ref": "#/definitions/transform/conditionalExecution"
+          },
+          "checkEntityExistence": {
+            "$ref": "#/definitions/transform/checkEntityExistence"
+          },
+          "convertToRichText": {
+            "$ref": "#/definitions/transform/convertToRichText"
+          }
+        },
+        "oneOf": [
+          {
+            "required": [
+              "fixCapitalization"
+            ]
+          },
+          {
+            "required": [
+              "removeUnwantedChars"
+            ]
+          },
+          {
+            "required": [
+              "extractText"
+            ]
+          },
+          {
+            "required": [
+              "function"
+            ]
+          },
+          {
+            "required": [
+              "findAndReplace"
+            ]
+          },
+          {
+            "required": [
+              "addColumn"
+            ]
+          },
+          {
+            "required": [
+              "filterRows"
+            ]
+          },
+          {
+            "required": [
+              "formatDates"
+            ]
+          },
+          {
+            "required": [
+              "mergeColumns"
+            ]
+          },
+          {
+            "required": [
+              "splitColumn"
+            ]
+          },
+          {
+            "required": [
+              "fillInEmptyCells"
+            ]
+          },
+          {
+            "required": [
+              "splitIntoRows"
+            ]
+          },
+          {
+            "required": [
+              "formatTimes"
+            ]
+          },
+          {
+            "required": [
+              "ignoreColumns"
+            ]
+          },
+          {
+            "required": [
+              "mapPublisherCategories"
+            ]
+          },
+          {
+            "required": [
+              "aIDataCleaning"
+            ]
+          },
+          {
+            "required": [
+              "duplicateColumn"
+            ]
+          },
+          {
+            "required": [
+              "functionOnARow"
+            ]
+          },
+          {
+            "required": [
+              "checkEntityExistence"
+            ]
+          },
+          {
+            "required": [
+              "convertToRichText"
+            ]
+          }
+        ]
       }
     },
     "mapping": {
       "type": "object",
       "description": "The mapping generated by the transformers.",
-      "header": {
-        "type": "string",
-        "title": "Header",
-        "description": "Header of a table."
-      },
-      "field": {
-        "type": "string",
-        "title": "Field",
-        "description": "The reference to the field resource.",
-        "format": "km/field"
-      },
-      "subfieldPath": {
-        "type": "array",
-        "additionalItems": false,
-        "description": "Path to a particular property or list item index.",
-        "items": {
-          "type": "object",
-          "additionalProperties": false,
-          "oneOf": {
-            "name": {
-              "type": "string",
-              "title": "Name",
-              "description": "A name which identifies a struct value property."
-            },
-            "index": {
-              "type": "number",
-              "title": "Index",
-              "description": "An index which identifies an item in a list value."
-            }
-          }
+      "properties": {
+        "header": {
+          "type": "string",
+          "title": "Header",
+          "description": "Header of a table."
+        },
+        "field": {
+          "type": "string",
+          "title": "Field",
+          "description": "The reference to the field resource."
+        },
+        "subfieldPath": {
+          "$ref": "#/definitions/subfieldPath"
+        },
+        "clearValueIfBlank": {
+          "type": "boolean",
+          "title": "Clear Value if Blank",
+          "default": false,
+          "description": "If true, blank values that are mapped to a field will clear existing field content."
         }
       },
       "required": [
@@ -1765,7 +2275,8 @@
             "ITEM_ID",
             "AUTHOR",
             "CREATED_DATE",
-            "COLUMN"
+            "COLUMN",
+            "FIELD"
           ]
         },
         "header": {
@@ -1824,6 +2335,14 @@
           "type": "string",
           "title": "Attribute Key",
           "description": "The attribute key of a CSS or XPath selector."
+        },
+        "fieldId": {
+          "type": "string",
+          "title": "Field ID",
+          "description": "The ID of the field to extract content from."
+        },
+        "subfieldPath": {
+          "$ref": "#/definitions/subfieldPath"
         }
       },
       "required": [
@@ -1873,6 +2392,223 @@
         "startDate",
         "startTime",
         "frequencyType"
+      ]
+    },
+    "searchByCriteria": {
+      "type": "object",
+      "additionalProperties": false,
+      "title": "Search By Criteria",
+      "description": "The criteria used to search through your Server to find a specific file.",
+      "properties": {
+        "lastModified": {
+          "type": "string",
+          "title": "Last Modified",
+          "description": "The file that matches the criteria that is either the most recently modified or least recently modified.",
+          "enum": [
+            "NEWEST",
+            "OLDEST"
+          ]
+        },
+        "folderPath": {
+          "type": "string",
+          "title": "Folder Path",
+          "description": "The path to the folder containing your file."
+        },
+        "searchPattern": {
+          "type": "string",
+          "title": "Search Pattern",
+          "description": "The search pattern rule by which to filter files by name.",
+          "enum": [
+            "CONTAINS",
+            "STARTS_WITH",
+            "ENDS_WITH",
+            "REGEX"
+          ]
+        },
+        "regex": {
+          "type": "string",
+          "title": "Regex",
+          "description": "The regex by which to filter files."
+        }
+      },
+      "required": [
+        "lastModified",
+        "folderPath"
+      ],
+      "dependentRequired": {
+        "searchPattern": [
+          "regex"
+        ]
+      }
+    },
+    "subfieldPath": {
+      "type": "array",
+      "title": "Subfield Path",
+      "additionalItems": false,
+      "description": "Path to a particular property or list item index.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "A name which identifies a struct value property."
+          },
+          "index": {
+            "type": "number",
+            "title": "Index",
+            "description": "An index which identifies an item in a list value."
+          }
+        },
+        "oneOf": [
+          {
+            "required": [
+              "name"
+            ]
+          },
+          {
+            "required": [
+              "index"
+            ]
+          }
+        ]
+      }
+    },
+    "runBreaker": {
+      "type": "object",
+      "additionalProperties": false,
+      "title": "Run Breaker",
+      "description": "The configuration for a Run Breaker.",
+      "properties": {
+        "comparator": {
+          "type": "string",
+          "title": "Comparator",
+          "description": "The comparator for your breaker.",
+          "enum": [
+            "EQUAL_TO",
+            "GREATER_THAN",
+            "GREATER_THAN_OR_EQUAL_TO",
+            "LESS_THAN",
+            "LESS_THAN_OR_EQUAL_TO"
+          ]
+        },
+        "bound": {
+          "type": "number",
+          "title": "Bound",
+          "description": "The numerical bound for your breaker.",
+          "minimum": 0
+        },
+        "boundType": {
+          "type": "string",
+          "title": "Bound Type",
+          "description": "Whether the designated bound represents an absolute or relative (percentage) value.",
+          "enum": [
+            "RELATIVE",
+            "ABSOLUTE"
+          ]
+        },
+        "entitySet": {
+          "type": "object",
+          "title": "Entity Set",
+          "description": "The set of entities to consider when breaking the run. This is either entities in the Run, within a specified Saved Filter, or from the Comprehensive Set.",
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [
+                "CURRENT_RUN",
+                "SAVED_FILTER",
+                "COMPREHENSIVE_SET"
+              ]
+            },
+            "savedFilter": {
+              "type": "string",
+              "title": "Saved Filter",
+              "description": "The reference to the saved filter resource if entity set type is set to saved filter.",
+              "format": "km/saved-filter"
+            }
+          },
+          "required": [
+            "type"
+          ]
+        },
+        "entityFilter": {
+          "type": "object",
+          "title": "Entity Filter",
+          "description": "A filter on the number of entities that count toward the Run Breaker. This can be whether an entity is new, existing, present in the source, missing from the Comprehensive Set, OR based on value of a mapped Column Header.",
+          "properties": {
+            "statusFilter": {
+              "type": "string",
+              "enum": [
+                "NEW",
+                "EXISTING",
+                "PRESENT_IN_SOURCE",
+                "MISSING"
+              ]
+            },
+            "fieldFilter": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "field": {
+                  "type": "string",
+                  "title": "Field",
+                  "description": "The reference to the field resource."
+                },
+                "subfieldPath": {
+                  "$ref": "#/definitions/subfieldPath"
+                },
+                "comparator": {
+                  "type": "string",
+                  "title": "Comparator",
+                  "description": "The comparator for your field value.",
+                  "enum": [
+                    "IS_BLANK",
+                    "IS_NOT_BLANK",
+                    "EQUAL_TO",
+                    "DOES_NOT_EQUAL",
+                    "CONTAINS",
+                    "DOES_NOT_CONTAIN",
+                    "GREATER_THAN",
+                    "GREATER_THAN_OR_EQUAL_TO",
+                    "LESS_THAN",
+                    "LESS_THAN_OR_EQUAL_TO",
+                    "STARTS_WITH",
+                    "ENDS_WITH"
+                  ]
+                },
+                "value": {
+                  "type": "string",
+                  "title": "Value",
+                  "description": "The value to compare against your field value."
+                }
+              },
+              "required": [
+                "field",
+                "comparator"
+              ]
+            }
+          },
+          "oneOf": [
+            {
+              "required": [
+                "statusFilter"
+              ]
+            },
+            {
+              "required": [
+                "fieldFilter"
+              ]
+            }
+          ]
+        }
+      },
+      "required": [
+        "comparator",
+        "bound",
+        "boundType",
+        "entitySet",
+        "entityFilter"
       ]
     }
   }

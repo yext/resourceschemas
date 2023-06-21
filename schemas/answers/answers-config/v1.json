@@ -24,6 +24,10 @@
       "description": "Display name of the experience (eg in Storm)",
       "type": "string"
     },
+    "restrictedApiKey": {
+      "description": "Scope the experience to a specific API key",
+      "type": "string"
+    },
     "supportedLocales": {
       "type": "array",
       "items": {
@@ -404,6 +408,10 @@
                 "type": "string",
                 "description": "A searchable field."
               }
+            },
+            "verticalType": {
+              "description": "Only valid when source is YEXT. Either BASIC or ADVANCED.",
+              "type": "string"
             }
           }
         }
@@ -523,6 +531,14 @@
       },
       "additionalItems": false
     },
+    "richTextV2ToHTML": {
+      "description": "Defaults to false. Whether to convert rich text v2 to HTML. If false, rich text v2 fields will be formatted as a JSON Abstract Expression Tree (AST).",
+      "type": "boolean"
+    },
+    "markdownToHTML": {
+      "description": "Defaults to false. Whether to convert markdown to HTML. If false, markdown fields will be formatted as their original markdown strings.",
+      "type": "boolean"
+    },
     "disableAutomaticPhraseDetection": {
       "description": "Disables automatic phase detection",
       "type": "boolean"
@@ -550,6 +566,14 @@
             "term": {
               "type": "string"
             }
+          }
+        },
+        "popularQueriesBlacklistedRegex": {
+          "title": "Query Suggestions",
+          "description": "Regex patterns that should be blacklisted from popular queries",
+          "type": "array",
+          "items": {
+            "type": "string"
           }
         },
         "universalPrompts": {

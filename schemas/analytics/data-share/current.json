@@ -1,0 +1,51 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://schema.yext.com/config/analytics/data-share",
+  "$version": "1",
+  "type": "object",
+  "title": "Data Share",
+  "description": "Configures a Snowflake data share.",
+  "properties": {
+    "$id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 63,
+      "description": "The unique identifier for the data share resource."
+    },
+    "$schema": {
+      "const": "https://schema.yext.com/config/analytics/data-share/v1"
+    },
+    "accountType": {
+      "const": "EXTERNAL",
+      "description": "Specifies that the data share consumer is a Snowflake account not managed by Yext."
+    },
+    "externalAccount": {
+      "type": "object",
+      "description": "Specifies the consumer Snowflake account to share with.",
+      "properties": {
+        "region": {
+          "const": "us-east-1",
+          "description": "Specifies that the consumer Snowflake account resides in Snowflake\u0027s AWS us-east-1 region."
+        },
+        "accountLocator": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 16,
+          "description": "The name of the Snowflake account to share with, provided by running SELECT CURRENT_ACCOUNT()."
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "region",
+        "accountLocator"
+      ]
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "$id",
+    "$schema",
+    "accountType",
+    "externalAccount"
+  ]
+}

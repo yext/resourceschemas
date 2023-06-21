@@ -110,11 +110,20 @@
         "decimalType": {
           "$ref": "#/definitions/decimalType"
         },
+        "fileType": {
+          "$ref": "#/definitions/fileType"
+        },
         "imageType": {
           "$ref": "#/definitions/imageType"
         },
+        "richTextV2Type": {
+          "$ref": "#/definitions/richTextV2Type"
+        },
         "listType": {
           "$ref": "#/definitions/listType"
+        },
+        "markdownType": {
+          "$ref": "#/definitions/markdownType"
         },
         "optionType": {
           "$ref": "#/definitions/optionType"
@@ -192,6 +201,56 @@
         },
         "maxValue": {
           "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "fileType": {
+      "type": "object",
+      "description": "A File type.",
+      "properties": {
+        "maxFileSize": {
+          "type": "integer",
+          "description": "Size of the file in bytes.",
+          "minimum": 0,
+          "maximum": 104857600
+        },
+        "mimeTypeFilter": {
+          "type": "object",
+          "description": "A MIME type filter.",
+          "properties": {
+            "supportedMimeType": {
+              "type": "array",
+              "description": "The list of MIME types supported by the file type.",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "description": "Primary type of the file.",
+                    "enum": [
+                      "UNKNOWN",
+                      "APPLICATION",
+                      "AUDIO",
+                      "FONT",
+                      "EXAMPLE",
+                      "IMAGE",
+                      "MESSAGE",
+                      "MODEL",
+                      "MULTIPART",
+                      "TEXT",
+                      "VIDEO"
+                    ]
+                  },
+                  "subtype": {
+                    "type": "string",
+                    "description": "Subtype of the file."
+                  }
+                },
+                "additionalProperties": false
+              }
+            }
+          }
         }
       },
       "additionalProperties": false
@@ -480,6 +539,77 @@
         "noSupportedFormats": {
           "type": "boolean",
           "description": "A flag determining if this type supports no rich text formats."
+        }
+      },
+      "additionalProperties": false
+    },
+    "richTextV2Type": {
+      "type": "object",
+      "description": "A Rich Text type, which contains a text that can be decorated with common formatting options such as bold and italics. Updated version of Rich Text Type Built on Meta\u0027s Lexical library.",
+      "properties": {
+        "minLength": {
+          "type": "integer",
+          "description": "The minimum length of the text.",
+          "minimum": 0
+        },
+        "maxLength": {
+          "type": "integer",
+          "description": "The maximum length of the text.",
+          "minimum": 0
+        },
+        "supportedFormatFilter": {
+          "type": "object",
+          "description": "The supported formats of the type",
+          "properties": {
+            "supportedFormats": {
+              "type": "array",
+              "description": "List of supported rich text v2 formats.",
+              "unordered": true,
+              "items": {
+                "type": "string",
+                "description": "Supported rich text v2 format.",
+                "enum": [
+                  "BOLD",
+                  "ITALICS",
+                  "UNDERLINE",
+                  "BULLETED_LIST",
+                  "NUMBERED_LIST",
+                  "HYPERLINK",
+                  "IMAGE",
+                  "CODE_SPAN",
+                  "HEADINGS",
+                  "HORIZONTAL_LINE",
+                  "STRIKETHROUGH",
+                  "BLOCK_QUOTE",
+                  "SUPERSCRIPT",
+                  "SUBSCRIPT",
+                  "CODE_BLOCK",
+                  "TABLE",
+                  "HIGHLIGHT",
+                  "TEXT_COLOR",
+                  "ALIGN"
+                ]
+              }
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "markdownType": {
+      "type": "object",
+      "description": "A Markdown type, which contains a text that can be formatted using the Markdown markup language.",
+      "properties": {
+        "minLength": {
+          "type": "integer",
+          "description": "The minimum length of the text.",
+          "minimum": 0
+        },
+        "maxLength": {
+          "type": "integer",
+          "description": "The maximum length of the text.",
+          "minimum": 0
         }
       },
       "additionalProperties": false

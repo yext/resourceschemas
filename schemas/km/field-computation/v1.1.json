@@ -1,0 +1,147 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://schema.yext.com/config/km/field-computation",
+  "$version": "1.1",
+  "type": "object",
+  "additionalProperties": false,
+  "title": "Field Computation",
+  "description": "A resource that represents the configuration of a Field Computation.",
+  "properties": {
+    "$id": {
+      "type": "string"
+    },
+    "$schema": {
+      "const": "https://schema.yext.com/config/km/field-computation/v1"
+    },
+    "field": {
+      "type": "string",
+      "format": "km/field"
+    },
+    "computationMethod": {
+      "type": "string"
+    },
+    "systemControlled": {
+      "type": "boolean"
+    },
+    "inputs": {
+      "$ref": "#/definitions/inputs"
+    },
+    "localizedInputs": {
+      "$ref": "#/definitions/localizedInputs"
+    }
+  },
+  "oneOf": [
+    {
+      "required": [
+        "field",
+        "computationMethod"
+      ],
+      "anyOf": [
+        {
+          "required": [
+            "inputs"
+          ]
+        },
+        {
+          "required": [
+            "localizedInputs"
+          ]
+        }
+      ]
+    }
+  ],
+  "definitions": {
+    "computation": {
+      "type": "object",
+      "properties": {
+        "subfieldPath": {
+          "type": "string"
+        },
+        "computationMethod": {
+          "type": "string"
+        },
+        "inputs": {
+          "$ref": "#/definitions/inputs"
+        },
+        "localizedInputs": {
+          "$ref": "#/definitions/localizedInputs"
+        }
+      },
+      "additionalProperties": false,
+      "anyOf": [
+        {
+          "required": [
+            "subfieldPath",
+            "computationMethod",
+            "inputs"
+          ]
+        },
+        {
+          "required": [
+            "subfieldPath",
+            "computationMethod",
+            "localizedInputs"
+          ]
+        }
+      ]
+    },
+    "inputs": {
+      "type": "object",
+      "description": "A model that represents the input values",
+      "patternProperties": {
+        "^[a-zA-Z0-9]+$": {
+          "type": [
+            "string",
+            "number",
+            "array",
+            "boolean",
+            "object",
+            "integer",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "localizedInputs": {
+      "type": "object",
+      "description": "A model that represents the localized input values",
+      "patternProperties": {
+        "^[a-zA-Z0-9]+$": {
+          "type": "object",
+          "properties": {
+            "default": {
+              "type": [
+                "string",
+                "number",
+                "array",
+                "boolean",
+                "object",
+                "integer",
+                "null"
+              ]
+            }
+          },
+          "patternProperties": {
+            "^[a-zA-Z-_]+$": {
+              "type": [
+                "string",
+                "number",
+                "array",
+                "boolean",
+                "object",
+                "integer",
+                "null"
+              ]
+            }
+          },
+          "required": [
+            "default"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

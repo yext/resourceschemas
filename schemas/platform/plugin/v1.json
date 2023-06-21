@@ -27,6 +27,22 @@
       "description": "A hint to suggest the number of worker instances to create",
       "minimum": 1,
       "maximum": 50
+    },
+    "disableLogging": {
+      "type": "array",
+      "default": [],
+      "title": "Disable Logging",
+      "additionalItems": false,
+      "description": "Invocation data to omit from Function Logs.",
+      "items": {
+        "type": "string",
+        "enum": [
+          "ARGUMENT_JSON",
+          "CONSOLE_LOGS",
+          "RESULT_JSON"
+        ],
+        "description": "Plugin properties to omit from Function Logs."
+      }
     }
   },
   "additionalProperties": false,
