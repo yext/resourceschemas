@@ -1118,6 +1118,33 @@
       ]
     },
     "transform": {
+      "applyTemplateFields": {
+        "type": "object",
+        "additionalProperties": false,
+        "title": "Apply Template Fields",
+        "description": "Applies the data stored in a template to your data.",
+        "properties": {
+          "template": {
+            "type": "string",
+            "title": "Template",
+            "description": "The template in your account to apply.",
+            "format": "km/entity-template"
+          },
+          "fieldHeaderMappings": {
+            "type": "array",
+            "title": "Field to Header Mappings",
+            "additionalItems": false,
+            "description": "The Column headers that should be populated via the fields in the template.",
+            "items": {
+              "$ref": "#/definitions/fieldHeaderMapping"
+            }
+          }
+        },
+        "required": [
+          "fieldHeaderMappings",
+          "template"
+        ]
+      },
       "inputHeaders": {
         "type": "object",
         "additionalProperties": false,
@@ -2057,6 +2084,9 @@
         "description": "A transform to apply to the data output by the previous step.",
         "unordered": false,
         "properties": {
+          "applyTemplateFields": {
+            "$ref": "#/definitions/transform/applyTemplateFields"
+          },
           "fixCapitalization": {
             "$ref": "#/definitions/transform/fixCapitalization"
           },
@@ -2122,6 +2152,11 @@
           }
         },
         "oneOf": [
+          {
+            "required": [
+              "applyTemplateFields"
+            ]
+          },
           {
             "required": [
               "fixCapitalization"
@@ -2417,6 +2452,7 @@
           "title": "Search Pattern",
           "description": "The search pattern rule by which to filter files by name.",
           "enum": [
+            "NONE",
             "CONTAINS",
             "STARTS_WITH",
             "ENDS_WITH",
@@ -2607,6 +2643,31 @@
         "boundType",
         "entitySet",
         "entityFilter"
+      ]
+    },
+    "fieldHeaderMapping": {
+      "type": "object",
+      "title": "Field-Header Mapping",
+      "additionalProperties": false,
+      "description": "The mapping between a field in your template and a Column Header within the Connector.",
+      "properties": {
+        "fieldId": {
+          "type": "string",
+          "title": "Field ID",
+          "description": "The ID of the field in the template to apply."
+        },
+        "subfieldPath": {
+          "$ref": "#/definitions/subfieldPath"
+        },
+        "columnHeader": {
+          "type": "string",
+          "title": "Column Header",
+          "description": "The Column Header that should be populated with the template value for the given field."
+        }
+      },
+      "required": [
+        "fieldId",
+        "columnHeader"
       ]
     }
   }

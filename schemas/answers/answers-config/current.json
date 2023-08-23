@@ -75,7 +75,7 @@
               "type": "string"
             },
             "source": {
-              "description": "The data source for the backend.  Options include KNOWLEDGE_MANAGER, GOOGLE_CSE, BING_CSE, ZENDESK, ALGOLIA, and CUSTOM_SEARCHER",
+              "description": "The data source for the backend.  Options include YEXT, GOOGLE_CSE, BING_CSE, ZENDESK, ALGOLIA, and CUSTOM_SEARCHER",
               "type": "string"
             },
             "verticalIntents": {
@@ -119,18 +119,18 @@
               "type": "number"
             },
             "entityTypes": {
-              "description": "KNOWLEDGE_MANAGER only. API names of the entity ids allowed in this vertical",
+              "description": "YEXT only. API names of the entity ids allowed in this vertical",
               "type": "array",
               "items": {
                 "type": "string"
               }
             },
             "savedSearchId": {
-              "description": "KNOWLEDGE_MANAGER only. Saved search to restrict results to",
+              "description": "YEXT only. Saved search to restrict results to",
               "type": "string"
             },
             "dynamicRerank": {
-              "description": "Controls dynamic reranking of results based on user engagement. Only available for KNOWLEDGE_MANAGER verticals with FAQ entity type.",
+              "description": "Controls dynamic reranking of results based on user engagement. Only available for YEXT verticals with FAQ entity type.",
               "type": "object",
               "additionalProperties": true,
               "properties": {
@@ -141,7 +141,7 @@
               }
             },
             "sortBys": {
-              "description": "KNOWLEDGE_MANAGER only. Specification for how results should be ordered",
+              "description": "YEXT only. Specification for how results should be ordered",
               "type": "array",
               "items": {
                 "type": "object",
@@ -170,7 +170,7 @@
               }
             },
             "facets": {
-              "description": "KNOWLEDGE_MANAGER only. Specification for facets",
+              "description": "YEXT only. Specification for facets",
               "type": "object",
               "additionalProperties": true,
               "properties": {
@@ -240,7 +240,7 @@
               }
             },
             "searchableFields": {
-              "description": "KNOWLEDGE_MANAGER only. Map of field api names to field configurations.",
+              "description": "YEXT only. Map of field api names to field configurations.",
               "type": "object",
               "additionalProperties": true,
               "patternProperties": {
@@ -289,21 +289,21 @@
               }
             },
             "facetOrder": {
-              "description": "KNOWLEDGE_MANAGER only. Ordering for facets",
+              "description": "YEXT only. Ordering for facets",
               "type": "array",
               "items": {
                 "type": "string"
               }
             },
             "nlpFilterOrder": {
-              "description": "KNOWLEDGE_MANAGER only. Priority ordering of fields for NLP Filtering",
+              "description": "YEXT only. Priority ordering of fields for NLP Filtering",
               "type": "array",
               "items": {
                 "type": "string"
               }
             },
             "minLocationRadius": {
-              "description": "KNOWLEDGE_MANAGER only. A minimum location radius override in meters.",
+              "description": "YEXT only. A minimum location radius override in meters.",
               "type": "number"
             },
             "apiKey": {
@@ -319,7 +319,7 @@
               "type": "string"
             },
             "directAnswers": {
-              "description": "KNOWLEDGE_MANAGER only. Configuration for various types of direct answers.",
+              "description": "YEXT only. Configuration for various types of direct answers.",
               "type": "object",
               "additionalProperties": true,
               "properties": {
@@ -352,7 +352,7 @@
               }
             },
             "displayFields": {
-              "description": "KNOWLEDGE_MANAGER only. Fields on the profile that are returned to the frontend. If ommitted or empty, all fields will be returned.",
+              "description": "YEXT only. Fields on the profile that are returned to the frontend. If ommitted or empty, all fields will be returned.",
               "type": "array",
               "items": {
                 "type": "string",
@@ -360,7 +360,7 @@
               }
             },
             "semanticThresholds": {
-              "description": "KNOWLEDGE_MANAGER only. Thresholds to be used for semantic search.",
+              "description": "YEXT only. Thresholds to be used for semantic search.",
               "type": "object",
               "additionalProperties": true,
               "properties": {
@@ -373,7 +373,7 @@
               }
             },
             "authorization": {
-              "description": "KNOWLEDGE_MANAGER only. Indicates choice of authorization scheme.",
+              "description": "YEXT only. Indicates choice of authorization scheme.",
               "type": "object",
               "additionalProperties": true,
               "properties": {
@@ -386,15 +386,15 @@
               }
             },
             "semanticVerticalBias": {
-              "description": "KNOWLEDGE_MANAGER only. A value that will always be added to the semantic vertical relevance score.",
+              "description": "YEXT only. A value that will always be added to the semantic vertical relevance score.",
               "type": "number"
             },
             "semanticVerticalThreshold": {
-              "description": "KNOWLEDGE_MANAGER only. Verticals with semantic relevance scores less than the threshold will not show.",
+              "description": "YEXT only. Verticals with semantic relevance scores less than the threshold will not show.",
               "type": "number"
             },
             "semanticVerticalIntents": {
-              "description": "KNOWLEDGE_MANAGER only. An array of strings that will contribute to semantic vertical ranking.",
+              "description": "YEXT only. An array of strings that will contribute to semantic vertical ranking.",
               "type": "array",
               "items": {
                 "type": "string",
@@ -402,7 +402,7 @@
               }
             },
             "semanticVerticalRankingPriorityFields": {
-              "description": "KNOWLEDGE_MANAGER only. An array of field IDs, used as a tiebreaker for ranking verticals when multiple have the same score.  Verticals with semantic values associated with these fields will be prioritized.",
+              "description": "YEXT only. An array of field IDs, used as a tiebreaker for ranking verticals when multiple have the same score.  Verticals with semantic values associated with these fields will be prioritized.",
               "type": "array",
               "items": {
                 "type": "string",

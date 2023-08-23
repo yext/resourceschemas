@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://schema.yext.com/config/km/field-computation",
-  "$version": "1.1",
+  "$version": "1.2",
   "type": "object",
   "additionalProperties": false,
   "title": "Field Computation",
@@ -20,6 +20,12 @@
     "computationMethod": {
       "type": "string"
     },
+    "computations": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/computation"
+      }
+    },
     "systemControlled": {
       "type": "boolean"
     },
@@ -33,6 +39,8 @@
   "oneOf": [
     {
       "required": [
+        "$id",
+        "$schema",
         "field",
         "computationMethod"
       ],
@@ -47,7 +55,43 @@
             "localizedInputs"
           ]
         }
-      ]
+      ],
+      "not": {
+        "anyOf": [
+          {
+            "required": [
+              "computations"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "required": [
+        "$id",
+        "$schema",
+        "field",
+        "computations"
+      ],
+      "not": {
+        "anyOf": [
+          {
+            "required": [
+              "computationMethod"
+            ]
+          },
+          {
+            "required": [
+              "inputs"
+            ]
+          },
+          {
+            "required": [
+              "localizedInputs"
+            ]
+          }
+        ]
+      }
     }
   ],
   "definitions": {
