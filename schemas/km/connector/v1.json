@@ -140,6 +140,11 @@
             "DEFAULT",
             "COMPREHENSIVE"
           ]
+        },
+        "dryRun": {
+          "type": "boolean",
+          "title": "Dry Run",
+          "description": "Indicates whether the run is a dry run."
         }
       },
       "oneOf": [
