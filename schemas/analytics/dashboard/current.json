@@ -175,6 +175,10 @@
       },
       "minItems": 1,
       "maxItems": 5
+    },
+    "shareWithSubAccounts": {
+      "type": "boolean",
+      "description": "Whether the dashboard is shared with its subaccounts."
     }
   },
   "additionalProperties": false,
