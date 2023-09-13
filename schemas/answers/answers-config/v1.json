@@ -3,7 +3,7 @@
   "$id": "https://schema.yext.com/config/answers/answers-config",
   "$version": "1",
   "type": "object",
-  "title": "Answers Configuration",
+  "title": "Search Configuration",
   "additionalProperties": true,
   "required": [
     "$schema",
