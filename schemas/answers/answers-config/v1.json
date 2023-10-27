@@ -159,6 +159,10 @@
                     "description": "ASC or DESC",
                     "type": "string"
                   },
+                  "relevanceAlgorithm": {
+                    "description": "If populated, the relevance algorithm to use",
+                    "type": "string"
+                  },
                   "buckets": {
                     "description": "If the type is ENTITY_DISTANCE and buckets are being used, the buckets to use",
                     "type": "array",

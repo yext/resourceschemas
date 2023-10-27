@@ -180,11 +180,33 @@
           "description": "The URL used to fetch tokens from a provider.",
           "type": "string"
         },
+        "headers": {
+          "type": "object",
+          "additionalProperties": false,
+          "title": "Headers",
+          "description": "Headers to pass along with the request.",
+          "patternProperties": {
+            "^.*$": {
+              "type": "string"
+            }
+          }
+        },
         "queryParams": {
           "type": "object",
           "additionalProperties": false,
           "title": "Query Parameters",
           "description": "Query parameters to pass along with the request.",
+          "patternProperties": {
+            "^.*$": {
+              "type": "string"
+            }
+          }
+        },
+        "bodyParams": {
+          "type": "object",
+          "additionalProperties": false,
+          "title": "Body Parameters",
+          "description": "Additional body parameters to pass along with the request. The following are reserved parameters that cannot be set: \u0027client_id\u0027, \u0027client_secret\u0027, \u0027scope\u0027, \u0027grant_type\u0027, \u0027code\u0027",
           "patternProperties": {
             "^.*$": {
               "type": "string"

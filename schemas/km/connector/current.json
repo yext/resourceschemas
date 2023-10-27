@@ -146,18 +146,10 @@
           "$ref": "#/definitions/customSchedule"
         },
         "runMode": {
-          "type": "string",
-          "title": "Run Mode",
-          "description": "Indicates the run mode.",
-          "enum": [
-            "DEFAULT",
-            "COMPREHENSIVE"
-          ]
+          "$ref": "#/definitions/runMode"
         },
         "dryRun": {
-          "type": "boolean",
-          "title": "Dry Run",
-          "description": "Indicates whether the run is a dry run."
+          "$ref": "#/definitions/dryRun"
         }
       },
       "oneOf": [
@@ -295,6 +287,15 @@
           ]
         }
       ]
+    },
+    "linkedConnectorConfigs": {
+      "type": "array",
+      "additionalProperties": false,
+      "title": "Linked Connector Configs",
+      "description": "The list of configurations of linked connectors\u0027 completed run triggering this connector to run.",
+      "items": {
+        "$ref": "#/definitions/linkedConnectorConfig"
+      }
     }
   },
   "required": [
@@ -2673,6 +2674,44 @@
       "required": [
         "fieldId",
         "columnHeader"
+      ]
+    },
+    "runMode": {
+      "type": "string",
+      "title": "Run Mode",
+      "description": "Indicates the run mode.",
+      "enum": [
+        "DEFAULT",
+        "COMPREHENSIVE"
+      ]
+    },
+    "dryRun": {
+      "type": "boolean",
+      "title": "Dry Run",
+      "description": "Indicates whether the run is a dry run."
+    },
+    "linkedConnectorConfig": {
+      "type": "object",
+      "title": "Linked Connector Config",
+      "additionalProperties": false,
+      "description": "The configuration of a linked connector\u0027s completed run triggering this connector to run.",
+      "properties": {
+        "connector": {
+          "type": "string",
+          "title": "Connector",
+          "format": "km/connector",
+          "description": "The reference to the connector whose completed runs will trigger this connector."
+        },
+        "runMode": {
+          "$ref": "#/definitions/runMode"
+        },
+        "dryRun": {
+          "$ref": "#/definitions/dryRun"
+        }
+      },
+      "required": [
+        "connector",
+        "runMode"
       ]
     }
   }
