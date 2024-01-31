@@ -2276,6 +2276,19 @@
           "type": "string",
           "title": "List Delimiter",
           "description": "The delimiter for the list field."
+        },
+        "fieldDataFormat": {
+          "type": "string",
+          "title": "Field Data Format",
+          "description": "The field data format.",
+          "enum": [
+            "FIELD_DATA_FORMAT_UNSPECIFIED",
+            "HOURS_API_FORMAT",
+            "HOURS_INTERVAL_FORMAT",
+            "HOLIDAY_HOURS_API_FORMAT",
+            "HOLIDAY_HOURS_INTERVAL_FORMAT",
+            "HOLIDAY_HOURS_COMBINED_DATE_TIME_FORMAT"
+          ]
         }
       }
     },
