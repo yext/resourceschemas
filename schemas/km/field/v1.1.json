@@ -685,7 +685,6 @@
             },
             "required": [
               "name",
-              "displayName",
               "isRequired",
               "typeId"
             ],

@@ -1602,8 +1602,7 @@
           }
         },
         "required": [
-          "inputHeaders",
-          "inputFormat"
+          "inputHeaders"
         ]
       },
       "mergeColumns": {
@@ -1737,8 +1736,7 @@
           }
         },
         "required": [
-          "inputHeaders",
-          "inputFormat"
+          "inputHeaders"
         ]
       },
       "ignoreColumns": {
