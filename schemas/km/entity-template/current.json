@@ -41,6 +41,10 @@
     "name": {
       "type": "string",
       "description": "Display name of the template."
+    },
+    "description": {
+      "type": "string",
+      "description": "Description of the template."
     }
   },
   "additionalProperties": false,
