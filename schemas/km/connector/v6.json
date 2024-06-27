@@ -115,7 +115,7 @@
         "apiConfig": {
           "type": "object",
           "title": "API Configuration",
-          "description": "A generic API config to send data to",
+          "description": "A generic API config to send data to.",
           "properties": {
             "variables": {
               "type": "array",
@@ -128,10 +128,15 @@
             },
             "rateLimit": {
               "$ref": "#/definitions/rateLimit"
+            },
+            "endpoints": {
+              "type": "object",
+              "title": "Endpoints",
+              "description": "The endpoints of the API configuration.",
+              "additionalProperties": {
+                "$ref": "#/definitions/endpointConfig"
+              }
             }
-          },
-          "additionalProperties": {
-            "$ref": "#/definitions/urlConfig"
           }
         },
         "contentConfig": {
@@ -2876,14 +2881,14 @@
         "runMode"
       ]
     },
-    "urlConfig": {
+    "endpointConfig": {
       "type": "object",
-      "title": "URL Configuration",
-      "description": "The core API URL config.",
+      "title": "Endpoint Configuration",
+      "description": "The configuration of an endpoint.",
       "properties": {
         "method": {
           "type": "string",
-          "description": "The http method type",
+          "description": "The HTTP method type.",
           "enum": [
             "PUT",
             "POST",
@@ -2925,8 +2930,7 @@
               "title": "List",
               "description": "The JSON list for PUT/POST requests that contain mapping keys that need to be substituted."
             }
-          ],
-          "maxProperties": 1
+          ]
         }
       },
       "additionalProperties": false,
@@ -2955,41 +2959,18 @@
     "listType": {
       "type": "object",
       "properties": {
-        "itemType": {
-          "$ref": "#/definitions/type"
+        "stringType": {
+          "$ref": "#/definitions/stringType"
+        },
+        "booleanType": {
+          "$ref": "#/definitions/booleanType"
+        },
+        "numberType": {
+          "$ref": "#/definitions/numberType"
         }
       },
+      "maxProperties": 1,
       "additionalProperties": false
-    },
-    "objectType": {
-      "type": "object",
-      "properties": {
-        "property": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "name": {
-                "type": "string"
-              },
-              "type": {
-                "$ref": "#/definitions/type"
-              }
-            },
-            "required": [
-              "name",
-              "type"
-            ],
-            "additionalProperties": false
-          }
-        }
-      }
-    },
-    "enumType": {
-      "type": "array",
-      "items": {
-        "type": "string"
-      }
     },
     "type": {
       "type": "object",
@@ -3003,14 +2984,8 @@
         "numberType": {
           "$ref": "#/definitions/numberType"
         },
-        "objectType": {
-          "$ref": "#/definitions/objectType"
-        },
         "listType": {
           "$ref": "#/definitions/listType"
-        },
-        "enumType": {
-          "$ref": "#/definitions/enumType"
         }
       },
       "additionalProperties": false,

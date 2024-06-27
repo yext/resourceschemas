@@ -203,6 +203,10 @@
               }
             }
           }
+        },
+        "usePrivateUrls": {
+          "type": "boolean",
+          "description": "If true, any Images or Files uploaded to this field will be hosted via a secure URL that is not publicly accessible. This is only recommended for content that will be integrating with authorized experiences."
         }
       },
       "additionalProperties": false
@@ -536,6 +540,10 @@
             }
           },
           "additionalProperties": false
+        },
+        "usePrivateUrls": {
+          "type": "boolean",
+          "description": "If true, any Images or Files uploaded to this field will be hosted via a secure URL that is not publicly accessible. This is only recommended for content that will be integrating with authorized experiences."
         }
       },
       "additionalProperties": false
