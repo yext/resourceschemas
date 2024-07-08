@@ -2953,8 +2953,10 @@
       ]
     },
     "booleanType": {
-      "type": "object",
-      "additionalProperties": false
+      "type": "string",
+      "enum": [
+        "BOOLEAN_DEFAULT"
+      ]
     },
     "listType": {
       "type": "object",
