@@ -56,6 +56,9 @@
         "booleanType": {
           "$ref": "#/definitions/booleanType"
         },
+        "dateTimeType": {
+          "$ref": "#/definitions/dateTimeType"
+        },
         "dateType": {
           "$ref": "#/definitions/dateType"
         },
@@ -100,6 +103,61 @@
     "booleanType": {
       "type": "object",
       "description": "A Boolean (Yes/No) type.",
+      "additionalProperties": false
+    },
+    "dateTimeType": {
+      "type": "object",
+      "description": "A DateTime type.",
+      "properties": {
+        "minValue": {
+          "$ref": "#/definitions/datetime"
+        },
+        "maxValue": {
+          "$ref": "#/definitions/datetime"
+        }
+      }
+    },
+    "datetime": {
+      "type": "object",
+      "description": "A type describing a certain date and time.",
+      "properties": {
+        "year": {
+          "type": "integer",
+          "description": "Year of the date.",
+          "minimum": 0
+        },
+        "month": {
+          "type": "integer",
+          "description": "Month of the date.",
+          "minimum": 1,
+          "maximum": 12
+        },
+        "day": {
+          "type": "integer",
+          "description": "Day of the date.",
+          "minimum": 1,
+          "maximum": 31
+        },
+        "hour": {
+          "type": "integer",
+          "description": "Hour of time.",
+          "minimum": 0,
+          "maximum": 23
+        },
+        "minute": {
+          "type": "integer",
+          "description": "Minute of time.",
+          "minimum": 0,
+          "maximum": 59
+        }
+      },
+      "required": [
+        "year",
+        "month",
+        "day",
+        "hour",
+        "minute"
+      ],
       "additionalProperties": false
     },
     "dateType": {
