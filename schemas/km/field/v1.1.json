@@ -104,6 +104,9 @@
         "booleanType": {
           "$ref": "#/definitions/booleanType"
         },
+        "dateTimeType": {
+          "$ref": "#/definitions/dateTimeType"
+        },
         "dateType": {
           "$ref": "#/definitions/dateType"
         },
@@ -149,6 +152,18 @@
       "type": "object",
       "description": "A Boolean (Yes/No) type.",
       "additionalProperties": false
+    },
+    "dateTimeType": {
+      "type": "object",
+      "description": "A DateTime type.",
+      "properties": {
+        "minValue": {
+          "type": "string"
+        },
+        "maxValue": {
+          "type": "string"
+        }
+      }
     },
     "dateType": {
       "type": "object",
