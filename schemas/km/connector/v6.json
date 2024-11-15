@@ -2893,10 +2893,37 @@
         },
         "numberType": {
           "$ref": "#/definitions/numberType"
+        },
+        "objectType": {
+          "$ref": "#/definitions/objectType"
         }
       },
       "maxProperties": 1,
       "additionalProperties": false
+    },
+    "objectType": {
+      "type": "object",
+      "properties": {
+        "properties": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "type": {
+                "$ref": "#/definitions/type"
+              }
+            },
+            "required": [
+              "name",
+              "type"
+            ],
+            "additionalProperties": false
+          }
+        }
+      }
     },
     "type": {
       "type": "object",
@@ -2912,6 +2939,9 @@
         },
         "listType": {
           "$ref": "#/definitions/listType"
+        },
+        "objectType": {
+          "$ref": "#/definitions/objectType"
         }
       },
       "additionalProperties": false,

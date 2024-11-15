@@ -43,6 +43,11 @@
         ],
         "description": "Plugin properties to omit from Function Logs."
       }
+    },
+    "uploadInCsrRegions": {
+      "type": "boolean",
+      "description": "Optional: Indicates if the plugin should be uploaded to Cloud regions.",
+      "default": false
     }
   },
   "additionalProperties": false,

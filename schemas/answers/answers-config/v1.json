@@ -256,6 +256,14 @@
                       "description": "Whether this field can be used in fulltext search",
                       "type": "boolean"
                     },
+                    "phraseMatch": {
+                      "description": "Whether this field can be used in phrase match",
+                      "type": "boolean"
+                    },
+                    "semanticTextSearch": {
+                      "description": "Whether this field can be used in semantic search",
+                      "type": "boolean"
+                    },
                     "documentSearch": {
                       "description": "Whether this field can be used in document search",
                       "type": "boolean"
@@ -287,6 +295,10 @@
                     "nerType": {
                       "description": "The named entity recognition type for this field.  Options include PERSON_GENERIC, PERSON_SPECIFIC, LOCATION, DATE, EVENTS, NUMBER_RANGE, PRODUCT, HEALTHCARE_PROCEDURE, HEALTHCARE_CONDITION, HEALTHCARE_SPECIALTY, INSTITUTION_BRAND, ROUTINE_BUSINESS_OPERATION, FEE_LIMIT_CHARGE, and PROBLEM",
                       "type": "string"
+                    },
+                    "keywordWeightMultiplier": {
+                      "description": "A multiplier to apply to the weight of this field when it is a keyword match",
+                      "type": "number"
                     }
                   }
                 }
@@ -541,6 +553,10 @@
     },
     "markdownToHTML": {
       "description": "Defaults to false. Whether to convert markdown to HTML. If false, markdown fields will be formatted as their original markdown strings.",
+      "type": "boolean"
+    },
+    "useSearchOperators": {
+      "description": "Defaults to false. Whether to enable search operators detection (AND, OR, NOT). If true, search operators will be enabled.",
       "type": "boolean"
     },
     "disableAutomaticPhraseDetection": {
