@@ -2816,7 +2816,8 @@
           "enum": [
             "PUT",
             "POST",
-            "PATCH"
+            "PATCH",
+            "DELETE"
           ]
         },
         "url": {
@@ -2912,12 +2913,17 @@
               "name": {
                 "type": "string"
               },
+              "isRequired": {
+                "type": "boolean",
+                "default": true
+              },
               "type": {
                 "$ref": "#/definitions/type"
               }
             },
             "required": [
               "name",
+              "isRequired",
               "type"
             ],
             "additionalProperties": false

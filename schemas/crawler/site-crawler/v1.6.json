@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://schema.yext.com/config/crawler/site-crawler",
-  "$version": "1.5",
+  "$version": "1.6",
   "type": "object",
   "additionalProperties": false,
   "title": "Yext Crawler",
@@ -67,6 +67,28 @@
       "items": {
         "type": "string"
       }
+    },
+    "sitemap": {
+      "type": "object",
+      "title": "Sitemap Configuration",
+      "description": "Configuration for using XML sitemaps as a source for starting URLs.",
+      "properties": {
+        "url": {
+          "type": "string",
+          "format": "uri",
+          "title": "URL",
+          "description": "The URL of the XML sitemap."
+        },
+        "checkLastModified": {
+          "type": "boolean",
+          "title": "Check Last Modified",
+          "description": "If true, the crawler will only crawl the sitemap if it has been modified since the last crawl.",
+          "default": false
+        }
+      },
+      "required": [
+        "url"
+      ]
     },
     "ignoreQueryParameterOption": {
       "type": "string",
@@ -179,5 +201,11 @@
   },
   "required": [
     "name"
-  ]
+  ],
+  "not": {
+    "required": [
+      "domains",
+      "sitemap"
+    ]
+  }
 }

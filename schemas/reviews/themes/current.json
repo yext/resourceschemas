@@ -1,0 +1,45 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://schema.yext.com/config/reviews/themes",
+  "$version": "1.1",
+  "type": "object",
+  "title": "Review Theme Definitions",
+  "description": "Configures a review theme resource.",
+  "properties": {
+    "$schema": {
+      "const": "https://schema.yext.com/config/reviews/themes/v1"
+    },
+    "$id": {
+      "type": "string",
+      "minLength": 4,
+      "maxLength": 63,
+      "description": "The unique identifier for the theme resource."
+    },
+    "title": {
+      "type": "string",
+      "maxLength": 50,
+      "description": "The title of the theme."
+    },
+    "description": {
+      "type": "string",
+      "maxLength": 250,
+      "description": "The description of the theme."
+    },
+    "isDisabled": {
+      "type": "boolean",
+      "description": "Whether this theme will be considered when categorizing reviews.",
+      "default": false
+    },
+    "reviewLabelId": {
+      "type": "integer",
+      "description": "ID of the Review Label to associate with this theme. If omitted, a new Review Label matching the theme\u0027s title will be created automatically."
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "$id",
+    "$schema",
+    "title",
+    "description"
+  ]
+}

@@ -2,6 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://schema.yext.com/config/streams/streams-endpoint",
   "$version": "2",
+  "$deprecationDate": "2025-04-16",
   "type": "object",
   "title": "Streams Endpoint",
   "properties": {
