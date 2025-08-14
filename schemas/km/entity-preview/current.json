@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://schema.yext.com/config/km/entity-preview",
-  "$version": "1",
+  "$version": "1.1",
   "type": "object",
   "title": "Entity Preview",
   "description": "Resource that represents an entity preview for an entity type.",
@@ -48,12 +48,20 @@
           "items": {
             "$ref": "#/definitions/fieldSettings"
           }
+        },
+        "multiFieldSettingsList": {
+          "type": "array",
+          "description": "The list of multi-field settings for this entity type",
+          "items": {
+            "$ref": "#/definitions/multiFieldSettings"
+          }
         }
       },
       "required": [
         "showEntityTypeName",
         "showEntityTypeSymbol",
-        "fieldSettingsList"
+        "fieldSettingsList",
+        "multiFieldSettingsList"
       ]
     }
   },
@@ -109,26 +117,7 @@
       "description": "Settings for one field",
       "properties": {
         "fieldIdentifier": {
-          "type": "object",
-          "description": "The identifier for the field",
-          "properties": {
-            "fieldId": {
-              "type": "string",
-              "format": "km/field",
-              "description": "The ID of a field"
-            },
-            "propertyNames": {
-              "type": "array",
-              "description": "A list of property names which define the path for the field",
-              "items": {
-                "type": "string"
-              }
-            }
-          },
-          "required": [
-            "fieldId"
-          ],
-          "additionalProperties": false
+          "$ref": "#/definitions/fieldIdentifier"
         },
         "fieldKind": {
           "description": "The kind of the field",
@@ -186,6 +175,52 @@
             "entityReferenceConfiguration"
           ]
         }
+      ],
+      "additionalProperties": false
+    },
+    "multiFieldSettings": {
+      "type": "object",
+      "description": "Settings for one multi-field",
+      "properties": {
+        "fieldIdentifierList": {
+          "type": "array",
+          "description": "The identifiers for the field",
+          "items": {
+            "$ref": "#/definitions/fieldIdentifier"
+          }
+        },
+        "fieldKind": {
+          "description": "The kind of the field",
+          "type": "string",
+          "enum": [
+            "STRING"
+          ]
+        },
+        "stringConfiguration": {
+          "$ref": "#/definitions/stringConfiguration"
+        }
+      },
+      "additionalProperties": false
+    },
+    "fieldIdentifier": {
+      "type": "object",
+      "description": "A field identifier",
+      "properties": {
+        "fieldId": {
+          "type": "string",
+          "format": "km/field",
+          "description": "The ID of a field"
+        },
+        "propertyNames": {
+          "type": "array",
+          "description": "A list of property names which define the path for the field",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "fieldId"
       ],
       "additionalProperties": false
     },

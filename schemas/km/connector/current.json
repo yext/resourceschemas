@@ -1249,6 +1249,54 @@
           }
         ]
       },
+      "addressSubfieldHeaders": {
+        "type": "object",
+        "additionalProperties": false,
+        "title": "Address Subfield Headers",
+        "description": "Headers for address subfields.",
+        "properties": {
+          "line1": {
+            "type": "string",
+            "title": "Line 1",
+            "description": "The name of the column containing line 1."
+          },
+          "line2": {
+            "type": "string",
+            "title": "Line 2",
+            "description": "The name of the column containing line 2."
+          },
+          "extraDescription": {
+            "type": "string",
+            "title": "Extra Description",
+            "description": "The name of the column containing extra description."
+          },
+          "subLocality": {
+            "type": "string",
+            "title": "Sub Locality",
+            "description": "The name of the column containing sub locality"
+          },
+          "city": {
+            "type": "string",
+            "title": "City",
+            "description": "The name of the column containing city."
+          },
+          "region": {
+            "type": "string",
+            "title": "Region",
+            "description": "The name of the column containing region."
+          },
+          "postalCode": {
+            "type": "string",
+            "title": "Postal Code",
+            "description": "The name of the column containing postal code."
+          },
+          "countryCode": {
+            "type": "string",
+            "title": "Country Code",
+            "description": "The name of the column containing country code."
+          }
+        }
+      },
       "valueToFind": {
         "type": "object",
         "additionalProperties": false,
@@ -1844,7 +1892,7 @@
         "type": "object",
         "additionalProperties": false,
         "title": "Map Publisher Categories",
-        "description": "Converts your Publisher Input Category IDs to Yext Categories",
+        "description": "Converts your Publisher Input Categories to Yext Categories",
         "properties": {
           "inputHeaders": {
             "$ref": "#/definitions/transform/inputHeaders"
@@ -1859,6 +1907,16 @@
               "BING",
               "TRIPADVISORREVIEWS"
             ]
+          },
+          "valueFormat": {
+            "type": "string",
+            "title": "Value Format",
+            "description": "The format of the input category values",
+            "enum": [
+              "EXTERNAL_FORMAT",
+              "DISPLAY_FORMAT"
+            ],
+            "default": "EXTERNAL_FORMAT"
           }
         },
         "required": [
@@ -2086,6 +2144,187 @@
           "inputHeaders",
           "inputFormat"
         ]
+      },
+      "getEntityFieldData": {
+        "type": "object",
+        "additionalProperties": false,
+        "title": "Get Entity Field Data",
+        "description": "Gets the entity field data using the entity ID.",
+        "properties": {
+          "entityIdInputHeader": {
+            "type": "string",
+            "description": "The column containing the entity ID to get the fields."
+          },
+          "localeCode": {
+            "description": "Optional: The locale code. If unset, the primary locale will be used.",
+            "type": "string"
+          },
+          "localeCodeHeader": {
+            "description": "Optional: The column containing the locale code. If the cell has an empty value, the primary locale will be used.",
+            "type": "string"
+          },
+          "fieldIdToOutputHeader": {
+            "type": "array",
+            "description": "A mapping of field ID to an output header. The output columns should be populated via the selected fields.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "fieldId": {
+                  "type": "string",
+                  "description": "The field ID to get the data from."
+                },
+                "outputHeader": {
+                  "type": "string",
+                  "description": "The header of the column that will be populated with the field data."
+                }
+              },
+              "required": [
+                "fieldId",
+                "outputHeader"
+              ]
+            }
+          },
+          "outputFormat": {
+            "type": "string",
+            "title": "Output Format",
+            "description": "The output format of your data, either RAW or RENDERED.",
+            "enum": [
+              "RAW",
+              "RENDERED"
+            ],
+            "default": "RAW"
+          }
+        },
+        "required": [
+          "entityIdInputHeader",
+          "fieldIdToOutputHeader",
+          "outputFormat"
+        ],
+        "not": {
+          "required": [
+            "localeCode",
+            "localeCodeHeader"
+          ]
+        }
+      },
+      "multiFindAndReplace": {
+        "type": "object",
+        "title": "Multi Find and Replace",
+        "additionalProperties": false,
+        "description": "Takes in text and replaces it with a specified value.",
+        "properties": {
+          "inputHeaders": {
+            "$ref": "#/definitions/transform/inputHeaders"
+          },
+          "findReplaceMapping": {
+            "type": "object",
+            "title": "Find Replace Mappings",
+            "description": "The key-value pairs to find and replace.",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "ignoreCase": {
+            "type": "boolean",
+            "default": false,
+            "title": "Ignore Case",
+            "description": "True if matching should be case-insensitive, false otherwise."
+          },
+          "defaultReplace": {
+            "type": "string",
+            "title": "A default replacement if no match is found",
+            "description": "If this value is set, any unmatched cell value will be set to the default."
+          }
+        },
+        "required": [
+          "inputHeaders",
+          "findReplaceMapping"
+        ]
+      },
+      "normalizeAddress": {
+        "type": "object",
+        "title": "Normalize Address",
+        "additionalProperties": false,
+        "description": "Formats and cleans addresses to Yext\u0027s expected format.",
+        "properties": {
+          "addressSubfieldHeaders": {
+            "$ref": "#/definitions/transform/addressSubfieldHeaders"
+          },
+          "fullAddressHeader": {
+            "type": "string",
+            "title": "Full Address Header",
+            "description": "The column name that contains the full address."
+          },
+          "coordinateHeaders": {
+            "type": "object",
+            "title": "Coordinate Headers",
+            "description": "The column names that contain the corresponding coordinates.",
+            "properties": {
+              "latitude": {
+                "type": "string",
+                "title": "Latitude Header",
+                "description": "The column name that contains the latitude."
+              },
+              "longitude": {
+                "type": "string",
+                "title": "Longitude Header",
+                "description": "The column name that contains the longitude."
+              }
+            },
+            "required": [
+              "latitude",
+              "longitude"
+            ]
+          },
+          "outputHeaders": {
+            "description": "The column names that should be populated with the corresponding address fields.",
+            "$ref": "#/definitions/transform/addressSubfieldHeaders"
+          }
+        },
+        "required": [
+          "outputHeaders"
+        ]
+      },
+      "calculateConfidence": {
+        "type": "object",
+        "title": "Calculate Confidence",
+        "additionalProperties": false,
+        "description": "Evaluates the similarity between a source entity and a list of target entities based on specified attributes. This operation calculates a confidence score for each potential match and filters out any entities that fall below a defined confidence threshold.",
+        "properties": {
+          "brandName": {
+            "type": "string",
+            "title": "Brand Name",
+            "description": "The brand name to be used as the basis for comparison."
+          },
+          "category": {
+            "type": "string",
+            "title": "Category",
+            "description": "The category to be used as the basis for comparison."
+          },
+          "nameHeader": {
+            "type": "string",
+            "title": "Brand Name Header",
+            "description": "The header that contains the brand name to be compared against the source brand name."
+          },
+          "categoryHeader": {
+            "type": "string",
+            "title": "Category Header",
+            "description": "The header that contains the category to be compared against the source category."
+          },
+          "minimumConfidenceLevel": {
+            "type": "number",
+            "title": "Minimum Confidence Level",
+            "description": "A numeric threshold (e.g., 0.8 for 80%) for filtering matches. Any entity with a confidence score below this value will be excluded from the results."
+          },
+          "confidenceOutputHeader": {
+            "type": "string",
+            "title": "Confidence Output Header",
+            "description": "The header to output the confidence score."
+          }
+        },
+        "required": [
+          "confidenceOutputHeader"
+        ]
       }
     },
     "transforms": {
@@ -2162,6 +2401,18 @@
           },
           "convertToRichText": {
             "$ref": "#/definitions/transform/convertToRichText"
+          },
+          "getEntityFieldData": {
+            "$ref": "#/definitions/transform/getEntityFieldData"
+          },
+          "multiFindAndReplace": {
+            "$ref": "#/definitions/transform/multiFindAndReplace"
+          },
+          "normalizeAddress": {
+            "$ref": "#/definitions/transform/normalizeAddress"
+          },
+          "calculateConfidence": {
+            "$ref": "#/definitions/transform/calculateConfidence"
           }
         },
         "oneOf": [
@@ -2264,6 +2515,26 @@
             "required": [
               "convertToRichText"
             ]
+          },
+          {
+            "required": [
+              "getEntityFieldData"
+            ]
+          },
+          {
+            "required": [
+              "multiFindAndReplace"
+            ]
+          },
+          {
+            "required": [
+              "normalizeAddress"
+            ]
+          },
+          {
+            "required": [
+              "calculateConfidence"
+            ]
           }
         ]
       }
@@ -2289,7 +2560,9 @@
             "HOURS_INTERVAL_FORMAT",
             "HOLIDAY_HOURS_API_FORMAT",
             "HOLIDAY_HOURS_INTERVAL_FORMAT",
-            "HOLIDAY_HOURS_COMBINED_DATE_TIME_FORMAT"
+            "HOLIDAY_HOURS_COMBINED_DATE_TIME_FORMAT",
+            "DISPLAY_FORMAT",
+            "EXTERNAL_FORMAT"
           ]
         }
       }

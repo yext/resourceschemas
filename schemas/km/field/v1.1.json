@@ -88,6 +88,21 @@
       "type": "string",
       "format": "km/field-type",
       "description": "The ID of this field\u0027s type."
+    },
+    "writeScopes": {
+      "type": "array",
+      "description": "List of supported write scopes to edit this field.",
+      "unordered": true,
+      "items": {
+        "type": "string",
+        "description": "Write scopes to edit this field.",
+        "enum": [
+          "YEXT",
+          "APP",
+          "USER",
+          "CONNECTOR"
+        ]
+      }
     }
   },
   "additionalProperties": false,
