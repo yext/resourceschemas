@@ -44,6 +44,10 @@
             "configurationEndpoint": {
               "type": "string",
               "description": "An optional endpoint used for OIDC configuration discovery. This endpoint may be needed for some Identity Providers where the configuration endpoint cannot be derived from the loginURL. When this endpoint is provided, the loginURL will be used as the issuer endpoint regardless of the one provided in the discovery document."
+            },
+            "scopes": {
+              "type": "array",
+              "description": "An optional list of scopes to include in the authentication request to the OIDC Identity Provider. If not provided, the default scopes of [\"openid\", \"profile\", \"email\"] will be used."
             }
           },
           "required": [

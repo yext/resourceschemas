@@ -98,6 +98,11 @@
             }
           },
           "additionalProperties": false
+        },
+        "includeCertifiedFacts": {
+          "type": "boolean",
+          "default": false,
+          "description": "Determines whether Certified-Fact credentials should be generated for this endpoint."
         }
       }
     },

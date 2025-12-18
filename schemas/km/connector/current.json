@@ -50,6 +50,9 @@
             },
             "ftpConfig": {
               "$ref": "#/definitions/configs/ftpConfig"
+            },
+            "entityEnrichmentConfig": {
+              "$ref": "#/definitions/configs/entityEnrichmentConfig"
             }
           },
           "oneOf": [
@@ -86,6 +89,11 @@
             {
               "required": [
                 "ftpConfig"
+              ]
+            },
+            {
+              "required": [
+                "entityEnrichmentConfig"
               ]
             }
           ]
@@ -842,6 +850,44 @@
           "credential",
           "fileLocation",
           "dataFormat"
+        ]
+      },
+      "entityEnrichmentConfig": {
+        "type": "object",
+        "title": "Entity Enrichment Configuration",
+        "additionalProperties": false,
+        "description": "Configuration used to enrich existing entities in Knowledge Graph from Google Search.",
+        "properties": {
+          "enrichMode": {
+            "type": "string",
+            "title": "Enrich Mode",
+            "description": "Determines the set of entities to be enriched and how it should be matched. This also Implicitly determines the source of data to be used for enrichment.",
+            "enum": [
+              "SCANNED_ENTITIES",
+              "GOOGLE_PLACES_LOOKUP"
+            ]
+          },
+          "folders": {
+            "type": "array",
+            "title": "Folders",
+            "description": "Optionally filter to entities in specified folder IDs.",
+            "items": {
+              "type": "string",
+              "format": "km/entity-folder"
+            }
+          },
+          "labels": {
+            "type": "array",
+            "title": "Labels",
+            "description": "Optionally filter to entities with specified label IDs.",
+            "items": {
+              "type": "string",
+              "format": "km/entity-label"
+            }
+          }
+        },
+        "required": [
+          "enrichMode"
         ]
       }
     },
@@ -2578,6 +2624,12 @@
           "type": "boolean",
           "title": "Clear Value if Blank",
           "description": "If true, blank values that are mapped to a field will clear existing field content.",
+          "default": false
+        },
+        "dropInvalidMapping": {
+          "type": "boolean",
+          "title": "Drop Invalid Mapping",
+          "description": "If true, invalid mapped values will be dropped.",
           "default": false
         }
       },
