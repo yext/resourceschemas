@@ -2625,12 +2625,6 @@
           "title": "Clear Value if Blank",
           "description": "If true, blank values that are mapped to a field will clear existing field content.",
           "default": false
-        },
-        "dropInvalidMapping": {
-          "type": "boolean",
-          "title": "Drop Invalid Mapping",
-          "description": "If true, invalid mapped values will be dropped.",
-          "default": false
         }
       },
       "oneOf": [
