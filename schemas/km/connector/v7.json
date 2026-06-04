@@ -195,6 +195,18 @@
         "$ref": "#/definitions/mapping"
       }
     },
+    "skipInvalidMappings": {
+      "type": "boolean",
+      "title": "Skip Invalid Mappings",
+      "description": "Indicates whether to skip invalid mappings instead of failing the run.",
+      "default": false
+    },
+    "preserveExistingValue": {
+      "type": "boolean",
+      "title": "Preserve Existing Value",
+      "description": "Indicates whether to preserve existing field values instead of overwriting fields that already contain data.",
+      "default": false
+    },
     "scheduleConfig": {
       "type": "object",
       "additionalProperties": false,
@@ -297,6 +309,18 @@
               "items": {
                 "$ref": "#/definitions/mapping"
               }
+            },
+            "skipInvalidMappings": {
+              "type": "boolean",
+              "title": "Skip Invalid Mappings",
+              "description": "Indicates whether to skip invalid mappings instead of failing the run.",
+              "default": false
+            },
+            "preserveExistingValue": {
+              "type": "boolean",
+              "title": "Preserve Existing Value",
+              "description": "Indicates whether to preserve existing field values instead of overwriting fields that already contain data.",
+              "default": false
             }
           }
         }
