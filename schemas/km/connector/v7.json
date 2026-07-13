@@ -2371,6 +2371,11 @@
             "title": "Category",
             "description": "The category to be used as the basis for comparison."
           },
+          "domain": {
+            "type": "string",
+            "title": "Domain",
+            "description": "The domain to be used as the basis for comparison."
+          },
           "nameHeader": {
             "type": "string",
             "title": "Brand Name Header",
@@ -2380,6 +2385,11 @@
             "type": "string",
             "title": "Category Header",
             "description": "The header that contains the category to be compared against the source category."
+          },
+          "domainHeader": {
+            "type": "string",
+            "title": "Domain Header",
+            "description": "The header that contains the domain to be compared against the source domain."
           },
           "minimumConfidenceLevel": {
             "type": "number",
