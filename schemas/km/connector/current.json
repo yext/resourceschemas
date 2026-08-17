@@ -908,6 +908,56 @@
               "type": "string",
               "format": "km/entity-label"
             }
+          },
+          "inputMode": {
+            "type": "string",
+            "title": "Input Mode",
+            "description": "Defines how the enrichment source provides input.",
+            "enum": [
+              "PULL",
+              "PUSH"
+            ]
+          },
+          "pushParseConfig": {
+            "type": "object",
+            "title": "Push Parse Configuration",
+            "description": "Output-only configuration used to extract values from pushed payloads.",
+            "additionalProperties": false,
+            "properties": {
+              "pathSpecs": {
+                "type": "array",
+                "title": "Path Specifications",
+                "description": "Candidate path expressions used to parse values from pushed payloads.",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "expression": {
+                      "type": "string",
+                      "title": "Expression",
+                      "description": "JMES expression used to extract a value from the payload."
+                    },
+                    "valueType": {
+                      "type": "string",
+                      "title": "Value Type",
+                      "description": "The expected type of the extracted value.",
+                      "enum": [
+                        "VALUE_TYPE_UNSPECIFIED",
+                        "ARRAY_STRING",
+                        "ARRAY_INT"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "expression",
+                    "valueType"
+                  ]
+                }
+              }
+            },
+            "required": [
+              "pathSpecs"
+            ]
           }
         },
         "required": [
@@ -2355,6 +2405,26 @@
           "outputHeaders"
         ]
       },
+      "normalizeCountry": {
+        "type": "object",
+        "title": "Normalize Country",
+        "additionalProperties": false,
+        "description": "Normalizes country values to ISO 3166-1 alpha-2 country codes.",
+        "properties": {
+          "inputHeaders": {
+            "$ref": "#/definitions/transform/inputHeaders"
+          },
+          "fallbackCountryCode": {
+            "type": "string",
+            "title": "Fallback Country Code",
+            "description": "The ISO 3166-1 alpha-2 country code to use when a value cannot be resolved."
+          }
+        },
+        "required": [
+          "inputHeaders",
+          "fallbackCountryCode"
+        ]
+      },
       "calculateConfidence": {
         "type": "object",
         "title": "Calculate Confidence",
@@ -2491,6 +2561,9 @@
           "normalizeAddress": {
             "$ref": "#/definitions/transform/normalizeAddress"
           },
+          "normalizeCountry": {
+            "$ref": "#/definitions/transform/normalizeCountry"
+          },
           "calculateConfidence": {
             "$ref": "#/definitions/transform/calculateConfidence"
           }
@@ -2609,6 +2682,11 @@
           {
             "required": [
               "normalizeAddress"
+            ]
+          },
+          {
+            "required": [
+              "normalizeCountry"
             ]
           },
           {
